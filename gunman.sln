@@ -1,0 +1,181 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dep", "dep", "{DD203441-CC7A-4F73-83B0-5CFBB72F4CE6}"
+	ProjectSection(SolutionItems) = preProject
+		dep\vcredist_x86.exe = dep\vcredist_x86.exe
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sfml2", "sfml2", "{5EBC1576-A2B2-4023-AE9D-718EEF2CC39F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "opznet", "opznet", "{6A8FCCD5-7B1B-474D-8592-B89C84408350}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "audiere", "audiere", "{68D501BA-1D62-4785-820E-2220C4E62C90}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{87BDB34A-2E91-4A39-81F3-66A9DCA3185D}"
+	ProjectSection(SolutionItems) = preProject
+		dep\opznet\opznet-client-d.dll = dep\opznet\opznet-client-d.dll
+		dep\opznet\opznet-client-d.lib = dep\opznet\opznet-client-d.lib
+		dep\opznet\opznet-client.dll = dep\opznet\opznet-client.dll
+		dep\opznet\opznet-client.lib = dep\opznet\opznet-client.lib
+		dep\opznet\opznet-server-d.dll = dep\opznet\opznet-server-d.dll
+		dep\opznet\opznet-server-d.lib = dep\opznet\opznet-server-d.lib
+		dep\opznet\opznet-server.dll = dep\opznet\opznet-server.dll
+		dep\opznet\opznet-server.lib = dep\opznet\opznet-server.lib
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "header", "header", "{DB40F5B6-9719-4933-96D3-C7E67380C0E3}"
+	ProjectSection(SolutionItems) = preProject
+		dep\opznet\opznet\client.h = dep\opznet\opznet\client.h
+		dep\opznet\opznet\server.h = dep\opznet\opznet\server.h
+		dep\opznet\opznet\shared_structs.h = dep\opznet\opznet\shared_structs.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "header", "header", "{2EE65EC3-D532-4AF3-BC47-9F72E42407EC}"
+	ProjectSection(SolutionItems) = preProject
+		dep\audiere\audiere.h = dep\audiere\audiere.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{A0AAEFA2-942B-4AA5-BB49-5159C1EEDE32}"
+	ProjectSection(SolutionItems) = preProject
+		dep\audiere\audiere.dll = dep\audiere\audiere.dll
+		dep\audiere\audiere.h = dep\audiere\audiere.h
+		dep\audiere\audiere.lib = dep\audiere\audiere.lib
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{3D3A88DB-ED3A-4524-A218-885FC3E7419A}"
+	ProjectSection(SolutionItems) = preProject
+		dep\sfml2\sfml-audio-2.dll = dep\sfml2\sfml-audio-2.dll
+		dep\sfml2\sfml-audio-d-2.dll = dep\sfml2\sfml-audio-d-2.dll
+		dep\sfml2\sfml-audio-d.lib = dep\sfml2\sfml-audio-d.lib
+		dep\sfml2\sfml-audio.lib = dep\sfml2\sfml-audio.lib
+		dep\sfml2\sfml-graphics-2.dll = dep\sfml2\sfml-graphics-2.dll
+		dep\sfml2\sfml-graphics-d-2.dll = dep\sfml2\sfml-graphics-d-2.dll
+		dep\sfml2\sfml-graphics-d.lib = dep\sfml2\sfml-graphics-d.lib
+		dep\sfml2\sfml-graphics.lib = dep\sfml2\sfml-graphics.lib
+		dep\sfml2\sfml-main-d.lib = dep\sfml2\sfml-main-d.lib
+		dep\sfml2\sfml-main.lib = dep\sfml2\sfml-main.lib
+		dep\sfml2\sfml-network-2.dll = dep\sfml2\sfml-network-2.dll
+		dep\sfml2\sfml-network-d-2.dll = dep\sfml2\sfml-network-d-2.dll
+		dep\sfml2\sfml-system-2.dll = dep\sfml2\sfml-system-2.dll
+		dep\sfml2\sfml-system-d-2.dll = dep\sfml2\sfml-system-d-2.dll
+		dep\sfml2\sfml-system-d.lib = dep\sfml2\sfml-system-d.lib
+		dep\sfml2\sfml-system.lib = dep\sfml2\sfml-system.lib
+		dep\sfml2\sfml-window-2.dll = dep\sfml2\sfml-window-2.dll
+		dep\sfml2\sfml-window-d-2.dll = dep\sfml2\sfml-window-d-2.dll
+		dep\sfml2\sfml-window-d.lib = dep\sfml2\sfml-window-d.lib
+		dep\sfml2\sfml-window.lib = dep\sfml2\sfml-window.lib
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "header", "header", "{14E28EAD-8495-47BA-AD85-467B344F0A59}"
+	ProjectSection(SolutionItems) = preProject
+		dep\sfml2\SFML\Config.hpp = dep\sfml2\SFML\Config.hpp
+		dep\sfml2\SFML\Graphics.hpp = dep\sfml2\SFML\Graphics.hpp
+		dep\sfml2\SFML\OpenGL.hpp = dep\sfml2\SFML\OpenGL.hpp
+		dep\sfml2\SFML\System.hpp = dep\sfml2\SFML\System.hpp
+		dep\sfml2\SFML\Window.hpp = dep\sfml2\SFML\Window.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Graphics", "Graphics", "{9BF81EA8-1674-40A8-A0BE-3344CEF33864}"
+	ProjectSection(SolutionItems) = preProject
+		dep\sfml2\SFML\Graphics\BlendMode.hpp = dep\sfml2\SFML\Graphics\BlendMode.hpp
+		dep\sfml2\SFML\Graphics\CircleShape.hpp = dep\sfml2\SFML\Graphics\CircleShape.hpp
+		dep\sfml2\SFML\Graphics\Color.hpp = dep\sfml2\SFML\Graphics\Color.hpp
+		dep\sfml2\SFML\Graphics\ConvexShape.hpp = dep\sfml2\SFML\Graphics\ConvexShape.hpp
+		dep\sfml2\SFML\Graphics\Drawable.hpp = dep\sfml2\SFML\Graphics\Drawable.hpp
+		dep\sfml2\SFML\Graphics\Export.hpp = dep\sfml2\SFML\Graphics\Export.hpp
+		dep\sfml2\SFML\Graphics\Font.hpp = dep\sfml2\SFML\Graphics\Font.hpp
+		dep\sfml2\SFML\Graphics\Glyph.hpp = dep\sfml2\SFML\Graphics\Glyph.hpp
+		dep\sfml2\SFML\Graphics\Image.hpp = dep\sfml2\SFML\Graphics\Image.hpp
+		dep\sfml2\SFML\Graphics\PrimitiveType.hpp = dep\sfml2\SFML\Graphics\PrimitiveType.hpp
+		dep\sfml2\SFML\Graphics\Rect.hpp = dep\sfml2\SFML\Graphics\Rect.hpp
+		dep\sfml2\SFML\Graphics\Rect.inl = dep\sfml2\SFML\Graphics\Rect.inl
+		dep\sfml2\SFML\Graphics\RectangleShape.hpp = dep\sfml2\SFML\Graphics\RectangleShape.hpp
+		dep\sfml2\SFML\Graphics\RenderStates.hpp = dep\sfml2\SFML\Graphics\RenderStates.hpp
+		dep\sfml2\SFML\Graphics\RenderTarget.hpp = dep\sfml2\SFML\Graphics\RenderTarget.hpp
+		dep\sfml2\SFML\Graphics\RenderTexture.hpp = dep\sfml2\SFML\Graphics\RenderTexture.hpp
+		dep\sfml2\SFML\Graphics\RenderWindow.hpp = dep\sfml2\SFML\Graphics\RenderWindow.hpp
+		dep\sfml2\SFML\Graphics\Shader.hpp = dep\sfml2\SFML\Graphics\Shader.hpp
+		dep\sfml2\SFML\Graphics\Shape.hpp = dep\sfml2\SFML\Graphics\Shape.hpp
+		dep\sfml2\SFML\Graphics\Sprite.hpp = dep\sfml2\SFML\Graphics\Sprite.hpp
+		dep\sfml2\SFML\Graphics\Text.hpp = dep\sfml2\SFML\Graphics\Text.hpp
+		dep\sfml2\SFML\Graphics\Texture.hpp = dep\sfml2\SFML\Graphics\Texture.hpp
+		dep\sfml2\SFML\Graphics\Transform.hpp = dep\sfml2\SFML\Graphics\Transform.hpp
+		dep\sfml2\SFML\Graphics\Transformable.hpp = dep\sfml2\SFML\Graphics\Transformable.hpp
+		dep\sfml2\SFML\Graphics\Vertex.hpp = dep\sfml2\SFML\Graphics\Vertex.hpp
+		dep\sfml2\SFML\Graphics\VertexArray.hpp = dep\sfml2\SFML\Graphics\VertexArray.hpp
+		dep\sfml2\SFML\Graphics\View.hpp = dep\sfml2\SFML\Graphics\View.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Window", "Window", "{9236B0A0-F78D-4F06-AEB6-52FBBDF64069}"
+	ProjectSection(SolutionItems) = preProject
+		dep\sfml2\SFML\Window\Context.hpp = dep\sfml2\SFML\Window\Context.hpp
+		dep\sfml2\SFML\Window\ContextSettings.hpp = dep\sfml2\SFML\Window\ContextSettings.hpp
+		dep\sfml2\SFML\Window\Event.hpp = dep\sfml2\SFML\Window\Event.hpp
+		dep\sfml2\SFML\Window\Export.hpp = dep\sfml2\SFML\Window\Export.hpp
+		dep\sfml2\SFML\Window\GlResource.hpp = dep\sfml2\SFML\Window\GlResource.hpp
+		dep\sfml2\SFML\Window\Joystick.hpp = dep\sfml2\SFML\Window\Joystick.hpp
+		dep\sfml2\SFML\Window\Keyboard.hpp = dep\sfml2\SFML\Window\Keyboard.hpp
+		dep\sfml2\SFML\Window\Mouse.hpp = dep\sfml2\SFML\Window\Mouse.hpp
+		dep\sfml2\SFML\Window\VideoMode.hpp = dep\sfml2\SFML\Window\VideoMode.hpp
+		dep\sfml2\SFML\Window\Window.hpp = dep\sfml2\SFML\Window\Window.hpp
+		dep\sfml2\SFML\Window\WindowHandle.hpp = dep\sfml2\SFML\Window\WindowHandle.hpp
+		dep\sfml2\SFML\Window\WindowStyle.hpp = dep\sfml2\SFML\Window\WindowStyle.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System", "System", "{346838EB-D9D4-4D36-B6AF-D57DC023C562}"
+	ProjectSection(SolutionItems) = preProject
+		dep\sfml2\SFML\System\Clock.hpp = dep\sfml2\SFML\System\Clock.hpp
+		dep\sfml2\SFML\System\Err.hpp = dep\sfml2\SFML\System\Err.hpp
+		dep\sfml2\SFML\System\Export.hpp = dep\sfml2\SFML\System\Export.hpp
+		dep\sfml2\SFML\System\InputStream.hpp = dep\sfml2\SFML\System\InputStream.hpp
+		dep\sfml2\SFML\System\Lock.hpp = dep\sfml2\SFML\System\Lock.hpp
+		dep\sfml2\SFML\System\Mutex.hpp = dep\sfml2\SFML\System\Mutex.hpp
+		dep\sfml2\SFML\System\NonCopyable.hpp = dep\sfml2\SFML\System\NonCopyable.hpp
+		dep\sfml2\SFML\System\Sleep.hpp = dep\sfml2\SFML\System\Sleep.hpp
+		dep\sfml2\SFML\System\String.hpp = dep\sfml2\SFML\System\String.hpp
+		dep\sfml2\SFML\System\Thread.hpp = dep\sfml2\SFML\System\Thread.hpp
+		dep\sfml2\SFML\System\Thread.inl = dep\sfml2\SFML\System\Thread.inl
+		dep\sfml2\SFML\System\ThreadLocal.hpp = dep\sfml2\SFML\System\ThreadLocal.hpp
+		dep\sfml2\SFML\System\ThreadLocalPtr.hpp = dep\sfml2\SFML\System\ThreadLocalPtr.hpp
+		dep\sfml2\SFML\System\ThreadLocalPtr.inl = dep\sfml2\SFML\System\ThreadLocalPtr.inl
+		dep\sfml2\SFML\System\Time.hpp = dep\sfml2\SFML\System\Time.hpp
+		dep\sfml2\SFML\System\Utf.hpp = dep\sfml2\SFML\System\Utf.hpp
+		dep\sfml2\SFML\System\Utf.inl = dep\sfml2\SFML\System\Utf.inl
+		dep\sfml2\SFML\System\Vector2.hpp = dep\sfml2\SFML\System\Vector2.hpp
+		dep\sfml2\SFML\System\Vector2.inl = dep\sfml2\SFML\System\Vector2.inl
+		dep\sfml2\SFML\System\Vector3.hpp = dep\sfml2\SFML\System\Vector3.hpp
+		dep\sfml2\SFML\System\Vector3.inl = dep\sfml2\SFML\System\Vector3.inl
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game", "src\game.vcxproj", "{DDE392B4-9BD3-4A7C-8AF9-CD28F780C196}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDE392B4-9BD3-4A7C-8AF9-CD28F780C196}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DDE392B4-9BD3-4A7C-8AF9-CD28F780C196}.Debug|Win32.Build.0 = Debug|Win32
+		{DDE392B4-9BD3-4A7C-8AF9-CD28F780C196}.Release|Win32.ActiveCfg = Release|Win32
+		{DDE392B4-9BD3-4A7C-8AF9-CD28F780C196}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5EBC1576-A2B2-4023-AE9D-718EEF2CC39F} = {DD203441-CC7A-4F73-83B0-5CFBB72F4CE6}
+		{6A8FCCD5-7B1B-474D-8592-B89C84408350} = {DD203441-CC7A-4F73-83B0-5CFBB72F4CE6}
+		{68D501BA-1D62-4785-820E-2220C4E62C90} = {DD203441-CC7A-4F73-83B0-5CFBB72F4CE6}
+		{3D3A88DB-ED3A-4524-A218-885FC3E7419A} = {5EBC1576-A2B2-4023-AE9D-718EEF2CC39F}
+		{14E28EAD-8495-47BA-AD85-467B344F0A59} = {5EBC1576-A2B2-4023-AE9D-718EEF2CC39F}
+		{87BDB34A-2E91-4A39-81F3-66A9DCA3185D} = {6A8FCCD5-7B1B-474D-8592-B89C84408350}
+		{DB40F5B6-9719-4933-96D3-C7E67380C0E3} = {6A8FCCD5-7B1B-474D-8592-B89C84408350}
+		{2EE65EC3-D532-4AF3-BC47-9F72E42407EC} = {68D501BA-1D62-4785-820E-2220C4E62C90}
+		{A0AAEFA2-942B-4AA5-BB49-5159C1EEDE32} = {68D501BA-1D62-4785-820E-2220C4E62C90}
+		{9BF81EA8-1674-40A8-A0BE-3344CEF33864} = {14E28EAD-8495-47BA-AD85-467B344F0A59}
+		{9236B0A0-F78D-4F06-AEB6-52FBBDF64069} = {14E28EAD-8495-47BA-AD85-467B344F0A59}
+		{346838EB-D9D4-4D36-B6AF-D57DC023C562} = {14E28EAD-8495-47BA-AD85-467B344F0A59}
+	EndGlobalSection
+EndGlobal

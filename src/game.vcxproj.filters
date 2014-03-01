@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="소스 파일\basic">
+      <UniqueIdentifier>{20651067-48f9-4160-91fc-63f61dc2c8fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\intro_scene">
+      <UniqueIdentifier>{60508e33-98c3-45bd-8f4b-4bbd86b5eafe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\sv">
+      <UniqueIdentifier>{f22f391a-824e-4420-9265-e3221ff68f27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\net_interface">
+      <UniqueIdentifier>{acab3289-26a2-4200-b7a0-72f5cc336236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\starcraft">
+      <UniqueIdentifier>{03d4a301-170f-4c25-90db-0298a62e8a10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\menu_scene">
+      <UniqueIdentifier>{2c02a48b-77cb-4faf-9a1b-f28c13a02961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\menu_item">
+      <UniqueIdentifier>{a7528acc-5e55-4d44-9d67-ccd916a9c7f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\menu_scene\widget">
+      <UniqueIdentifier>{632bdae4-cbfe-4af6-aec6-42aaa6c734c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\test">
+      <UniqueIdentifier>{f5552a6f-348f-4e32-8242-104d8b21b263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\ingame">
+      <UniqueIdentifier>{3fabfff4-8c42-4f65-bc50-4930209da76f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\lobby_scene">
+      <UniqueIdentifier>{4603d130-b363-4d73-b9ac-48de78466670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\proto">
+      <UniqueIdentifier>{10c4046d-8a52-4f64-833f-ea3c8cd21367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\ingame\ui">
+      <UniqueIdentifier>{5b310290-4f80-470d-b676-b0e5288ad071}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="loaded_libs.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\d_input.cpp">
+      <Filter>소스 파일\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\logger.cpp">
+      <Filter>소스 파일\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="intro_scene.cpp">
+      <Filter>소스 파일\intro_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="asset.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="director.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\edit_text.cpp">
+      <Filter>소스 파일\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\menu.cpp">
+      <Filter>소스 파일\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="protocol.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="net_interface.cpp">
+      <Filter>소스 파일\net_interface</Filter>
+    </ClCompile>
+    <ClCompile Include="sv\sv_play_scene.cpp">
+      <Filter>소스 파일\sv</Filter>
+    </ClCompile>
+    <ClCompile Include="sv\sv_wait_scene.cpp">
+      <Filter>소스 파일\sv</Filter>
+    </ClCompile>
+    <ClCompile Include="sv\sv_service.cpp">
+      <Filter>소스 파일\sv</Filter>
+    </ClCompile>
+    <ClCompile Include="sv\sv_scene.cpp">
+      <Filter>소스 파일\sv</Filter>
+    </ClCompile>
+    <ClCompile Include="sv\sv_global.cpp">
+      <Filter>소스 파일\sv</Filter>
+    </ClCompile>
+    <ClCompile Include="sv\sv_util.cpp">
+      <Filter>소스 파일\sv</Filter>
+    </ClCompile>
+    <ClCompile Include="logic.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="sv\sv_director.cpp">
+      <Filter>소스 파일\sv</Filter>
+    </ClCompile>
+    <ClCompile Include="sfx_mgr.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="starcraft\star_unit.cpp">
+      <Filter>소스 파일\starcraft</Filter>
+    </ClCompile>
+    <ClCompile Include="starcraft\grp_loader.cpp">
+      <Filter>소스 파일\starcraft</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\string_convert.cpp">
+      <Filter>소스 파일\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="menu_scene.cpp">
+      <Filter>소스 파일\menu_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="menu_item.cpp">
+      <Filter>소스 파일\menu_item</Filter>
+    </ClCompile>
+    <ClCompile Include="userprofile.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\profile_widget.cpp">
+      <Filter>소스 파일\menu_scene\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\roomlist_widget.cpp">
+      <Filter>소스 파일\menu_scene\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="widget\roomname_widget.cpp">
+      <Filter>소스 파일\menu_scene\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="test\edittext_test.cpp">
+      <Filter>소스 파일\test</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\chat_box.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\play_scene.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\player.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\pop_msg.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\tilemap.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\lobby_scene.cpp">
+      <Filter>소스 파일\lobby_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="basic\cleaner.cpp">
+      <Filter>소스 파일\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\command.pb.cc">
+      <Filter>소스 파일\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\champion.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="colors.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\logic_util.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\ani00.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\cooldown_shadow.cpp">
+      <Filter>소스 파일\ingame\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\skillbox.cpp">
+      <Filter>소스 파일\ingame\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\ability.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\bullet.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\renderer.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
+    <ClCompile Include="ingame\skillarrow.cpp">
+      <Filter>소스 파일\ingame\ui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="internal.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\logger.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\d_input.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="intro_scene.h">
+      <Filter>소스 파일\intro_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="asset.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\s_map.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="director.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\signal_queue.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\edit_text.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\menu.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="protocol.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="net_interface.h">
+      <Filter>소스 파일\net_interface</Filter>
+    </ClInclude>
+    <ClInclude Include="sv\sv_play_scene.h">
+      <Filter>소스 파일\sv</Filter>
+    </ClInclude>
+    <ClInclude Include="sv\sv_wait_scene.h">
+      <Filter>소스 파일\sv</Filter>
+    </ClInclude>
+    <ClInclude Include="sv\sv_service.h">
+      <Filter>소스 파일\sv</Filter>
+    </ClInclude>
+    <ClInclude Include="sv\sv_scene.h">
+      <Filter>소스 파일\sv</Filter>
+    </ClInclude>
+    <ClInclude Include="sv\sv_internal.h">
+      <Filter>소스 파일\sv</Filter>
+    </ClInclude>
+    <ClInclude Include="sv\sv_global.h">
+      <Filter>소스 파일\sv</Filter>
+    </ClInclude>
+    <ClInclude Include="sv\sv_util.h">
+      <Filter>소스 파일\sv</Filter>
+    </ClInclude>
+    <ClInclude Include="logic.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="sv\sv_scene_ids.h">
+      <Filter>소스 파일\sv</Filter>
+    </ClInclude>
+    <ClInclude Include="sv\sv_director.h">
+      <Filter>소스 파일\sv</Filter>
+    </ClInclude>
+    <ClInclude Include="sfx_mgr.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="starcraft\star_unit.h">
+      <Filter>소스 파일\starcraft</Filter>
+    </ClInclude>
+    <ClInclude Include="starcraft\grp_loader.h">
+      <Filter>소스 파일\starcraft</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\string_convert.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="menu_scene.h">
+      <Filter>소스 파일\menu_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="menu_item.h">
+      <Filter>소스 파일\menu_item</Filter>
+    </ClInclude>
+    <ClInclude Include="userprofile.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\widget.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\item.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\profile_widget.h">
+      <Filter>소스 파일\menu_scene\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\roomlist_widget.h">
+      <Filter>소스 파일\menu_scene\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="widget\roomname_widget.h">
+      <Filter>소스 파일\menu_scene\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\chat_box.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\play_scene.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\player.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\pop_msg.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\tilemap.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\lobby_scene.h">
+      <Filter>소스 파일\lobby_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\cleaner.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\command.pb.h">
+      <Filter>소스 파일\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\champion.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="colors.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\logic_util.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\finite.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\coord.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\ani00.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\renderable.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\cooldown_shadow.h">
+      <Filter>소스 파일\ingame\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\skillbox.h">
+      <Filter>소스 파일\ingame\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\bullet.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\ability.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\observable.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="basic\flag.h">
+      <Filter>소스 파일\basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\renderer.h">
+      <Filter>소스 파일\ingame</Filter>
+    </ClInclude>
+    <ClInclude Include="ingame\skillarrow.h">
+      <Filter>소스 파일\ingame\ui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="command.proto">
+      <Filter>소스 파일\proto</Filter>
+    </None>
+  </ItemGroup>
+</Project>

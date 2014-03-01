@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DDE392B4-9BD3-4A7C-8AF9-CD28F780C196}</ProjectGuid>
+    <RootNamespace>multi_game</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)temp\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)-d</TargetName>
+    <IncludePath>$(SolutionDir)dep\opznet\;$(SolutionDir)dep\sfml2\;$(SolutionDir)dep\audiere\;$(SolutionDir)dep\v8\include\;$(SolutionDir)dep\grpapi\include\;$(SolutionDir)dep\gtest\include\;$(IncludePath);$(SolutionDir)dep\tmx-parser\include\;$(SolutionDir)dep\protobuf\include\</IncludePath>
+    <LibraryPath>$(SolutionDir)dep\opznet\;$(SolutionDir)dep\sfml2\;$(SolutionDir)dep\audiere\;$(SolutionDir)dep\v8\lib\;$(SolutionDir)dep\grpapi\lib\;$(SolutionDir)dep\gtest\lib\;$(LibraryPath);$(SolutionDir)dep\tmx-parser\lib\;$(SolutionDir)dep\protobuf\lib\</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)temp\$(Configuration)\</IntDir>
+    <IncludePath>$(SolutionDir)dep\opznet\;$(SolutionDir)dep\sfml2\;$(SolutionDir)dep\audiere\;$(SolutionDir)dep\v8\include\;$(SolutionDir)dep\grpapi\include\;$(IncludePath);$(SolutionDir)dep\tmx-parser\include\;$(SolutionDir)dep\protobuf\include\</IncludePath>
+    <LibraryPath>$(SolutionDir)dep\opznet\;$(SolutionDir)dep\sfml2\;$(SolutionDir)dep\audiere\;$(SolutionDir)dep\v8\lib\;$(SolutionDir)dep\grpapi\lib\;$(LibraryPath);$(SolutionDir)dep\tmx-parser\lib\;$(SolutionDir)dep\protobuf\lib\</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy ..\build\Debug\game-d.exe ..\test-d /Y</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>ㅋㅋ</Message>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>protoc command.proto --cpp_out=proto/</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy ..\build\Release\game.exe ..\test /Y</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>ㅎㅎ</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="asset.cpp" />
+    <ClCompile Include="basic\cleaner.cpp" />
+    <ClCompile Include="basic\d_input.cpp" />
+    <ClCompile Include="basic\edit_text.cpp" />
+    <ClCompile Include="basic\logger.cpp" />
+    <ClCompile Include="basic\menu.cpp" />
+    <ClCompile Include="basic\string_convert.cpp" />
+    <ClCompile Include="colors.cpp" />
+    <ClCompile Include="director.cpp" />
+    <ClCompile Include="ingame\ability.cpp" />
+    <ClCompile Include="ingame\ani00.cpp" />
+    <ClCompile Include="ingame\skillarrow.cpp" />
+    <ClCompile Include="ingame\bullet.cpp" />
+    <ClCompile Include="ingame\champion.cpp" />
+    <ClCompile Include="ingame\chat_box.cpp" />
+    <ClCompile Include="ingame\cooldown_shadow.cpp" />
+    <ClCompile Include="ingame\lobby_scene.cpp" />
+    <ClCompile Include="ingame\logic_util.cpp" />
+    <ClCompile Include="ingame\player.cpp" />
+    <ClCompile Include="ingame\play_scene.cpp" />
+    <ClCompile Include="ingame\pop_msg.cpp" />
+    <ClCompile Include="ingame\renderer.cpp" />
+    <ClCompile Include="ingame\skillbox.cpp" />
+    <ClCompile Include="ingame\tilemap.cpp" />
+    <ClCompile Include="intro_scene.cpp" />
+    <ClCompile Include="loaded_libs.cpp" />
+    <ClCompile Include="logic.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu_item.cpp" />
+    <ClCompile Include="menu_scene.cpp" />
+    <ClCompile Include="net_interface.cpp" />
+    <ClCompile Include="protocol.cpp" />
+    <ClCompile Include="proto\command.pb.cc" />
+    <ClCompile Include="sfx_mgr.cpp" />
+    <ClCompile Include="starcraft\grp_loader.cpp" />
+    <ClCompile Include="starcraft\star_unit.cpp" />
+    <ClCompile Include="sv\sv_director.cpp" />
+    <ClCompile Include="sv\sv_global.cpp" />
+    <ClCompile Include="sv\sv_scene.cpp" />
+    <ClCompile Include="sv\sv_service.cpp" />
+    <ClCompile Include="sv\sv_play_scene.cpp" />
+    <ClCompile Include="sv\sv_util.cpp" />
+    <ClCompile Include="sv\sv_wait_scene.cpp" />
+    <ClCompile Include="test\edittext_test.cpp" />
+    <ClCompile Include="userprofile.cpp" />
+    <ClCompile Include="util.cpp" />
+    <ClCompile Include="widget\profile_widget.cpp" />
+    <ClCompile Include="widget\roomlist_widget.cpp" />
+    <ClCompile Include="widget\roomname_widget.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="asset.h" />
+    <ClInclude Include="basic\cleaner.h" />
+    <ClInclude Include="basic\d_input.h" />
+    <ClInclude Include="basic\edit_text.h" />
+    <ClInclude Include="basic\flag.h" />
+    <ClInclude Include="basic\item.h" />
+    <ClInclude Include="basic\logger.h" />
+    <ClInclude Include="basic\menu.h" />
+    <ClInclude Include="basic\observable.h" />
+    <ClInclude Include="basic\signal_queue.h" />
+    <ClInclude Include="basic\string_convert.h" />
+    <ClInclude Include="basic\s_map.h" />
+    <ClInclude Include="basic\widget.h" />
+    <ClInclude Include="colors.h" />
+    <ClInclude Include="director.h" />
+    <ClInclude Include="global.h" />
+    <ClInclude Include="ingame\ani00.h" />
+    <ClInclude Include="ingame\skillarrow.h" />
+    <ClInclude Include="ingame\champion.h" />
+    <ClInclude Include="ingame\chat_box.h" />
+    <ClInclude Include="ingame\cooldown_shadow.h" />
+    <ClInclude Include="ingame\coord.h" />
+    <ClInclude Include="ingame\finite.h" />
+    <ClInclude Include="ingame\bullet.h" />
+    <ClInclude Include="ingame\lobby_scene.h" />
+    <ClInclude Include="ingame\logic_util.h" />
+    <ClInclude Include="ingame\player.h" />
+    <ClInclude Include="ingame\play_scene.h" />
+    <ClInclude Include="ingame\pop_msg.h" />
+    <ClInclude Include="ingame\renderable.h" />
+    <ClInclude Include="ingame\ability.h" />
+    <ClInclude Include="ingame\renderer.h" />
+    <ClInclude Include="ingame\skillbox.h" />
+    <ClInclude Include="ingame\tilemap.h" />
+    <ClInclude Include="internal.h" />
+    <ClInclude Include="intro_scene.h" />
+    <ClInclude Include="logic.h" />
+    <ClInclude Include="menu_item.h" />
+    <ClInclude Include="menu_scene.h" />
+    <ClInclude Include="protocol.h" />
+    <ClInclude Include="proto\command.pb.h" />
+    <ClInclude Include="scene.h" />
+    <ClInclude Include="sfx_mgr.h" />
+    <ClInclude Include="starcraft\grp_loader.h" />
+    <ClInclude Include="starcraft\star_unit.h" />
+    <ClInclude Include="sv\sv_director.h" />
+    <ClInclude Include="sv\sv_scene_ids.h" />
+    <ClInclude Include="sv\sv_global.h" />
+    <ClInclude Include="sv\sv_internal.h" />
+    <ClInclude Include="sv\sv_play_scene.h" />
+    <ClInclude Include="sv\sv_scene.h" />
+    <ClInclude Include="sv\sv_service.h" />
+    <ClInclude Include="net_interface.h" />
+    <ClInclude Include="sv\sv_wait_scene.h" />
+    <ClInclude Include="sv\sv_util.h" />
+    <ClInclude Include="userprofile.h" />
+    <ClInclude Include="util.h" />
+    <ClInclude Include="widget\profile_widget.h" />
+    <ClInclude Include="widget\roomlist_widget.h" />
+    <ClInclude Include="widget\roomname_widget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="command.proto" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
