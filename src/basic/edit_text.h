@@ -27,7 +27,7 @@ public:
 
 	bool					  HandleWindowEvent(const Event & e);
 
-	const String &			  getString() {return _string;}
+	const sf::String &		  getString() {return _string;}
 
 	void					  clear();
 
@@ -41,7 +41,7 @@ private:
 	Text			_text;
 	RectangleShape	_caret;
 
-	String			_string;
+	sf::String		_string;
 	size_t			_maxchar;
 	size_t			_caret_pos;
 

@@ -225,12 +225,19 @@ class Command : public ::google::protobuf::Message {
   inline ::Vector2d* release_pos();
   inline void set_allocated_pos(::Vector2d* pos);
 
-  // optional int32 slot = 4;
-  inline bool has_slot() const;
-  inline void clear_slot();
-  static const int kSlotFieldNumber = 4;
-  inline ::google::protobuf::int32 slot() const;
-  inline void set_slot(::google::protobuf::int32 value);
+  // optional int32 key = 4;
+  inline bool has_key() const;
+  inline void clear_key();
+  static const int kKeyFieldNumber = 4;
+  inline ::google::protobuf::int32 key() const;
+  inline void set_key(::google::protobuf::int32 value);
+
+  // optional int32 dir = 5;
+  inline bool has_dir() const;
+  inline void clear_dir();
+  static const int kDirFieldNumber = 5;
+  inline ::google::protobuf::int32 dir() const;
+  inline void set_dir(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:Command)
  private:
@@ -240,18 +247,21 @@ class Command : public ::google::protobuf::Message {
   inline void clear_has_type();
   inline void set_has_pos();
   inline void clear_has_pos();
-  inline void set_has_slot();
-  inline void clear_has_slot();
+  inline void set_has_key();
+  inline void clear_has_key();
+  inline void set_has_dir();
+  inline void clear_has_dir();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 pid_;
   int type_;
   ::Vector2d* pos_;
-  ::google::protobuf::int32 slot_;
+  ::google::protobuf::int32 key_;
+  ::google::protobuf::int32 dir_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
 
   friend void  protobuf_AddDesc_command_2eproto();
   friend void protobuf_AssignDesc_command_2eproto();
@@ -398,26 +408,48 @@ inline void Command::set_allocated_pos(::Vector2d* pos) {
   }
 }
 
-// optional int32 slot = 4;
-inline bool Command::has_slot() const {
+// optional int32 key = 4;
+inline bool Command::has_key() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void Command::set_has_slot() {
+inline void Command::set_has_key() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void Command::clear_has_slot() {
+inline void Command::clear_has_key() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void Command::clear_slot() {
-  slot_ = 0;
-  clear_has_slot();
+inline void Command::clear_key() {
+  key_ = 0;
+  clear_has_key();
 }
-inline ::google::protobuf::int32 Command::slot() const {
-  return slot_;
+inline ::google::protobuf::int32 Command::key() const {
+  return key_;
 }
-inline void Command::set_slot(::google::protobuf::int32 value) {
-  set_has_slot();
-  slot_ = value;
+inline void Command::set_key(::google::protobuf::int32 value) {
+  set_has_key();
+  key_ = value;
+}
+
+// optional int32 dir = 5;
+inline bool Command::has_dir() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Command::set_has_dir() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Command::clear_has_dir() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Command::clear_dir() {
+  dir_ = 0;
+  clear_has_dir();
+}
+inline ::google::protobuf::int32 Command::dir() const {
+  return dir_;
+}
+inline void Command::set_dir(::google::protobuf::int32 value) {
+  set_has_dir();
+  dir_ = value;
 }
 
 

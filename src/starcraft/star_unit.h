@@ -39,7 +39,7 @@ private:
 
 	enum
 	{
-		ANIM_WEIGHT = 1
+		ANIM_WEIGHT = 2
 	};
 
 	int					_anim_count;

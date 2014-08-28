@@ -52,11 +52,12 @@ void protobuf_AssignDesc_command_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Vector2d));
   Command_descriptor_ = file->message_type(1);
-  static const int Command_offsets_[4] = {
+  static const int Command_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Command, pid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Command, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Command, pos_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Command, slot_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Command, key_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Command, dir_),
   };
   Command_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -105,10 +106,11 @@ void protobuf_AddDesc_command_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\rcommand.proto\" \n\010Vector2d\022\t\n\001x\030\001 \002(\005\022\t"
-    "\n\001y\030\002 \002(\005\"X\n\007Command\022\013\n\003pid\030\001 \002(\r\022\032\n\004typ"
+    "\n\001y\030\002 \002(\005\"d\n\007Command\022\013\n\003pid\030\001 \002(\r\022\032\n\004typ"
     "e\030\002 \002(\0162\014.CommandType\022\026\n\003pos\030\003 \001(\0132\t.Vec"
-    "tor2d\022\014\n\004slot\030\004 \001(\005*0\n\013CommandType\022\016\n\nCO"
-    "MMAND_GO\020\000\022\021\n\rCOMMAND_SKILL\020\001", 189);
+    "tor2d\022\013\n\003key\030\004 \001(\005\022\013\n\003dir\030\005 \001(\005*0\n\013Comma"
+    "ndType\022\016\n\nCOMMAND_GO\020\000\022\021\n\rCOMMAND_SKILL\020"
+    "\001", 201);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "command.proto", &protobuf_RegisterTypes);
   Vector2d::default_instance_ = new Vector2d();
@@ -394,7 +396,8 @@ void Vector2d::Swap(Vector2d* other) {
 const int Command::kPidFieldNumber;
 const int Command::kTypeFieldNumber;
 const int Command::kPosFieldNumber;
-const int Command::kSlotFieldNumber;
+const int Command::kKeyFieldNumber;
+const int Command::kDirFieldNumber;
 #endif  // !_MSC_VER
 
 Command::Command()
@@ -417,7 +420,8 @@ void Command::SharedCtor() {
   pid_ = 0u;
   type_ = 0;
   pos_ = NULL;
-  slot_ = 0;
+  key_ = 0;
+  dir_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -459,7 +463,8 @@ void Command::Clear() {
     if (has_pos()) {
       if (pos_ != NULL) pos_->::Vector2d::Clear();
     }
-    slot_ = 0;
+    key_ = 0;
+    dir_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -517,19 +522,35 @@ bool Command::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(32)) goto parse_slot;
+        if (input->ExpectTag(32)) goto parse_key;
         break;
       }
 
-      // optional int32 slot = 4;
+      // optional int32 key = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_slot:
+         parse_key:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &slot_)));
-          set_has_slot();
+                 input, &key_)));
+          set_has_key();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_dir;
+        break;
+      }
+
+      // optional int32 dir = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_dir:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &dir_)));
+          set_has_dir();
         } else {
           goto handle_uninterpreted;
         }
@@ -572,9 +593,14 @@ void Command::SerializeWithCachedSizes(
       3, this->pos(), output);
   }
 
-  // optional int32 slot = 4;
-  if (has_slot()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->slot(), output);
+  // optional int32 key = 4;
+  if (has_key()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->key(), output);
+  }
+
+  // optional int32 dir = 5;
+  if (has_dir()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->dir(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -603,9 +629,14 @@ void Command::SerializeWithCachedSizes(
         3, this->pos(), target);
   }
 
-  // optional int32 slot = 4;
-  if (has_slot()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->slot(), target);
+  // optional int32 key = 4;
+  if (has_key()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->key(), target);
+  }
+
+  // optional int32 dir = 5;
+  if (has_dir()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->dir(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -639,11 +670,18 @@ int Command::ByteSize() const {
           this->pos());
     }
 
-    // optional int32 slot = 4;
-    if (has_slot()) {
+    // optional int32 key = 4;
+    if (has_key()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->slot());
+          this->key());
+    }
+
+    // optional int32 dir = 5;
+    if (has_dir()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->dir());
     }
 
   }
@@ -682,8 +720,11 @@ void Command::MergeFrom(const Command& from) {
     if (from.has_pos()) {
       mutable_pos()->::Vector2d::MergeFrom(from.pos());
     }
-    if (from.has_slot()) {
-      set_slot(from.slot());
+    if (from.has_key()) {
+      set_key(from.key());
+    }
+    if (from.has_dir()) {
+      set_dir(from.dir());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -715,7 +756,8 @@ void Command::Swap(Command* other) {
     std::swap(pid_, other->pid_);
     std::swap(type_, other->type_);
     std::swap(pos_, other->pos_);
-    std::swap(slot_, other->slot_);
+    std::swap(key_, other->key_);
+    std::swap(dir_, other->dir_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

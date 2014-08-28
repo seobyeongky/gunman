@@ -56,8 +56,7 @@ void Champion::Update()
 
 		Vector2f fdpos((float)dx, (float)dy);
 		fdpos = GetUnitVector(fdpos);
-		float dir = GetDir(fdpos);
-		_ghost.setRotation(360.f * dir / (2.f * PI));
+		_ghost.setRotation(GetDir(fdpos));
 		_ghost.Walk();
 	}
 	else

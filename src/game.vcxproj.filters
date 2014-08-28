@@ -52,6 +52,9 @@
     <Filter Include="소스 파일\ingame\ui">
       <UniqueIdentifier>{5b310290-4f80-470d-b676-b0e5288ad071}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\scripting">
+      <UniqueIdentifier>{5878c2de-5ee1-471d-b37e-4394f0a7e7d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -382,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="ingame\skillarrow.h">
       <Filter>소스 파일\ingame\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\v8_object_wrap.h">
+      <Filter>소스 파일\scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

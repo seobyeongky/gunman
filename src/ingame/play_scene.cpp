@@ -13,7 +13,13 @@
 #include "renderer.h"
 #include "coord.h"
 
+#include <v8.h>
+using namespace v8;
+
+
+
 PlayScene * g_playscene = nullptr;
+
 
 void CheckCursorScreenCollision(bool * up, bool * down, bool * left, bool * right)
 {
@@ -65,15 +71,17 @@ PlayScene::PlayScene(const wstring & room_name,
 		Ability * abil = new Ability();
 		abil->name = L"missile";
 		abil->flag = ACTIVE_ABILITY;
-		abil->invoke = [this](Champion * champ){
-
+		abil->invoke = [this](Champion * champ, invoke_arg_t arg){
+//			champ->RunCommandSkill(arg.key, [this](){
+					
+//			});
 		};
 		abil->cooltime = 5;
 		abil->range = -1;
 		abil->targeting = false;
 		abil->casttime = 500;
 		abil->icon = L"icon-missile";
-		abil->uiflag.add(UI_SKILL_INF_ARROW);
+		abil->uiflag.add(UI_SKILL_ARROW);
 		ability_map[L"missile"] = abil;
 	}
 	
@@ -112,7 +120,7 @@ PlayScene::PlayScene(const wstring & room_name,
 			inbuf.clear();
 		}
 		UpdateLogic();
-		_rest_update_count = 5;
+		_rest_update_count = 3;
 		_command_send_ok = true;
 	}));
 
@@ -157,10 +165,37 @@ PlayScene::PlayScene(const wstring & room_name,
 
 	_skillbox.setPosition((float)winsize.x, .5f*winsize.y);
 	_skillbox.setOrigin(89.f, .5f*191.f);
+
+	V8::Initialize();
+	_js_isolate = v8::Isolate::New();
+	{
+		Isolate::Scope isolate_scope(_js_isolate);
+		CreateJSContext();
+		v8::Context::Scope context_scope(_js_context);
+		v8::HandleScope handle_scope(_js_isolate);
+		v8::TryCatch try_catch;
+		v8::Handle<v8::Value> name;
+		v8::ScriptOrigin origin(name);
+		v8::Handle<v8::String> source;
+		v8::Handle<v8::Script> script = v8::Script::Compile(source, &origin);
+		if (script.IsEmpty()) {
+			// Print errors that happened during compilation.
+			ReportException(&try_catch);
+		} else {
+			v8::Handle<v8::Value> result = script->Run();
+			if (result.IsEmpty()) {
+				assert(try_catch.HasCaught());
+				// Print errors that happened during execution.
+				ReportException(&try_catch);
+			}
+		}
+	}
 }
 
 PlayScene::~PlayScene()
 {
+	V8::Dispose();
+
 	for (auto it : _champions) delete it.element();
 	for (auto it : _ui_finites) delete it;
 
@@ -349,6 +384,27 @@ void PlayScene::HandleCommand(Command & c)
 			champion->RunCommandGo(Vector2i(c.pos().x(),c.pos().y()));
 		}
 		break;
+
+	case COMMAND_SKILL:
+		{
+			smap<ID, Champion*>::Iter champ_it;
+			if (!_champions.find(clid, &champ_it))
+			{
+				G.logger->Warning(L"HandleCommand : COMMAND_GO : ¾ø´Â Ã¨ÇÇ¿Â(%d)", clid);
+				return;
+			}
+			Champion * champ = (*champ_it).element();
+			Vector2i pos(c.pos().x(), c.pos().y());
+			auto key = (Keyboard::Key)c.key();
+			skillcontext * sc = champ->skills[key];
+			if (!sc) return;
+			if (sc->cooltime.get() > 0) return;
+//			champ->RunCommandSkill(key, [](){});
+			invoke_arg_t arg;
+			arg.key = (Keyboard::Key)c.key();
+			arg.pos = pos;
+			sc->ability->invoke(champ, arg);
+		}
 	}
 }
 
@@ -453,12 +509,12 @@ void PlayScene::UpdateUI()
 
 	if (_ui_flag.has(UI_FLAG_AIM))
 	{
-		if (_ui_skill_flag.has(UI_SKILL_INF_ARROW))
+		if (_ui_skill_flag.has(UI_SKILL_ARROW))
 		{
 			_ui_skill_arrow->SetVisible(true);
 			Vector2f champpos((float)_mychamp->GetPos().x, (float)_mychamp->GetPos().y);
 			_ui_skill_arrow->setPosition(champpos);
-			_ui_skill_arrow->Update(-1);
+			_ui_skill_arrow->Update(ability_map[_ui_skill_name]->range);
 			Vector2f cursorpos((float)Mouse::getPosition(G.window).x, (float)Mouse::getPosition(G.window).y);
 			cursorpos = Renderer::TransformPoint(cursorpos);
 			_ui_skill_arrow->setRotation(GetDir(cursorpos-champpos));
@@ -536,4 +592,89 @@ void PlayScene::SendReadyToRecv()
 	Packet sendpacket;
 	sendpacket << TO_UINT16(CL_TO_SV_READY_TO_RECV);
 	SafeSend(sendpacket);
+}
+
+
+void PlayScene::JS_Print(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	bool first = true;
+	for (int i = 0; i < args.Length(); i++) {
+	    HandleScope handle_scope(args.GetIsolate());
+	    if (first) {
+		  first = false;
+		} else {
+		  printf(" ");
+		}
+		v8::String::Value msg(args[i]);
+		const wchar_t * wchar_list = reinterpret_cast<wchar_t*>(*msg);
+
+		g_playscene->_chat_box.AddInfoMsg(wchar_list);
+		G.sfx_mgr.Play(L"data\\system\\bell.wav");
+	}
+}
+
+void PlayScene::JS_OnPlayerInput(const FunctionCallbackInfo<Value>& args)
+{
+	HandleScope handle_scope(_js_isolate);
+
+	_js_player_input_callback = Handle<Function>::Cast(args[0]);
+	_js_player_input_callback_ref.Reset(_js_isolate, _js_player_input_callback);
+}
+
+
+void PlayScene::CreateJSContext()
+{
+	HandleScope handle_scope(_js_isolate);
+
+	_js_global = ObjectTemplate::New(_js_isolate);
+
+	_js_global->Set(v8::String::NewFromUtf8(_js_isolate, "print"), FunctionTemplate::New(_js_isolate, S_JS_Print));
+
+	_js_global->Set(v8::String::NewFromUtf8(_js_isolate, "_OnPlayerEvent"), FunctionTemplate::New(_js_isolate, S_JS_OnPlayerInput));
+
+	_js_context = v8::Context::New(_js_isolate, nullptr, _js_global);
+
+//	_js_context_ref.Reset(_js_isolate, _js_context);
+}
+
+void PlayScene::ReportException(TryCatch* try_catch)
+{
+	v8::HandleScope handle_scope(_js_isolate);
+	v8::String::Value exception(try_catch->Exception());
+	const wchar_t* exception_string = reinterpret_cast<const wchar_t *>(*exception);
+	v8::Handle<v8::Message> message = try_catch->Message();
+	if (message.IsEmpty()) {
+		// V8 didn't provide any extra information about this error; just
+		// print the exception.
+		_chat_box.AddInfoMsg(exception_string);
+	} else {
+		// Print (filename):(line number): (message).
+		
+		v8::String::Value filename(message->GetScriptResourceName());
+		const wchar_t* filename_string  = reinterpret_cast<const wchar_t *>(*filename);
+		int linenum = message->GetLineNumber();
+		wchar_t buf[1024];
+		wsprintf(buf, L"%s:%i: %s\n", filename_string, linenum, exception_string);
+		// Print line of source code.
+		v8::String::Utf8Value sourceline(message->GetSourceLine());
+		const wchar_t * sourceline_string = reinterpret_cast<const wchar_t *>(*sourceline);
+		wsprintf(buf, L"%s\n", sourceline_string);
+		// Print wavy underline (GetUnderline is deprecated).
+		int start = message->GetStartColumn();
+		for (int i = 0; i < start; i++) {
+			wsprintf(buf, L" ");
+		}
+		int end = message->GetEndColumn();
+		for (int i = start; i < end; i++) {
+			wsprintf(buf, L"^");
+		}
+		wsprintf(buf, L"\n");
+		v8::String::Value stack_trace(try_catch->StackTrace());
+		if (stack_trace.length() > 0) {
+			const wchar_t * stack_trace_string = reinterpret_cast<const wchar_t *>(*stack_trace);
+			wsprintf(buf, L"%s\n", stack_trace_string);
+		}
+		_chat_box.AddInfoMsg(buf);
+		G.sfx_mgr.Play(L"data\\system\\Error.wav");
+	}
 }

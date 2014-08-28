@@ -11,11 +11,19 @@ enum
 	, TOGGLE_ABILITY = 4
 };
 
+struct invoke_arg_t
+{
+	Keyboard::Key	key;
+	Vector2i		pos;
+};
+
+typedef function<void(Champion *, invoke_arg_t)> invoke_fn_t;
+
 struct Ability
 {
 	wstring						name;
 	int							flag;
-	function<void(Champion*)>	invoke;	// for ACTIVE ABILITY
+	invoke_fn_t					invoke;
 	int							cooltime;
 	int							range;
 	bool						targeting;

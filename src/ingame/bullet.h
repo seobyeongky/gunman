@@ -11,7 +11,7 @@ class Bullet
 {
 public:
 	Bullet(function<void()> callback, int flags);
-	virtual ~Bullet() {};
+//	virtual ~Bullet() {};
 
 	function<void()>	callback;
 	int					flags;

@@ -10,6 +10,7 @@ namespace Director
 
 	bool			alt_pressed = false;
 	Sprite			cursor;
+	Text			fps_text;
 
 	struct timeout_t
 	{
@@ -58,12 +59,15 @@ namespace Director
 
 		SetDefaultCursor();
 		G.window.setMouseCursorVisible(false);
+		fps_text.setFont(G.default_font);
 
 		while(G.window.isOpen())
 		{
 			G.present_time = clock.getElapsedTime().asMilliseconds();
 			G.delta_time = G.present_time - last_time;
 			last_time = G.present_time;
+
+			fps_text.setString(to_string(1000.f / G.delta_time));
 
 			G.sfx_mgr.Update();
 			NetInterface::Update();
@@ -127,6 +131,7 @@ namespace Director
 #endif
 
 			G.window.draw(cursor);
+			G.window.draw(fps_text);
 			G.window.display();
 		
 			_ASSERTE( _CrtCheckMemory( ) );

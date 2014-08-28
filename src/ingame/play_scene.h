@@ -15,9 +15,18 @@
 
 #include <queue>
 
+#include <v8.h>
+
 // test tmx parsing
 #include <Tmx.h>
 #include "tilemap.h"
+
+
+#define DEFINE_STATIC_JS_BINDING(func) static void S_##func(const v8::FunctionCallbackInfo<v8::Value>& args) \
+	{ \
+		g_playscene->func(args); \
+	}
+
 
 class PlayScene : public IScene
 {
@@ -44,7 +53,6 @@ private:
 	enum
 	{
 		UI_SKILL_ARROW = 1
-		, UI_SKILL_INF_ARROW = 2
 	};
 
 	struct context_t
@@ -93,6 +101,14 @@ private:
 	Keyboard::Key			_ui_skill_key;
 	SkillArrow *			_ui_skill_arrow;
 
+	// scripting
+	v8::Isolate * _js_isolate;
+	v8::Handle<v8::ObjectTemplate> _js_global;
+	v8::Handle<v8::Context> _js_context;
+	v8::Persistent<v8::Context> _js_context_ref;
+	v8::Handle<v8::Function> _js_player_input_callback;
+	v8::Persistent<v8::Function> _js_player_input_callback_ref;
+
 	// Event
 	void	AddPlayer(const client_t & basic_info);
 	void	HandleCommand(Command & c);
@@ -114,6 +130,16 @@ private:
 	void	CreatePlayerUnits();
 	void	CreatePlayerUnits2(const vector<ID> ids, const Tmx::Object & loc);
 	void	SendReadyToRecv();
+
+	// Scripting
+
+//	v8::Handle<v8::Value> Plus(const v8::Arguments & args);
+	void JS_Print(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_BINDING(JS_Print);
+	void JS_OnPlayerInput(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_BINDING(JS_OnPlayerInput);
+	void CreateJSContext();
+	void ReportException(v8::TryCatch* try_catch);
 };
 
 extern PlayScene * g_playscene;

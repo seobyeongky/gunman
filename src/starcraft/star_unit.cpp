@@ -86,7 +86,7 @@ void StarUnit::Update()
 				const auto & frames = (*it).element();
 				SetRotatedFrame(frames, _anim_count / ANIM_WEIGHT);
 				_anim_count++;
-				if (_anim_count >= (int)frames.size())
+				if (_anim_count >= ANIM_WEIGHT*(int)frames.size())
 					_anim_count = 0;
 			}
 		}

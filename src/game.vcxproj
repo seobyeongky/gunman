@@ -188,6 +188,7 @@
     <ClInclude Include="protocol.h" />
     <ClInclude Include="proto\command.pb.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="scripting\v8_object_wrap.h" />
     <ClInclude Include="sfx_mgr.h" />
     <ClInclude Include="starcraft\grp_loader.h" />
     <ClInclude Include="starcraft\star_unit.h" />

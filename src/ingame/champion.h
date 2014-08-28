@@ -27,7 +27,7 @@ public:
 	int GetSize() const {return 20;}
 
 	void RunCommandGo(const Vector2i & pos);
-	void RunCommandSpell(float direction);
+//	void RunCommandSkill(const );
 	void Update();
 
 	smap<Keyboard::Key, skillcontext*>	skills;
@@ -37,7 +37,7 @@ protected:
 
 private:
 	enum {
-		DISTPF = 5
+		DISTPF = 3
 	};
 
 private:

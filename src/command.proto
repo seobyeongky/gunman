@@ -13,5 +13,6 @@ message Command {
   required uint32 pid = 1;
   required CommandType type = 2;
   optional Vector2d pos = 3; // for shooting
-  optional int32 slot = 4; // for skill slot index number 'q', 'w', 'e', 'r'
+  optional int32 key = 4;
+  optional int32 dir = 5;
 }
