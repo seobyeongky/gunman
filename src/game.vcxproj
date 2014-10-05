@@ -109,6 +109,7 @@
     <ClCompile Include="director.cpp" />
     <ClCompile Include="ingame\ability.cpp" />
     <ClCompile Include="ingame\ani00.cpp" />
+    <ClCompile Include="ingame\renderable.cpp" />
     <ClCompile Include="ingame\skillarrow.cpp" />
     <ClCompile Include="ingame\bullet.cpp" />
     <ClCompile Include="ingame\champion.cpp" />

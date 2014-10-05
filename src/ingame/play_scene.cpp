@@ -71,7 +71,7 @@ void CheckCursorScreenCollision(bool * up, bool * down, bool * left, bool * righ
 }
 
 
-static void JS_RendererMove(const v8::FunctionCallbackInfo<v8::Value>& args)
+static void JS_RendererMove(const FunctionCallbackInfo<Value>& args)
 {
 	JS_PARAM_ASSERTION(args.Length() == 2);
 	
@@ -81,6 +81,17 @@ static void JS_RendererMove(const v8::FunctionCallbackInfo<v8::Value>& args)
 	auto dy = Handle<Number>::Cast(args[1]);
 
 	Renderer::Move(static_cast<float>(dx->NumberValue()), static_cast<float>(dy->NumberValue()));
+}
+
+static void JS_RendererAddRenderable(const FunctionCallbackInfo<Value>& args)
+{
+	JS_PARAM_ASSERTION(args.Length() == 1);
+
+	HandleScope handle_scope(args.GetIsolate());
+
+	auto obj = Handle<Object>::Cast(args[0]);
+
+	Renderer::AddJsRenderable(obj);
 }
 
 

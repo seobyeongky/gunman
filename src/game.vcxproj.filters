@@ -216,6 +216,9 @@
     <ClCompile Include="scripting\v8_transformable.cpp">
       <Filter>소스 파일\scripting</Filter>
     </ClCompile>
+    <ClCompile Include="ingame\renderable.cpp">
+      <Filter>소스 파일\ingame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal.h">
