@@ -152,6 +152,9 @@ public:
 	Iter	 begin() { return Iter(_pair_vec.begin()); }
 	Iter	 end() { return Iter(_pair_vec.end()); }
 
+	ConstIter cbegin() const { return ConstIter(_pair_vec.cbegin()); }
+	ConstIter cend() const { return ConstIter(_pair_vec.cend()); }
+
 	T	&	 operator [] (const KeyT & key);
 
 	size_t	 size() const { return _pair_vec.size(); }

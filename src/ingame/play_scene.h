@@ -6,7 +6,7 @@
 #include "pop_msg.h"
 #include "../starcraft/star_unit.h"
 #include "finite.h"
-#include "../proto/command.pb.h"
+#include "../proto/input.pb.h"
 #include "champion.h"
 #include "renderable.h"
 #include "bullet.h"
@@ -22,9 +22,17 @@
 #include "tilemap.h"
 
 
-#define DEFINE_STATIC_JS_BINDING(func) static void S_##func(const v8::FunctionCallbackInfo<v8::Value>& args) \
+#define DEFINE_JS_REF(type,that) v8::Persistent<type> that##_ref
+
+
+#define DEFINE_STATIC_JS_FUNC(func) static void S_##func(const v8::FunctionCallbackInfo<v8::Value>& args) \
 	{ \
-		g_playscene->func(args); \
+		_instance->func(args); \
+	}
+
+#define DEFINE_STATIC_JS_GETTER(func) static void S_##func(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info) \
+	{ \
+		_instance->func(name, info); \
 	}
 
 
@@ -34,12 +42,15 @@ public:
 				 PlayScene(	const wstring & room_name,
 							bool is_host,
 							ID my_id,
-							smap<ID, player_t> & player_map);
+							smap<ID, player_t> & player_map,
+							const wstring & map_name);
 	virtual		~PlayScene();
 
 	bool		 HandleWindowEvent(const Event & event);
-	bool		 HandleClientMsg(client_msg_t & msg);
 	void		 FrameMove();
+
+private:
+	static PlayScene * _instance;
 
 private:
 	typedef smap<ID, player_t> player_map_t;
@@ -61,9 +72,12 @@ private:
 		int index;	// player index
 	};
 	typedef smap<ID, context_t> context_map_t;
+	typedef smap<Event::EventType,function<bool(const Event & e)>> window_event_dict_t;
 
 private:
 	Cleaner					_cleaner;
+
+	window_event_dict_t		_window_event_dict;
 
 	bool					_is_host;
 	ID						_my_id;
@@ -86,10 +100,12 @@ private:
 	Champion*				_mychamp;
 	list<Bullet*>			_bullets;
 
-	int						_rest_update_count;
-	bool					_command_send_ok;
+	// frame_count means the next frame index when the update logic not committed
+	int						_frame_count;
 
-	vector<Command>			_commands;
+	// x is a input sync frame s.t. x % _input_sync_term == 0
+	int						_input_sync_term;
+	vector<Input>			_inputs;
 
 	// non-logical UI finites
 	vector<IFinite*>		_ui_finites;
@@ -103,19 +119,23 @@ private:
 
 	// scripting
 	v8::Isolate * _js_isolate;
-	v8::Handle<v8::ObjectTemplate> _js_global;
-	v8::Handle<v8::Context> _js_context;
-	v8::Persistent<v8::Context> _js_context_ref;
-	v8::Handle<v8::Function> _js_player_input_callback;
-	v8::Persistent<v8::Function> _js_player_input_callback_ref;
+	DEFINE_JS_REF(v8::Context, _js_context);
+	DEFINE_JS_REF(v8::Function, _js_player_input_callback);
+	DEFINE_JS_REF(v8::Function, _js_private_input_callback);
+	DEFINE_JS_REF(v8::Function, _js_frame_move_callback);
+	DEFINE_JS_REF(v8::Object, _js_renderer);
+	DEFINE_JS_REF(v8::Object, _js_player_api);
 
 	// Event
 	void	AddPlayer(const client_t & basic_info);
-	void	HandleCommand(Command & c);
+	void	HandleInputFromRemote(Input & c);
 
 	bool	HandleKeyPressedEvent(const Event & e);
+	bool	HandleKeyReleasedEvent(const Event & e);
 	bool	HandleTextEnteredEvent(const Event & e);
 	bool	HandleMouseButtonPressedEvent(const Event & e);
+	bool	HandleMouseButtonReleasedEvent(const Event & e);
+	bool	HandleIMEUpdatedEvent(const Event & e);
 
 	void	ResetSkillUI();
 
@@ -135,11 +155,30 @@ private:
 
 //	v8::Handle<v8::Value> Plus(const v8::Arguments & args);
 	void JS_Print(const v8::FunctionCallbackInfo<v8::Value>& args);
-	DEFINE_STATIC_JS_BINDING(JS_Print);
+	DEFINE_STATIC_JS_FUNC(JS_Print);
 	void JS_OnPlayerInput(const v8::FunctionCallbackInfo<v8::Value>& args);
-	DEFINE_STATIC_JS_BINDING(JS_OnPlayerInput);
-	void CreateJSContext();
-	void ReportException(v8::TryCatch* try_catch);
-};
+	DEFINE_STATIC_JS_FUNC(JS_OnPlayerInput);
+	void JS_OnPrivateInput(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_FUNC(JS_OnPrivateInput);
+	void JS_OnFrameMove(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_FUNC(JS_OnFrameMove);
+	void JS_RendererGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info);
+	DEFINE_STATIC_JS_GETTER(JS_RendererGetter);
+	void JS_PlayerGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info);
+	DEFINE_STATIC_JS_GETTER(JS_PlayerGetter);
 
-extern PlayScene * g_playscene;
+	void JS_PlayerApiMe(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_FUNC(JS_PlayerApiMe);
+	void JS_PlayerApiAll(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_FUNC(JS_PlayerApiAll);
+	void JS_PlayerApiTheOthers(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_FUNC(JS_PlayerApiTheOthers);
+
+
+	void JS_Init(const std::wstring & map_name);
+	void ReportException(v8::TryCatch* try_catch);
+	bool CheckAllSended() const;
+	void MoveGameFrame();
+	Vector2d * GetClickedPos(const Event & event);
+	player_t * SafeGetPlayer(ID pid);
+};

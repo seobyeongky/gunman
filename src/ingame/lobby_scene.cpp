@@ -9,7 +9,9 @@
 #include "../director.h"
 #include "../menu_scene.h"
 #include "../colors.h"
+#include "../map_list.h"
 #include "play_scene.h"
+
 
 #include <gl\GL.h>
 
@@ -23,6 +25,7 @@ LobbyScene::LobbyScene(const wstring & room_name,
 	, _chat_frame(*G.sprite_map[L"frame01"])
 	, _unodes()
 	, _menu()
+	, _map_list()
 	, _cleaner()
 {
 	G.window.setTitle(L"사격의 달인 - " + room_name + L"방");
@@ -57,8 +60,10 @@ LobbyScene::LobbyScene(const wstring & room_name,
 	{
 		_pop.Show(L"곧 시작합니다");
 		G.sfx_mgr.Play(L"data\\system\\audio\\영화+효과음_02.mp3");
-		Director::SetTimeout(2000, [this, room_name](){
-			Director::SwitchScene(new PlayScene(room_name, _is_host, _my_id, _player_map));
+		wstring map;
+		packet >> map;
+		Director::SetTimeout(2000, [this, room_name, map](){
+			Director::SwitchScene(new PlayScene(room_name, _is_host, _my_id, _player_map, map));
 		});
 	}));
 
@@ -93,10 +98,27 @@ LobbyScene::LobbyScene(const wstring & room_name,
 	if (is_host)
 	{
 		_menu.PushItem(new MyItem(L"시작", [this](){
+			if (_map.empty())
+			{
+				ErrorMsg(L"맵을 선택하십시오.");
+				return;
+			}
 			Packet sendpacket;
-			sendpacket << TO_UINT16(CL_TO_SV_START);
+			sendpacket << TO_UINT16(CL_TO_SV_START) << _map;
 			SafeSend(sendpacket);
 		}));
+	}
+
+	if (_is_host)
+	{
+		vector<wstring> map_list;
+		MapList::GetList(&map_list);
+		for (auto & map_name : map_list)
+		{
+			_map_list.PushItem(new MyItem(map_name, [this,map_name](){
+				_map = map_name;
+			}));
+		}
 	}
 }
 
@@ -115,14 +137,9 @@ bool LobbyScene::HandleWindowEvent(const Event & e)
 			return true;
 		}
 	}
-	bool ret = _menu.HandleWindowEvent(e);
-	if (ret) return ret;
+	if (_menu.HandleWindowEvent(e)) return true;
+	if (_map_list.HandleWindowEvent(e)) return true;
 	return _chat_box.HandleWindowEvent(e);
-}
-
-bool LobbyScene::HandleClientMsg(client_msg_t & msg)
-{
-	return false;
 }
 
 void LobbyScene::FrameMove()
@@ -150,6 +167,8 @@ void LobbyScene::FrameMove()
 	G.window.draw(_chat_box);
 	glDisable(GL_SCISSOR_TEST);
 
+	if (_is_host)
+		G.window.draw(_map_list);
 	G.window.draw(_menu);
 	G.window.draw(_pop);
 }

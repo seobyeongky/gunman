@@ -16,7 +16,6 @@ public:
 	virtual		~LobbyScene();
 
 	bool		 HandleWindowEvent(const Event & event);
-	bool		 HandleClientMsg(client_msg_t & msg);
 	void		 FrameMove();
 
 private:
@@ -42,8 +41,10 @@ private:
 	Sprite			_chat_frame;
 
 	unode_vec_t		_unodes;
-
+	
 	Menu			_menu;
+	Menu			_map_list;
+	wstring			_map;
 
 	Cleaner			_cleaner;
 

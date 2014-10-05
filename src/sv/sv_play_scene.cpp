@@ -11,8 +11,9 @@
 SvPlayScene::SvPlayScene()
 	: _ready_map()
 	, _begin(false)
-	, _commands()
-	, _ack_map()
+	, _void_input_players()
+	, _inputs()
+//	, _ack_map()
 {
 
 }
@@ -33,7 +34,7 @@ void SvPlayScene::HandleNewCl(const client_t & new_cl)
 void SvPlayScene::HandleGoneCl(const client_t & gone_cl)
 {
 	_ready_map.erase(gone_cl.id);
-	_ack_map.erase(gone_cl.id);
+//	_ack_map.erase(gone_cl.id);
 	CheckClReady();
 }
 
@@ -50,17 +51,9 @@ void SvPlayScene::HandleRecvPacket(	const client_t & cl,
 			CheckClReady();
 		}
 		break;
-	case CL_TO_SV_COMMANDS:
+	case CL_TO_SV_INPUTS:
 		{
-			if (_ack_map[cl.id])
-			{
-				G.logger->Warning(L"Server : (%d)%s 중복 ack 전송", cl.id, cl.name);
-				return;
-			}
-			
-			_ack_map[cl.id] = true;
-
-			PushCommands(cl.id, recv_packet);
+			SaveInputs(cl.id, recv_packet);
 		}
 		break;
 	default:
@@ -70,10 +63,12 @@ void SvPlayScene::HandleRecvPacket(	const client_t & cl,
 
 void SvPlayScene::Go()
 {
-	if (_begin)
+/*	if (_begin)
 	{
 		UpdateLogic();
 	}
+	*/
+	Broadcast();
 }
 
 void SvPlayScene::CheckClReady()
@@ -95,65 +90,60 @@ void SvPlayScene::CheckClReady()
 	}
 }
 
-bool SvPlayScene::IsGotAllCommands()
+void SvPlayScene::Broadcast()
 {
-	bool ok = true;
+	static string outbuf;
+
+	Packet sendpacket;
+	sendpacket << TO_UINT16(SV_TO_CL_BROADCAST)
+		<< _inputs.size();
+
+	for (auto & input : _inputs)
+	{
+		input.AppendToString(&outbuf);
+		sendpacket << outbuf;
+		outbuf.clear();
+	}
+
+	sendpacket << TO_UINT16(_void_input_players.size());
+	for (ID cid : _void_input_players)
+		sendpacket << cid;
 
 	for (auto & cl : svG.client_map)
 	{
-		if (_ack_map[cl.key()] == false)
-		{
-			ok = false;
-			break;
-		}
+		SafeSend(cl.key(), sendpacket);
 	}
 
-	return ok;
+	_inputs.clear();
 }
 
-void SvPlayScene::DelegateCommands()
-{
-	for (auto & it : svG.client_map)
-	{
-		_ack_map[it.key()] = false;
-		Packet sendpacket;
-		sendpacket << TO_UINT16(SV_TO_CL_COMMANDS)
-			<< _commands.size();
-		string outbuf;
-
-		for (auto & c : _commands)
-		{
-			c.AppendToString(&outbuf);
-			sendpacket << outbuf;
-			outbuf.clear();
-		}
-
-		for (auto & cl : svG.client_map)
-		{
-			SafeSend(cl.key(), sendpacket);
-		}
-
-		_commands.clear();
-	}
-}
-
+/*
 void SvPlayScene::UpdateLogic()
 {
 	if (IsGotAllCommands()) DelegateCommands();
 }
+*/
 
-void SvPlayScene::PushCommands(ID cid, Packet & recv_packet)
+void SvPlayScene::SaveInputs(ID cid, Packet & recv_packet)
 {
-	size_t nr_commands;
-	recv_packet >> nr_commands;
-	string inbuf;
-	for (size_t i = 0U; i < nr_commands; ++i)
+	size_t nr_inputs;
+	recv_packet >> nr_inputs;
+	if (nr_inputs == 0)
 	{
-		Command c;
+		auto & ct = _void_input_players;
+		if (find(ct.begin(), ct.end(), cid) == ct.end())
+			ct.push_back(cid);
+		return;
+	}
+
+	static string inbuf;
+	for (size_t i = 0U; i < nr_inputs; ++i)
+	{
+		Input input;
 		recv_packet >> inbuf;
-		c.ParseFromString(inbuf);
-		c.set_pid(cid);
-		_commands.push_back(c);
+		input.ParseFromString(inbuf);
+		input.set_pid(cid);
+		_inputs.push_back(input);
 		inbuf.clear();
 	}
 }

@@ -14,7 +14,7 @@ enum sv_to_cl_t
 	SV_TO_CL_CHAT,
 	SV_TO_CL_INFO,
 	SV_TO_CL_WILL_START,
-	SV_TO_CL_COMMANDS
+	SV_TO_CL_BROADCAST
 };
 
 enum cl_to_sv_t
@@ -22,5 +22,5 @@ enum cl_to_sv_t
 	CL_TO_SV_CHAT,
 	CL_TO_SV_START,
 	CL_TO_SV_READY_TO_RECV,
-	CL_TO_SV_COMMANDS
+	CL_TO_SV_INPUTS
 };

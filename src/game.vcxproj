@@ -69,7 +69,7 @@
       <Message>ㅋㅋ</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>protoc command.proto --cpp_out=proto/</Command>
+      <Command>protoc input.proto --cpp_out=proto/</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -93,6 +93,9 @@
     <PostBuildEvent>
       <Message>ㅎㅎ</Message>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>protoc input.proto --cpp_out=proto/</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="asset.cpp" />
@@ -123,11 +126,15 @@
     <ClCompile Include="loaded_libs.cpp" />
     <ClCompile Include="logic.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map_list.cpp" />
     <ClCompile Include="menu_item.cpp" />
     <ClCompile Include="menu_scene.cpp" />
     <ClCompile Include="net_interface.cpp" />
     <ClCompile Include="protocol.cpp" />
-    <ClCompile Include="proto\command.pb.cc" />
+    <ClCompile Include="proto\input.pb.cc" />
+    <ClCompile Include="scripting\v8_sfml.cpp" />
+    <ClCompile Include="scripting\v8_transformable.cpp" />
+    <ClCompile Include="scripting\v8_utils.cpp" />
     <ClCompile Include="sfx_mgr.cpp" />
     <ClCompile Include="starcraft\grp_loader.cpp" />
     <ClCompile Include="starcraft\star_unit.cpp" />
@@ -183,12 +190,16 @@
     <ClInclude Include="internal.h" />
     <ClInclude Include="intro_scene.h" />
     <ClInclude Include="logic.h" />
+    <ClInclude Include="map_list.h" />
     <ClInclude Include="menu_item.h" />
     <ClInclude Include="menu_scene.h" />
     <ClInclude Include="protocol.h" />
-    <ClInclude Include="proto\command.pb.h" />
+    <ClInclude Include="proto\input.pb.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="scripting\v8_sfml.h" />
     <ClInclude Include="scripting\v8_object_wrap.h" />
+    <ClInclude Include="scripting\v8_transformable.h" />
+    <ClInclude Include="scripting\v8_utils.h" />
     <ClInclude Include="sfx_mgr.h" />
     <ClInclude Include="starcraft\grp_loader.h" />
     <ClInclude Include="starcraft\star_unit.h" />
@@ -209,7 +220,7 @@
     <ClInclude Include="widget\roomname_widget.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="command.proto" />
+    <None Include="input.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

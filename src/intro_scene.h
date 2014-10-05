@@ -15,7 +15,6 @@ public:
 	virtual		~IntroScene();
 
 	bool		 HandleWindowEvent(const Event & event);
-	bool		 HandleClientMsg(client_msg_t & msg) {return false;}
 	void		 FrameMove();
 
 private:

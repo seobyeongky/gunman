@@ -9,6 +9,8 @@
 #include "userprofile.h"
 #include "colors.h"
 
+#include <v8.h>
+
 #ifdef _DEBUG
 #include <gtest\gtest.h>
 #endif
@@ -41,6 +43,13 @@ public:
 	~NetInterfaceLoader(){NetInterface::End();}
 };
 
+class V8EngineLoader
+{
+public:
+	V8EngineLoader(void){v8::V8::Initialize();}
+	~V8EngineLoader(void){v8::V8::Dispose();}
+};
+
 ///////////////// MAIN FUNC ///////////////////
 int main(int argc, char * argv[])
 {
@@ -51,7 +60,7 @@ int main(int argc, char * argv[])
 
 #ifdef _DEBUG
 	desktop.width /= 2;
-	desktop.height /= 1.5;
+	desktop.height = static_cast<unsigned int>(desktop.height / 1.5f);
 #endif
 
 	G.window.create(desktop, L"사격의 달인"
@@ -64,6 +73,8 @@ int main(int argc, char * argv[])
 	LoggerLoader l;
 	AudioDeviceLoader a;
 	LoadSystemAssets();
+
+	V8EngineLoader v8;
 
 	{
 		NetInterfaceLoader n;

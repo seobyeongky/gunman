@@ -19,9 +19,6 @@
     <Filter Include="소스 파일\intro_scene">
       <UniqueIdentifier>{60508e33-98c3-45bd-8f4b-4bbd86b5eafe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\sv">
-      <UniqueIdentifier>{f22f391a-824e-4420-9265-e3221ff68f27}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\net_interface">
       <UniqueIdentifier>{acab3289-26a2-4200-b7a0-72f5cc336236}</UniqueIdentifier>
     </Filter>
@@ -54,6 +51,9 @@
     </Filter>
     <Filter Include="소스 파일\scripting">
       <UniqueIdentifier>{5878c2de-5ee1-471d-b37e-4394f0a7e7d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\server">
+      <UniqueIdentifier>{f22f391a-824e-4420-9265-e3221ff68f27}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,28 +94,28 @@
       <Filter>소스 파일\net_interface</Filter>
     </ClCompile>
     <ClCompile Include="sv\sv_play_scene.cpp">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClCompile>
     <ClCompile Include="sv\sv_wait_scene.cpp">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClCompile>
     <ClCompile Include="sv\sv_service.cpp">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClCompile>
     <ClCompile Include="sv\sv_scene.cpp">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClCompile>
     <ClCompile Include="sv\sv_global.cpp">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClCompile>
     <ClCompile Include="sv\sv_util.cpp">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClCompile>
     <ClCompile Include="logic.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="sv\sv_director.cpp">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClCompile>
     <ClCompile Include="sfx_mgr.cpp">
       <Filter>소스 파일</Filter>
@@ -171,9 +171,6 @@
     <ClCompile Include="basic\cleaner.cpp">
       <Filter>소스 파일\basic</Filter>
     </ClCompile>
-    <ClCompile Include="proto\command.pb.cc">
-      <Filter>소스 파일\proto</Filter>
-    </ClCompile>
     <ClCompile Include="ingame\champion.cpp">
       <Filter>소스 파일\ingame</Filter>
     </ClCompile>
@@ -203,6 +200,21 @@
     </ClCompile>
     <ClCompile Include="ingame\skillarrow.cpp">
       <Filter>소스 파일\ingame\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="map_list.cpp">
+      <Filter>소스 파일\lobby_scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\v8_utils.cpp">
+      <Filter>소스 파일\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\input.pb.cc">
+      <Filter>소스 파일\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\v8_sfml.cpp">
+      <Filter>소스 파일\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\v8_transformable.cpp">
+      <Filter>소스 파일\scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -252,34 +264,34 @@
       <Filter>소스 파일\net_interface</Filter>
     </ClInclude>
     <ClInclude Include="sv\sv_play_scene.h">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClInclude>
     <ClInclude Include="sv\sv_wait_scene.h">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClInclude>
     <ClInclude Include="sv\sv_service.h">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClInclude>
     <ClInclude Include="sv\sv_scene.h">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClInclude>
     <ClInclude Include="sv\sv_internal.h">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClInclude>
     <ClInclude Include="sv\sv_global.h">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClInclude>
     <ClInclude Include="sv\sv_util.h">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClInclude>
     <ClInclude Include="logic.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="sv\sv_scene_ids.h">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClInclude>
     <ClInclude Include="sv\sv_director.h">
-      <Filter>소스 파일\sv</Filter>
+      <Filter>소스 파일\server</Filter>
     </ClInclude>
     <ClInclude Include="sfx_mgr.h">
       <Filter>소스 파일</Filter>
@@ -338,9 +350,6 @@
     <ClInclude Include="basic\cleaner.h">
       <Filter>소스 파일\basic</Filter>
     </ClInclude>
-    <ClInclude Include="proto\command.pb.h">
-      <Filter>소스 파일\proto</Filter>
-    </ClInclude>
     <ClInclude Include="ingame\champion.h">
       <Filter>소스 파일\ingame</Filter>
     </ClInclude>
@@ -389,9 +398,24 @@
     <ClInclude Include="scripting\v8_object_wrap.h">
       <Filter>소스 파일\scripting</Filter>
     </ClInclude>
+    <ClInclude Include="map_list.h">
+      <Filter>소스 파일\lobby_scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\v8_utils.h">
+      <Filter>소스 파일\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\input.pb.h">
+      <Filter>소스 파일\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\v8_sfml.h">
+      <Filter>소스 파일\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\v8_transformable.h">
+      <Filter>소스 파일\scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="command.proto">
+    <None Include="input.proto">
       <Filter>소스 파일\proto</Filter>
     </None>
   </ItemGroup>

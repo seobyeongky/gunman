@@ -1,0 +1,22 @@
+enum InputType {
+	INPUT_LEFT_MOUSE_DOWN = 0;
+	INPUT_LEFT_MOUSE_UP = 1;
+	INPUT_RIGHT_MOUSE_DOWN = 2;
+	INPUT_RIGHT_MOUSE_UP = 3;
+	INPUT_MOUSE_MOVE = 4;
+	INPUT_KEY_DOWN = 5;
+	INPUT_KEY_UP = 6;
+}
+
+message Vector2d
+{
+	required int32 x = 1;
+	required int32 y = 2;
+} 
+
+message Input {
+  required uint32 pid = 1;
+  required InputType type = 2;
+  optional Vector2d pos = 3;
+  optional int32 key = 4;
+}

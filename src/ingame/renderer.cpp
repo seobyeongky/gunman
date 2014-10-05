@@ -5,6 +5,7 @@
 namespace Renderer
 {
 	vector<IRenderable*>	sorted_renderables;
+	vector<int>				freed_ids;
 	smap<int, IRenderable*>	renderables;
 	
 	View					view;
@@ -24,21 +25,22 @@ namespace Renderer
 
 	int AddRenderable(IRenderable * renderable)
 	{
-		for (int i = 0; i < 100000; i++)
+		if (!freed_ids.empty())
 		{
-			if (renderables.find(i) == false)
-			{
-				renderables[i] = renderable;
-				return i;
-			}
+			int ret = freed_ids.back();
+			freed_ids.pop_back();
+			return ret;
 		}
-		G.logger->Error(L"PlayScene : 예외상황");
-		return -1;
+
+		int next_id = renderables.size();
+		renderables[next_id] = renderable;
+		return next_id;
 	}
 
 	void RemoveRenderable(int id)
 	{
 		renderables.erase(id);
+		freed_ids.push_back(id);
 	}
 
 	void Render()

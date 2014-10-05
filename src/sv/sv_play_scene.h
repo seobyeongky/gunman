@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sv_scene.h"
-#include "../proto/command.pb.h"
+#include "../proto/input.pb.h"
 
 class SvPlayScene : public SvScene {
 public:
@@ -19,15 +19,16 @@ public:
 private:
 	smap<ID, bool>	_ready_map;
 	bool			_begin;
-
-	vector<Command>	_commands;
-	smap<ID, bool>	_ack_map;
+	
+	vector<ID>		_void_input_players;
+	vector<Input>	_inputs;
+//	smap<ID, bool>	_ack_map;
 
 	void CheckClReady();
 
-	bool IsGotAllCommands();
-	void DelegateCommands();
-	void UpdateLogic();
+//	bool IsGotAllCommands();
+	void Broadcast();
+//	void UpdateLogic();
 
-	void PushCommands(ID cid, Packet & recv_packet);
+	void SaveInputs(ID cid, Packet & recv_packet);
 };

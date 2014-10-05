@@ -36,8 +36,10 @@ void SvWaitScene::HandleRecvPacket(	const client_t & cl,
 			if (begin_flag) return;
 			if (cl.id != 0u)
 				return;
+			wstring map;
+			recv_packet >> map;
 			Packet sendpacket;
-			sendpacket << TO_UINT16(SV_TO_CL_WILL_START);
+			sendpacket << TO_UINT16(SV_TO_CL_WILL_START) << map;
 			for (auto & cl : svG.client_map)
 				SafeSend(cl.key(), sendpacket);
 			begin_flag = true;

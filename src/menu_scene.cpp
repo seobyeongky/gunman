@@ -36,7 +36,7 @@ MenuScene::MenuScene()
 
 	FitScaleToScreen(&_bg);
 	
-	if (G.bg_music) G.bg_music->play();
+//	if (G.bg_music) G.bg_music->play();
 	
 	auto & winsize = G.window.getSize();
 
@@ -110,11 +110,6 @@ bool MenuScene::HandleWindowEvent(const Event & event)
 		return  _widget->HandleWindowEvent(event);
 	else
 		return false;
-}
-
-bool MenuScene::HandleClientMsg(client_msg_t & msg)
-{
-	return false;
 }
 
 bool MenuScene::HandleKeyPressed(Event::KeyEvent key)

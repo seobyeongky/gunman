@@ -131,7 +131,9 @@ namespace Director
 #endif
 
 			G.window.draw(cursor);
-			G.window.draw(fps_text);
+#ifdef _DEBUG
+			//G.window.draw(fps_text);
+#endif
 			G.window.display();
 		
 			_ASSERTE( _CrtCheckMemory( ) );

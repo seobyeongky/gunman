@@ -8,17 +8,52 @@
 #include "../director.h"
 #include "../colors.h"
 #include "../starcraft/grp_loader.h"
+#include "../scripting/v8_utils.h"
+#include "../scripting/v8_sfml.h"
+#include "../scripting/v8_transformable.h"
 #include "ani00.h"
 #include "ability.h"
 #include "renderer.h"
 #include "coord.h"
+#include "../menu_scene.h"
 
 #include <v8.h>
+
 using namespace v8;
 
 
+#define JS_STR(arg) v8::String::NewFromUtf8(_js_isolate, arg)
+#define JS_FUNC(func) FunctionTemplate::New(_js_isolate, func)
+#define JS_PARAM_ASSERTION(exp) if (!(exp)) \
+	{ \
+		args.GetIsolate()->ThrowException( \
+			v8::String::NewFromUtf8(args.GetIsolate(), "Bad parameters " #exp)); \
+		return; \
+	} \
 
-PlayScene * g_playscene = nullptr;
+
+// Reads a file into a v8 string.
+bool GetByteFromFile(const char* path, std::vector<char> * ptr) {
+  FILE* file = fopen(path, "rb");
+  if (file == NULL) return false;
+
+  fseek(file, 0, SEEK_END);
+  int size = ftell(file);
+  rewind(file);
+
+  ptr->clear();
+  char* chars = new char[size + 1];
+  chars[size] = '\0';
+  for (int i = 0; i < size;) {
+    int read = static_cast<int>(fread(&chars[i], 1, size - i, file));
+    i += read;
+  }
+  fclose(file);
+  ptr->assign(chars, chars + size);
+
+  return true;
+}
+
 
 
 void CheckCursorScreenCollision(bool * up, bool * down, bool * left, bool * right)
@@ -35,8 +70,25 @@ void CheckCursorScreenCollision(bool * up, bool * down, bool * left, bool * righ
 	else *down = false;
 }
 
+
+static void JS_RendererMove(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	JS_PARAM_ASSERTION(args.Length() == 2);
+	
+	HandleScope handle_scope(args.GetIsolate());
+
+	auto dx = Handle<Number>::Cast(args[0]);
+	auto dy = Handle<Number>::Cast(args[1]);
+
+	Renderer::Move(static_cast<float>(dx->NumberValue()), static_cast<float>(dy->NumberValue()));
+}
+
+
+PlayScene * PlayScene::_instance = nullptr;
+
 PlayScene::PlayScene(const wstring & room_name,
-					 bool is_host, ID my_id, smap<ID, player_t> & player_map)
+					 bool is_host, ID my_id, smap<ID, player_t> & player_map,
+					 const wstring & map_name)
 	: _cleaner()
 	, _is_host(is_host)
 	, _my_id(my_id)
@@ -52,8 +104,8 @@ PlayScene::PlayScene(const wstring & room_name,
 	, _champions()
 	, _mychamp(nullptr)
 	, _bullets()
-	, _rest_update_count(0)
-	, _command_send_ok(true)
+	, _frame_count(0)
+	, _input_sync_term(1)
 	, _ui_finites()
 	, _skillbox()
 	, _ui_skill_flag()
@@ -61,12 +113,21 @@ PlayScene::PlayScene(const wstring & room_name,
 	, _ui_skill_key()
 	, _ui_skill_arrow(nullptr)
 {
-	g_playscene = this;
+	_instance = this;
+	
+	using namespace placeholders;
+
+	_window_event_dict.insert(Event::KeyPressed, bind(&PlayScene::HandleKeyPressedEvent, this, _1));
+	_window_event_dict.insert(Event::KeyReleased, bind(&PlayScene::HandleKeyReleasedEvent, this, _1));
+	_window_event_dict.insert(Event::TextEntered, bind(&PlayScene::HandleTextEnteredEvent, this, _1));
+	_window_event_dict.insert(Event::MouseButtonPressed, bind(&PlayScene::HandleMouseButtonPressedEvent, this, _1));
+	_window_event_dict.insert(Event::MouseButtonReleased, bind(&PlayScene::HandleMouseButtonReleasedEvent, this, _1));
+	_window_event_dict.insert(Event::IMEUpdated, bind(&PlayScene::HandleIMEUpdatedEvent, this, _1));
 
 	Renderer::Init();
 
-	_ui_skill_arrow = new SkillArrow();
-
+//	_ui_skill_arrow = new SkillArrow();
+/*
 	{
 		Ability * abil = new Ability();
 		abil->name = L"missile";
@@ -84,7 +145,7 @@ PlayScene::PlayScene(const wstring & room_name,
 		abil->uiflag.add(UI_SKILL_ARROW);
 		ability_map[L"missile"] = abil;
 	}
-	
+	*/
 	// Fixme : player_map을 const로 인자 받게...
 	// Fixme : smap 복사생성자만들어야함..복사대입연산자도
 	for (auto it : player_map)
@@ -107,30 +168,37 @@ PlayScene::PlayScene(const wstring & room_name,
 		G.sfx_mgr.Play(L"data\\system\\chatmsg.mp3");
 	}));
 
-	_cleaner.Register(NetInterface::RegisterPacketCallback(SV_TO_CL_COMMANDS, [this](Packet & packet){
-		size_t nr_commands;
-		packet >> nr_commands;
-		string inbuf;
-		for (size_t i = 0U; i < nr_commands; ++i)
+	_cleaner.Register(NetInterface::RegisterPacketCallback(SV_TO_CL_BROADCAST, [this](Packet & packet){
+		size_t nr_inputs;
+		packet >> nr_inputs;
+		static string inbuf;
+		for (size_t i = 0U; i < nr_inputs; ++i)
 		{
-			Command c;
+			Input input;
 			packet >> inbuf;
-			c.ParseFromString(inbuf);
-			HandleCommand(c);
+			input.ParseFromString(inbuf);
+			HandleInputFromRemote(input);
 			inbuf.clear();
 		}
-		UpdateLogic();
-		_rest_update_count = 3;
-		_command_send_ok = true;
+		uint16_t nr_void_input_players;
+		packet >> nr_void_input_players;
+		for (uint16_t i = 0U; i < nr_void_input_players; ++i)
+		{
+			ID cid;
+			packet >> cid;
+			player_t * player = SafeGetPlayer(cid);
+			if (!player) return;
+			player->input_received = true;
+		}
 	}));
 
 	_chat_box.setPosition(.05f*winsize.x, .7f*winsize.y);
 	_chat_box.Reset(*_me);
 
-	InitContext();
+//	InitContext();
 	
-	_map.ParseFile("./data/missile_dodge/tiled/departed.tmx");
-	if (_map.HasError())
+//	_map.ParseFile("./data/missile_dodge/tiled/departed.tmx");
+/*	if (_map.HasError())
 	{
 		ErrorMsg(L"error code: %d\n", _map.GetErrorCode());
 		ErrorMsg(L"error text: %hs\n", _map.GetErrorText().c_str());
@@ -151,50 +219,31 @@ PlayScene::PlayScene(const wstring & room_name,
 			}
 		}
 	}
+	*/
 
-	{
-		DirChanger changed(L"data\\missile_dodge\\tiled");
-		g_tilemap.LoadFromTmx(_map);
-	}
+	
 
-	grp::AddUnit(L"ghost", L"data\\missile_dodge\\grp\\ghost.grp", L"data\\missile_dodge\\grp\\ghost.info", _player_map.size());
+//	{
+//		DirChanger changed(L"data\\missile_dodge\\tiled");
+//		g_tilemap.LoadFromTmx(_map);
+//	}
 
-	CreatePlayerUnits();
+//	grp::AddUnit(L"ghost", L"data\\missile_dodge\\grp\\ghost.grp", L"data\\missile_dodge\\grp\\ghost.info", _player_map.size());
 
-	SendReadyToRecv();
+//	CreatePlayerUnits();
+
 
 	_skillbox.setPosition((float)winsize.x, .5f*winsize.y);
 	_skillbox.setOrigin(89.f, .5f*191.f);
 
-	V8::Initialize();
-	_js_isolate = v8::Isolate::New();
-	{
-		Isolate::Scope isolate_scope(_js_isolate);
-		CreateJSContext();
-		v8::Context::Scope context_scope(_js_context);
-		v8::HandleScope handle_scope(_js_isolate);
-		v8::TryCatch try_catch;
-		v8::Handle<v8::Value> name;
-		v8::ScriptOrigin origin(name);
-		v8::Handle<v8::String> source;
-		v8::Handle<v8::Script> script = v8::Script::Compile(source, &origin);
-		if (script.IsEmpty()) {
-			// Print errors that happened during compilation.
-			ReportException(&try_catch);
-		} else {
-			v8::Handle<v8::Value> result = script->Run();
-			if (result.IsEmpty()) {
-				assert(try_catch.HasCaught());
-				// Print errors that happened during execution.
-				ReportException(&try_catch);
-			}
-		}
-	}
+	JS_Init(map_name);
+
+	SendReadyToRecv();
 }
 
 PlayScene::~PlayScene()
 {
-	V8::Dispose();
+	_js_isolate->Dispose();
 
 	for (auto it : _champions) delete it.element();
 	for (auto it : _ui_finites) delete it;
@@ -209,14 +258,13 @@ PlayScene::~PlayScene()
 
 bool PlayScene::HandleWindowEvent(const Event & e)
 {
-	if (e.type == Event::KeyPressed)
-		return HandleKeyPressedEvent(e);
-	else if (e.type == Event::TextEntered)
-		return HandleTextEnteredEvent(e);
-	else if (e.type == Event::MouseButtonPressed)
-		return HandleMouseButtonPressedEvent(e);
-	else
-		return false;
+	window_event_dict_t::Iter it;
+	if (_window_event_dict.find(e.type, &it))
+	{
+		return (*it).element()(e);
+	}
+
+	return false;
 }
 
 bool PlayScene::HandleKeyPressedEvent(const Event & e)
@@ -226,6 +274,7 @@ bool PlayScene::HandleKeyPressedEvent(const Event & e)
 		if (e.key.code == Keyboard::Return)
 		{
 			_ui_flag.drop(UI_FLAG_CHAT);
+			_chat_box.DrawEditText(false);
 			_chat_box.HandleWindowEvent(e);
 			return true;
 		}
@@ -233,6 +282,7 @@ bool PlayScene::HandleKeyPressedEvent(const Event & e)
 	}
 	else
 	{
+		/*
 		static Keyboard::Key keys[] = {Keyboard::Q, Keyboard::W, Keyboard::E, Keyboard::R};
 		for (auto key : keys)
 		{
@@ -246,13 +296,23 @@ bool PlayScene::HandleKeyPressedEvent(const Event & e)
 			_ui_skill_name = sc->ability->name;
 			_ui_skill_key = key;
 		}
-		
+		*/
 		if (e.key.code == Keyboard::Return)
 		{
 			_ui_flag.add(UI_FLAG_CHAT);
+			_chat_box.DrawEditText(true);
 			return true;
 		}
+		else
+		{
+			
+		}
 	}
+	return false;
+}
+
+bool PlayScene::HandleKeyReleasedEvent(const Event & e)
+{
 	return false;
 }
 
@@ -272,7 +332,7 @@ bool PlayScene::HandleTextEnteredEvent(const Event & e)
 		if (e.key.code == UNICODE_ESC)
 		{
 			DisconnectToServer();
-			G.window.close();
+			Director::SwitchScene(new MenuScene());
 			return true;
 		}
 		return false;
@@ -281,33 +341,46 @@ bool PlayScene::HandleTextEnteredEvent(const Event & e)
 
 bool PlayScene::HandleMouseButtonPressedEvent(const Event & e)
 {
-	if (e.mouseButton.button == Mouse::Right)
-	{
-		if (_ui_flag.has(UI_FLAG_AIM))
-		{
-			ResetSkillUI();
-		}
+	Input input;
+	input.set_pid(_my_id);
 
-		Vector2f p((float)e.mouseButton.x, (float)e.mouseButton.y);
-		p = Renderer::TransformPoint(p);
+	if (e.mouseButton.button == Mouse::Left)
+		input.set_type(INPUT_LEFT_MOUSE_DOWN);
+	else if (e.mouseButton.button == Mouse::Right)
+		input.set_type(INPUT_RIGHT_MOUSE_DOWN);
+	else
+		assert(!"Unknown mouse button!");
+	
+	input.set_allocated_pos(GetClickedPos(e));
+	_inputs.push_back(input);
 
-		Ani00 * newone = new Ani00();
-		newone->setPosition(p.x, p.y);
-		_ui_finites.push_back(newone);
+	return true;
+}
 
-		Command c;
-		c.set_pid(_my_id);
-		c.set_type(COMMAND_GO);
-		Vector2d *f = new Vector2d;
-		f->set_x((int)p.x);
-		f->set_y((int)p.y);
-		c.set_allocated_pos(f);
-		_commands.push_back(c);
+bool PlayScene::HandleMouseButtonReleasedEvent(const Event & e)
+{
+	Input input;
+	input.set_pid(_my_id);
 
-		return true;
-	}
+	if (e.mouseButton.button == Mouse::Left)
+		input.set_type(INPUT_LEFT_MOUSE_UP);
+	else if (e.mouseButton.button == Mouse::Right)
+		input.set_type(INPUT_RIGHT_MOUSE_UP);
+	else
+		assert(!"Unknown mouse button!");
 
-	return false;
+	input.set_allocated_pos(GetClickedPos(e));
+	_inputs.push_back(input);
+
+	return true;
+}	
+
+bool PlayScene::HandleIMEUpdatedEvent(const Event & event)
+{
+	if (_ui_flag.has(UI_FLAG_CHAT))
+		return _chat_box.HandleWindowEvent(event);
+	else
+		return false;
 }
 
 void PlayScene::ResetSkillUI()
@@ -316,36 +389,41 @@ void PlayScene::ResetSkillUI()
 	_ui_skill_arrow->SetVisible(false);
 }
 
-bool PlayScene::HandleClientMsg(client_msg_t & msg)
-{
-	return false;
-}
-
 void PlayScene::FrameMove()
 {
-	HandleInput();
-
-	if (_rest_update_count > 0)
+	// inputs buffer가 비어있지 않다면 서버로 flush시킵니다.
+	Packet sendpacket;
+	sendpacket	<< TO_UINT16(CL_TO_SV_INPUTS)
+		<< _inputs.size();
+	if (_inputs.size() > 0)
 	{
-		_rest_update_count--;
-		UpdateLogic();
-	}
-
-	if (_command_send_ok && _rest_update_count == 0)
-	{
-		_command_send_ok = false;
-		Packet sendpacket;
-		sendpacket	<< TO_UINT16(CL_TO_SV_COMMANDS)
-			<< _commands.size();
-		string outbuf;
-		for (auto it : _commands)
+		static string outbuf;
+		for (auto it : _inputs)
 		{
 			it.AppendToString(&outbuf);
 			sendpacket << outbuf;
 			outbuf.clear();
 		}
-		opznet::SafeSend(sendpacket);
-		_commands.clear();
+		_inputs.clear();
+	}
+	opznet::SafeSend(sendpacket);
+
+	if (_frame_count % _input_sync_term == 0)
+	{
+		if (CheckAllSended())
+		{
+			// Continue
+			MoveGameFrame();
+		}
+		else
+		{
+			// Wait for pending input
+
+		}
+	}
+	else
+	{
+		MoveGameFrame();
 	}
 
 	UpdateUI();
@@ -359,18 +437,37 @@ void PlayScene::AddPlayer(const client_t & basic_info)
 	_player_map.insert(id, player_t(basic_info.name, colors::GetPlayerColor(id)));
 }
 
-void PlayScene::HandleCommand(Command & c)
+// 서버로부터 온 클라이언트 input이니, 순서는 보장이 되어있음.
+void PlayScene::HandleInputFromRemote(Input & input)
 {
-	ID clid = c.pid();
-	player_map_t::Iter it;
-	if (!_player_map.find(clid, &it))
+	ID clid = input.pid();
+	player_t * player = SafeGetPlayer(clid);
+	if (!player) return;
+	player->input_received = true;
+	
+	if (!_js_player_input_callback_ref.IsEmpty())
 	{
-		G.logger->Warning(L"HandleCommand : 없는 클라이언트 %d", clid);
-		return;
-	}
-	player_t & player = (*it).element();
+		v8::TryCatch try_catch;
+		try_catch.SetVerbose(true);
 
-	switch (c.type())
+		Isolate::Scope isolate_scope(_js_isolate);
+		HandleScope handle_scope(_js_isolate);
+		Local<v8::Context> context = PersistentToLocal(_js_isolate, _js_context_ref);
+		v8::Context::Scope context_scope(context );
+		Local<Function> cb = PersistentToLocal(_js_isolate, _js_player_input_callback_ref);
+		Handle<Number> pid = Number::New(_js_isolate, static_cast<double>(clid));
+		Handle<Number> type = Number::New(_js_isolate, static_cast<double>(input.type()));
+		Handle<Value> args[] = {pid, type};
+		Handle<Value> result = cb->Call(context->Global(), 2, args);
+
+		if (try_catch.HasCaught())
+		{
+			ReportException(&try_catch);
+		}
+	}
+
+	/*
+	switch (input.type())
 	{
 	case COMMAND_GO:
 		{
@@ -406,6 +503,7 @@ void PlayScene::HandleCommand(Command & c)
 			sc->ability->invoke(champ, arg);
 		}
 	}
+	*/
 }
 
 void PlayScene::HandleInput()
@@ -413,7 +511,7 @@ void PlayScene::HandleInput()
 	if (GetFocus() != G.window.getSystemHandle()) return;
 	
 
-	{
+/*	{
 		bool up, down, left, right;
 		CheckCursorScreenCollision(&up, &down, &left, &right);
 
@@ -422,7 +520,7 @@ void PlayScene::HandleInput()
 		if (right) Renderer::Move(15.f,0);
 		if (up) Renderer::Move(0,-15.f);
 		if (down) Renderer::Move(0,15.f);
-	}
+	}*/
 }
 
 void PlayScene::UpdateLogic()
@@ -467,7 +565,8 @@ void PlayScene::UpdateLogic()
 
 void PlayScene::UpdateUI()
 {
-	_skillbox.Update();
+	_chat_box.Update();
+//	_skillbox.Update();
 
 	bool up, down, left, right;
 	CheckCursorScreenCollision(&up, &down, &left, &right);
@@ -489,12 +588,10 @@ void PlayScene::UpdateUI()
 	}
 	else
 	{
-		if (_ui_flag.has(UI_FLAG_AIM))
-			Director::SetCursor(Sprite());
-		else
-			Director::SetDefaultCursor();
+		Director::SetDefaultCursor();
 	}
 
+	/*
 	for (vector<IFinite*>::iterator it = _ui_finites.begin(); it != _ui_finites.end();)
 	{
 		(*it)->Consume(1);
@@ -520,13 +617,14 @@ void PlayScene::UpdateUI()
 			_ui_skill_arrow->setRotation(GetDir(cursorpos-champpos));
 		}
 	}
+	*/
 }
 
 void PlayScene::Render()
 {
 	Renderer::Render();
 	G.window.draw(_chat_box);
-	G.window.draw(_skillbox);
+//	G.window.draw(_skillbox);
 	G.window.draw(_pop);
 }
 
@@ -608,7 +706,7 @@ void PlayScene::JS_Print(const v8::FunctionCallbackInfo<v8::Value>& args)
 		v8::String::Value msg(args[i]);
 		const wchar_t * wchar_list = reinterpret_cast<wchar_t*>(*msg);
 
-		g_playscene->_chat_box.AddInfoMsg(wchar_list);
+		_instance->_chat_box.AddInfoMsg(wchar_list);
 		G.sfx_mgr.Play(L"data\\system\\bell.wav");
 	}
 }
@@ -617,32 +715,168 @@ void PlayScene::JS_OnPlayerInput(const FunctionCallbackInfo<Value>& args)
 {
 	HandleScope handle_scope(_js_isolate);
 
-	_js_player_input_callback = Handle<Function>::Cast(args[0]);
-	_js_player_input_callback_ref.Reset(_js_isolate, _js_player_input_callback);
+	JS_PARAM_ASSERTION(args.Length() == 1);
+
+	_js_player_input_callback_ref.Reset(_js_isolate, Handle<Function>::Cast(args[0]));
 }
 
-
-void PlayScene::CreateJSContext()
+void PlayScene::JS_OnPrivateInput(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
 	HandleScope handle_scope(_js_isolate);
 
-	_js_global = ObjectTemplate::New(_js_isolate);
+	JS_PARAM_ASSERTION(args.Length() == 1);
 
-	_js_global->Set(v8::String::NewFromUtf8(_js_isolate, "print"), FunctionTemplate::New(_js_isolate, S_JS_Print));
+	_js_private_input_callback_ref.Reset(_js_isolate, Handle<Function>::Cast(args[0]));
+}
 
-	_js_global->Set(v8::String::NewFromUtf8(_js_isolate, "_OnPlayerEvent"), FunctionTemplate::New(_js_isolate, S_JS_OnPlayerInput));
+void PlayScene::JS_OnFrameMove(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	HandleScope handle_scope(_js_isolate);
 
-	_js_context = v8::Context::New(_js_isolate, nullptr, _js_global);
+	JS_PARAM_ASSERTION(args.Length() == 1);
 
-//	_js_context_ref.Reset(_js_isolate, _js_context);
+	_js_frame_move_callback_ref.Reset(_js_isolate, Handle<Function>::Cast(args[0]));
+}
+
+void PlayScene::JS_RendererGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
+{
+	HandleScope handle_scope(_js_isolate);
+
+	info.GetReturnValue().Set(PersistentToLocal(_js_isolate, _js_renderer_ref));
+}
+
+void PlayScene::JS_PlayerGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
+{
+	HandleScope handle_scope(_js_isolate);
+
+	info.GetReturnValue().Set(PersistentToLocal(_js_isolate, _js_player_api_ref));
+}
+
+void PlayScene::JS_PlayerApiMe(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	HandleScope handle_scope(_js_isolate);
+
+	assert(_me && "me should exists");
+	args.GetReturnValue().Set(JS_MakePlayerObject(_js_isolate, _my_id, *_me));
+}
+
+void PlayScene::JS_PlayerApiAll(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	HandleScope handle_scope(_js_isolate);
+
+	Handle<Array> ret = Array::New(_js_isolate, _player_map.size());
+	int32_t index = 0;
+	for (auto it : _player_map)
+	{
+		ret->Set(index, JS_MakePlayerObject(_js_isolate, it.key(), it.element()));
+		index++;
+	}
+	args.GetReturnValue().Set(ret);
+}
+
+void PlayScene::JS_PlayerApiTheOthers(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	HandleScope handle_scope(_js_isolate);
+
+	Handle<Array> ret = Array::New(_js_isolate, _player_map.size() - 1);
+	int32_t index = 0;
+	for (auto it : _player_map)
+	{
+		if (it.key() == _my_id) continue;
+		ret->Set(index, JS_MakePlayerObject(_js_isolate, it.key(), it.element()));
+		index++;
+	}
+	args.GetReturnValue().Set(ret);
+
+}
+
+void PlayScene::JS_Init(const wstring & map_name)
+{
+	_js_isolate = v8::Isolate::New();
+	{
+		Isolate::Scope isolate_scope(_js_isolate);
+		
+		HandleScope handle_scope(_js_isolate);
+		
+		Local<ObjectTemplate> js_global;
+		js_global = ObjectTemplate::New(_js_isolate);
+
+		js_global->Set(JS_STR("print"), JS_FUNC(S_JS_Print));
+		js_global->Set(JS_STR("onPlayerInput"), JS_FUNC(S_JS_OnPlayerInput));
+		js_global->Set(JS_STR("onPrivateInput"), JS_FUNC(S_JS_OnPrivateInput));
+		js_global->Set(JS_STR("onFrameMove"), JS_FUNC(S_JS_OnFrameMove));
+		js_global->SetAccessor(JS_STR("Renderer"), S_JS_RendererGetter);
+		js_global->SetAccessor(JS_STR("Player"), S_JS_PlayerGetter);
+
+		v8_transformable::Init(_js_isolate);
+		JsText::Init(_js_isolate, js_global);
+
+/*
+		Local<ObjectTemplate> player_templ = ObjectTemplate::New(_js_isolate);
+		player_templ->SetInternalFieldCount(1);
+		player_templ->SetAccessor(JS_STR("id"), js_player_t::JS_GetId);
+		player_templ->SetAccessor(JS_STR("name"), js_player_t::JS_GetName);
+		player_templ->SetAccessor(JS_STR("color"), js_player_t::JS_GetColor);
+		_js_player_templ_ref.Reset(_js_isolate, player_templ);
+		*/
+		Local<v8::Context> context = v8::Context::New(_js_isolate, nullptr, js_global);
+		_js_context_ref.Reset(_js_isolate, context);
+
+		v8::Context::Scope context_scope(context);
+
+		Local<ObjectTemplate> renderer_templ = ObjectTemplate::New(_js_isolate);
+		renderer_templ->Set(JS_STR("move"), JS_FUNC(JS_RendererMove));
+		Local<Object> renderer = renderer_templ->NewInstance();
+		_js_renderer_ref.Reset(_js_isolate, renderer);
+
+		Local<ObjectTemplate> player_api_templ = ObjectTemplate::New(_js_isolate);
+		player_api_templ->Set(JS_STR("me"), JS_FUNC(S_JS_PlayerApiMe));
+		player_api_templ->Set(JS_STR("all"), JS_FUNC(S_JS_PlayerApiAll));
+		player_api_templ->Set(JS_STR("theOthers"), JS_FUNC(S_JS_PlayerApiTheOthers));
+		Local<Object> player_api = player_api_templ->NewInstance();
+		_js_player_api_ref.Reset(_js_isolate, player_api);
+
+		v8::TryCatch try_catch;
+		v8::Handle<v8::Value> script_path;
+		v8::Handle<v8::String> source;
+		{
+			std::string path;
+			std::wstring wpath(L"data/");
+			wpath += map_name;
+			wpath += L"/script/index.js";
+			uni2multi(wpath, &path);
+			script_path = JS_STR(path.c_str());
+			std::vector<char> buf;
+			if (!GetByteFromFile(path.c_str(), &buf))
+			{
+				ErrorMsg(L"%s 파일을 읽을 수 없습니다.", wpath.c_str());
+				return;
+			}
+			source = v8::String::NewFromUtf8(_js_isolate, &buf[0], v8::String::kNormalString, buf.size());
+		}
+		v8::ScriptOrigin origin(script_path);
+		v8::Handle<v8::Script> script = v8::Script::Compile(source, &origin);
+		if (script.IsEmpty()) {
+			// Print errors that happened during compilation.
+			ReportException(&try_catch);
+		} else {
+			v8::Handle<v8::Value> result = script->Run();
+
+			if (result.IsEmpty()) {
+				assert(try_catch.HasCaught());
+				// Print errors that happened during execution.
+				ReportException(&try_catch);
+			}
+		}
+	}
 }
 
 void PlayScene::ReportException(TryCatch* try_catch)
 {
 	v8::HandleScope handle_scope(_js_isolate);
+	v8::Handle<v8::Message> message = try_catch->Message();
 	v8::String::Value exception(try_catch->Exception());
 	const wchar_t* exception_string = reinterpret_cast<const wchar_t *>(*exception);
-	v8::Handle<v8::Message> message = try_catch->Message();
 	if (message.IsEmpty()) {
 		// V8 didn't provide any extra information about this error; just
 		// print the exception.
@@ -677,4 +911,59 @@ void PlayScene::ReportException(TryCatch* try_catch)
 		_chat_box.AddInfoMsg(buf);
 		G.sfx_mgr.Play(L"data\\system\\Error.wav");
 	}
+}
+
+bool PlayScene::CheckAllSended() const
+{
+	bool all_sended = true;
+	for (player_map_t::ConstIter it = _player_map.cbegin(); it != _player_map.cend(); ++it)
+	{
+		if (!(*it).element().input_received)
+			return false;
+	}
+
+	return true;
+}
+
+void PlayScene::MoveGameFrame()
+{
+	if (!_js_frame_move_callback_ref.IsEmpty())
+	{
+		Isolate::Scope isolate_scope(_js_isolate);
+		HandleScope handle_scope(_js_isolate);
+		v8::TryCatch try_catch;
+		Local<v8::Context> context = PersistentToLocal(_js_isolate, _js_context_ref);
+		v8::Context::Scope context_scope(context);
+		Local<Function> cb = PersistentToLocal(_js_isolate, _js_frame_move_callback_ref);
+		v8::Handle<v8::Value> result = cb->Call(context->Global(), 0, nullptr);
+
+		if (try_catch.HasCaught())
+		{
+			ReportException(&try_catch);
+		}
+	}
+
+	_frame_count++;
+}
+
+Vector2d * PlayScene::GetClickedPos(const Event & event)
+{
+	Vector2f p((float)event.mouseButton.x, (float)event.mouseButton.y);
+	p = Renderer::TransformPoint(p);
+	Vector2d *f = new Vector2d;
+	f->set_x((int)p.x);
+	f->set_y((int)p.y);
+	return f;
+}
+
+player_t * PlayScene::SafeGetPlayer(ID pid)
+{
+	player_map_t::Iter it;
+	if (!_player_map.find(pid, &it))
+	{
+		G.logger->Warning(L"HandleInputFromRemote : 없는 클라이언트 %d", pid);
+		return nullptr;
+	}
+
+	return &(*it).element();
 }

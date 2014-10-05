@@ -18,7 +18,6 @@ public:
 	virtual	~MenuScene();
 
 	bool	 HandleWindowEvent(const Event & event);
-	bool	 HandleClientMsg(client_msg_t & msg);
 	void	 FrameMove();
 
 private:

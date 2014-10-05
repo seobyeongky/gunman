@@ -133,14 +133,13 @@ bool GetMatchedFileList(vector<wstring> * ptr, const wstring & wfilename)
 
 	_finddata_t fd;
     long handle;
-    int result=1;
 	int count = 0;
 	string filename;
 	uni2multi(wfilename, &filename);
     handle=_findfirst(filename.c_str(), &fd);
     if (handle == -1) return false;
 
-    while (result != -1)
+	do
 	{
 		WCHAR buf[512];
 		size_t len = strlen(fd.name);
@@ -149,9 +148,9 @@ bool GetMatchedFileList(vector<wstring> * ptr, const wstring & wfilename)
 		wstring file_name(buf, buf + wlen);
 		if (file_name != L"." && file_name != L"..")
 			ptr->push_back(file_name);
-		result=_findnext(handle, &fd);
-     }
-     _findclose(handle);
+     } while (_findnext(handle, &fd) != -1);
+     
+	_findclose(handle);
 
 	 return true;
 }
