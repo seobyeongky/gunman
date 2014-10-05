@@ -16,7 +16,7 @@ Persistent<FunctionTemplate> tpl_ref;
 void New(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	HandleScope handle_scope(info.GetIsolate());
-
+	int a = info.This()->InternalFieldCount();
 	info.GetReturnValue().Set(info.This());
 }
 
