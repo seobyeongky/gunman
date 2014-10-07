@@ -84,21 +84,6 @@ static void JS_RendererMove(const FunctionCallbackInfo<Value>& args)
 }
 
 
-class JsRenderable : public IRenderable
-{
-	virtual int GetHeight() const {return 0;}
-	virtual int GetPriority() const {return PR_ANI00;}
-
-protected:
-	virtual void draw(RenderTarget& target, RenderStates states) const;
-};
-
-make_renderable = (obj) ->
-	_.extend obj, new RenderableInterface
-	a.height = 123
-	a.width = 321
-	a
-
 
 static void JS_RendererAddRenderable(const FunctionCallbackInfo<Value>& args)
 {

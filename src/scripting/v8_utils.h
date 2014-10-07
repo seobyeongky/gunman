@@ -36,7 +36,7 @@ inline T * GetSelf(const v8::PropertyCallbackInfo<V>& info)
 	v8::Local<v8::Object> self = info.This();
     assert(!self.IsEmpty());
     assert(self->InternalFieldCount() > 0);
-	   v8::Local<v8::External> wrap = v8::Local<v8::External>::Cast(self->GetInternalField(0));
+	v8::Local<v8::External> wrap = v8::Local<v8::External>::Cast(self->GetInternalField(0));
     void* ptr = wrap->Value();
 	return static_cast<T*>(ptr);
 }

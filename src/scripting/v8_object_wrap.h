@@ -48,11 +48,18 @@ public:
 		return handle(v8::Isolate::GetCurrent());
 	}
 
+	inline v8::Local<v8::Object> handle() const {
+		return handle(v8::Isolate::GetCurrent());
+	}
+
 
 	inline v8::Local<v8::Object> handle(v8::Isolate* isolate) {
 		return v8::Local<v8::Object>::New(isolate, persistent());
 	}
 
+	inline v8::Local<v8::Object> handle(v8::Isolate* isolate) const {
+		return handle(v8::Isolate::GetCurrent());
+	}
 
 	inline v8::Persistent<v8::Object>& persistent() {
 		return handle_;
