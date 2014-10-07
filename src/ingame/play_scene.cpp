@@ -93,10 +93,23 @@ static void JS_RendererAddRenderable(const FunctionCallbackInfo<Value>& args)
 
 	Renderer::AddJsRenderable(obj);
 }
+
 class JsRenderable
 {
 public:
-	
+
+// constructor : register this to renderer
+// destructor : unregister this to renderer
+
+// js property
+	// height
+	// priority
+
+// js method
+	// remove
+
+// properties
+// Object Persistent...
 };
 
 static void JS_RendererRemoveRenderable(const FunctionCallbackInfo<Value>& args)
