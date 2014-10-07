@@ -83,6 +83,23 @@ static void JS_RendererMove(const FunctionCallbackInfo<Value>& args)
 	Renderer::Move(static_cast<float>(dx->NumberValue()), static_cast<float>(dy->NumberValue()));
 }
 
+
+class JsRenderable : public IRenderable
+{
+	virtual int GetHeight() const {return 0;}
+	virtual int GetPriority() const {return PR_ANI00;}
+
+protected:
+	virtual void draw(RenderTarget& target, RenderStates states) const;
+};
+
+make_renderable = (obj) ->
+	_.extend obj, new RenderableInterface
+	a.height = 123
+	a.width = 321
+	a
+
+
 static void JS_RendererAddRenderable(const FunctionCallbackInfo<Value>& args)
 {
 	JS_PARAM_ASSERTION(args.Length() == 1);
@@ -94,33 +111,15 @@ static void JS_RendererAddRenderable(const FunctionCallbackInfo<Value>& args)
 	Renderer::AddJsRenderable(obj);
 }
 
-class JsRenderable
-{
-public:
-
-// constructor : register this to renderer
-// destructor : unregister this to renderer
-
-// js property
-	// height
-	// priority
-
-// js method
-	// remove
-
-// properties
-// Object Persistent...
-};
-
 static void JS_RendererRemoveRenderable(const FunctionCallbackInfo<Value>& args)
 {
 	JS_PARAM_ASSERTION(args.Length() == 1);
 
 	HandleScope handle_scope(args.GetIsolate());
 
-	auto obj = Handle<Object>::Cast(args[0]);
+	auto num = Handle<Number>::Cast(args[0]);
 
-	Renderer::RemoveJsRenderable(obj);
+	Renderer::RemoveJsRenderable(num->Integer());
 }
 
 PlayScene * PlayScene::_instance = nullptr;
