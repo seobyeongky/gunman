@@ -93,7 +93,22 @@ static void JS_RendererAddRenderable(const FunctionCallbackInfo<Value>& args)
 
 	Renderer::AddJsRenderable(obj);
 }
+class JsRenderable
+{
+public:
+	
+};
 
+static void JS_RendererRemoveRenderable(const FunctionCallbackInfo<Value>& args)
+{
+	JS_PARAM_ASSERTION(args.Length() == 1);
+
+	HandleScope handle_scope(args.GetIsolate());
+
+	auto obj = Handle<Object>::Cast(args[0]);
+
+	Renderer::RemoveJsRenderable(obj);
+}
 
 PlayScene * PlayScene::_instance = nullptr;
 
@@ -157,14 +172,14 @@ PlayScene::PlayScene(const wstring & room_name,
 		ability_map[L"missile"] = abil;
 	}
 	*/
-	// Fixme : player_mapÀ» const·Î ÀÎÀÚ ¹Ş°Ô...
-	// Fixme : smap º¹»ç»ı¼ºÀÚ¸¸µé¾î¾ßÇÔ..º¹»ç´ëÀÔ¿¬»êÀÚµµ
+	// Fixme : player_mapÃ€Â» constÂ·Ã Ã€ÃÃ€Ãš Â¹ÃÂ°Ã”...
+	// Fixme : smap ÂºÂ¹Â»Ã§Â»Ã½Â¼ÂºÃ€ÃšÂ¸Â¸ÂµÃ©Â¾Ã®Â¾ÃŸÃ‡Ã”..ÂºÂ¹Â»Ã§Â´Ã«Ã€Ã”Â¿Â¬Â»ÃªÃ€ÃšÂµÂµ
 	for (auto it : player_map)
 		_player_map[it.key()] = it.element();
 
 	auto winsize = G.window.getSize();
 
-	G.window.setTitle(L"»ç°İÀÇ ´ŞÀÎ - " + room_name + L"¹æ");
+	G.window.setTitle(L"Â»Ã§Â°ÃÃ€Ã‡ Â´ÃÃ€Ã - " + room_name + L"Â¹Ã¦");
 	
 	_me = &_player_map[_my_id];
 
@@ -402,7 +417,7 @@ void PlayScene::ResetSkillUI()
 
 void PlayScene::FrameMove()
 {
-	// inputs buffer°¡ ºñ¾îÀÖÁö ¾Ê´Ù¸é ¼­¹ö·Î flush½ÃÅµ´Ï´Ù.
+	// inputs bufferÂ°Â¡ ÂºÃ±Â¾Ã®Ã€Ã–ÃÃ¶ Â¾ÃŠÂ´Ã™Â¸Ã© Â¼Â­Â¹Ã¶Â·Ã flushÂ½ÃƒÃ…ÂµÂ´ÃÂ´Ã™.
 	Packet sendpacket;
 	sendpacket	<< TO_UINT16(CL_TO_SV_INPUTS)
 		<< _inputs.size();
@@ -448,7 +463,7 @@ void PlayScene::AddPlayer(const client_t & basic_info)
 	_player_map.insert(id, player_t(basic_info.name, colors::GetPlayerColor(id)));
 }
 
-// ¼­¹ö·ÎºÎÅÍ ¿Â Å¬¶óÀÌ¾ğÆ® inputÀÌ´Ï, ¼ø¼­´Â º¸ÀåÀÌ µÇ¾îÀÖÀ½.
+// Â¼Â­Â¹Ã¶Â·ÃÂºÃÃ…Ã Â¿Ã‚ Ã…Â¬Â¶Ã³Ã€ÃŒÂ¾Ã°Ã†Â® inputÃ€ÃŒÂ´Ã, Â¼Ã¸Â¼Â­Â´Ã‚ ÂºÂ¸Ã€Ã¥Ã€ÃŒ ÂµÃ‡Â¾Ã®Ã€Ã–Ã€Â½.
 void PlayScene::HandleInputFromRemote(Input & input)
 {
 	ID clid = input.pid();
@@ -485,7 +500,7 @@ void PlayScene::HandleInputFromRemote(Input & input)
 			smap<ID, Champion*>::Iter champ_it;
 			if (!_champions.find(clid, &champ_it))
 			{
-				G.logger->Warning(L"HandleCommand : COMMAND_GO : ¾ø´Â Ã¨ÇÇ¿Â(%d)", clid);
+				G.logger->Warning(L"HandleCommand : COMMAND_GO : Â¾Ã¸Â´Ã‚ ÃƒÂ¨Ã‡Ã‡Â¿Ã‚(%d)", clid);
 				return;
 			}
 			Champion * champion = (*champ_it).element();
@@ -498,7 +513,7 @@ void PlayScene::HandleInputFromRemote(Input & input)
 			smap<ID, Champion*>::Iter champ_it;
 			if (!_champions.find(clid, &champ_it))
 			{
-				G.logger->Warning(L"HandleCommand : COMMAND_GO : ¾ø´Â Ã¨ÇÇ¿Â(%d)", clid);
+				G.logger->Warning(L"HandleCommand : COMMAND_GO : Â¾Ã¸Â´Ã‚ ÃƒÂ¨Ã‡Ã‡Â¿Ã‚(%d)", clid);
 				return;
 			}
 			Champion * champ = (*champ_it).element();
@@ -798,6 +813,43 @@ void PlayScene::JS_PlayerApiTheOthers(const v8::FunctionCallbackInfo<v8::Value>&
 		index++;
 	}
 	args.GetReturnValue().Set(ret);
+}
+
+void PlayScene::JS_UIGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
+{
+	HandleScope handle_scope(_js_isolate);
+
+	info.GetReturnValue().Set(PersistentToLocal(_js_isolate, _js_ui_ref);
+}
+
+void PlayScene::JS_UIWidthGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
+{
+	HandleScope handle_scope(_js_isolate);
+	
+	info.GetReturnValue().Set(Number::New(_js_isolate, window.getSize().x);
+}
+
+void PlayScene::JS_UIHeightGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
+{
+	HandleScope handle_scope(_js_isolate);
+	
+	info.GetReturnValue().Set(Number::New(_js_isolate, window.getSize().y);
+}
+
+void PlayScene::JS_UIDraw(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	JS_PARAM_ASSERTION(args.Length() == 1);
+
+	HandleScope handle_scope(_js_isolate);
+
+	// ì—¬ê¸°ì„œ ë§‰í˜
+	// stop here!!!
+
+	Local<Object> the = Local<Object>::Cast(args[0]);
+
+	GetSelf<>
+	the.
+
 
 }
 
@@ -818,6 +870,7 @@ void PlayScene::JS_Init(const wstring & map_name)
 		js_global->Set(JS_STR("onFrameMove"), JS_FUNC(S_JS_OnFrameMove));
 		js_global->SetAccessor(JS_STR("Renderer"), S_JS_RendererGetter);
 		js_global->SetAccessor(JS_STR("Player"), S_JS_PlayerGetter);
+		js_global->SetAccessor(JS_STR("UI"), S_JS_UIGetter);
 
 		v8_transformable::Init(_js_isolate);
 		JsText::Init(_js_isolate, js_global);
@@ -837,6 +890,8 @@ void PlayScene::JS_Init(const wstring & map_name)
 
 		Local<ObjectTemplate> renderer_templ = ObjectTemplate::New(_js_isolate);
 		renderer_templ->Set(JS_STR("move"), JS_FUNC(JS_RendererMove));
+		renderer_templ->Set(JS_STR("addRenderable"), JS_FUNC(JS_RendererAddRenderable));
+		renderer_templ->Set(JS_STR("removeRenderable", JS_FUNC(JS_RendererRemoveRenderable)));
 		Local<Object> renderer = renderer_templ->NewInstance();
 		_js_renderer_ref.Reset(_js_isolate, renderer);
 
@@ -846,6 +901,13 @@ void PlayScene::JS_Init(const wstring & map_name)
 		player_api_templ->Set(JS_STR("theOthers"), JS_FUNC(S_JS_PlayerApiTheOthers));
 		Local<Object> player_api = player_api_templ->NewInstance();
 		_js_player_api_ref.Reset(_js_isolate, player_api);
+
+		Local<ObjectTemplate> ui_templ = ObjectTemplate::New(_js_isolate);
+		ui_templ->SetAccessor(JS_STR("width"), S_JS_UIWidthGetter);
+		ui_templ->SetAccessor(JS_STR("height"), S_JS_UIHeightGetter);
+		ui_templ->Set(JS_STR("draw"), JS_FUNC(S_JS_UIDraw));
+		Local<Object> ui = ui_templ->NewInstance();
+		_js_ui_ref.Reset(_js_isolate, ui);
 
 		v8::TryCatch try_catch;
 		v8::Handle<v8::Value> script_path;
@@ -860,7 +922,7 @@ void PlayScene::JS_Init(const wstring & map_name)
 			std::vector<char> buf;
 			if (!GetByteFromFile(path.c_str(), &buf))
 			{
-				ErrorMsg(L"%s ÆÄÀÏÀ» ÀĞÀ» ¼ö ¾ø½À´Ï´Ù.", wpath.c_str());
+				ErrorMsg(L"%s Ã†Ã„Ã€ÃÃ€Â» Ã€ÃÃ€Â» Â¼Ã¶ Â¾Ã¸Â½Ã€Â´ÃÂ´Ã™.", wpath.c_str());
 				return;
 			}
 			source = v8::String::NewFromUtf8(_js_isolate, &buf[0], v8::String::kNormalString, buf.size());
@@ -972,7 +1034,7 @@ player_t * PlayScene::SafeGetPlayer(ID pid)
 	player_map_t::Iter it;
 	if (!_player_map.find(pid, &it))
 	{
-		G.logger->Warning(L"HandleInputFromRemote : ¾ø´Â Å¬¶óÀÌ¾ğÆ® %d", pid);
+		G.logger->Warning(L"HandleInputFromRemote : Â¾Ã¸Â´Ã‚ Ã…Â¬Â¶Ã³Ã€ÃŒÂ¾Ã°Ã†Â® %d", pid);
 		return nullptr;
 	}
 

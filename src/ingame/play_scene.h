@@ -125,6 +125,7 @@ private:
 	DEFINE_JS_REF(v8::Function, _js_frame_move_callback);
 	DEFINE_JS_REF(v8::Object, _js_renderer);
 	DEFINE_JS_REF(v8::Object, _js_player_api);
+	DEFINE_JS_REF(v8::Object, _js_ui);
 
 	// Event
 	void	AddPlayer(const client_t & basic_info);
@@ -153,7 +154,7 @@ private:
 
 	// Scripting
 
-//	v8::Handle<v8::Value> Plus(const v8::Arguments & args);
+	// Global
 	void JS_Print(const v8::FunctionCallbackInfo<v8::Value>& args);
 	DEFINE_STATIC_JS_FUNC(JS_Print);
 	void JS_OnPlayerInput(const v8::FunctionCallbackInfo<v8::Value>& args);
@@ -167,6 +168,7 @@ private:
 	void JS_PlayerGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info);
 	DEFINE_STATIC_JS_GETTER(JS_PlayerGetter);
 
+	// Player
 	void JS_PlayerApiMe(const v8::FunctionCallbackInfo<v8::Value>& args);
 	DEFINE_STATIC_JS_FUNC(JS_PlayerApiMe);
 	void JS_PlayerApiAll(const v8::FunctionCallbackInfo<v8::Value>& args);
@@ -174,6 +176,15 @@ private:
 	void JS_PlayerApiTheOthers(const v8::FunctionCallbackInfo<v8::Value>& args);
 	DEFINE_STATIC_JS_FUNC(JS_PlayerApiTheOthers);
 
+	// UI
+	void JS_UIGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info);
+	DEFINE_STATIC_JS_GETTER(JS_UIGetter);
+	void JS_UIWidthGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info);
+	DEFINE_STATIC_JS_GETTER(JS_UIWidthGetter);
+	void JS_UIHeightGetter(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info);
+	DEFINE_STATIC_JS_GETTER(JS_UIHeightGetter);
+	void JS_UIDraw(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_FUNC(JS_UIDraw);
 
 	void JS_Init(const std::wstring & map_name);
 	void ReportException(v8::TryCatch* try_catch);

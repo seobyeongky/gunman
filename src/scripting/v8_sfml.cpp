@@ -6,8 +6,10 @@
 
 using namespace v8;
 
-#define DEFINE_HANDLE_SCOPE_AND_GET_SELF 	HandleScope handle_scope(info.GetIsolate()); \
-	Text * self = GetSelf<Text>(info);
+#define DEFINE_HANDLE_SCOPE_AND_GET_SELF(T) 	HandleScope handle_scope(info.GetIsolate()); \
+	T * self = GetSelf<T>(info);
+
+#define DEFINE_HANDLE_SCOPE_AND_GET_SELF_FOR_TEXT DEFINE_HANDLE_SCOPE_AND_GET_SELF(Text)
 
 Persistent<FunctionTemplate> JsText::constructor;
 
@@ -50,13 +52,13 @@ void JsText::Init(Isolate * isolate, Handle<ObjectTemplate> exports)
 
 void JsText::JS_GetString(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
 {
-	DEFINE_HANDLE_SCOPE_AND_GET_SELF;
+	DEFINE_HANDLE_SCOPE_AND_GET_SELF_FOR_TEXT;
 	info.GetReturnValue().Set(v8::String::NewFromUtf8(info.GetIsolate(), self->getString().toAnsiString().c_str()));
 }
 
 void JsText::JS_SetString(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
 {
-	DEFINE_HANDLE_SCOPE_AND_GET_SELF;
+	DEFINE_HANDLE_SCOPE_AND_GET_SELF_FOR_TEXT;
 	v8::String::Utf8Value str(value);
 	const char * char_list = reinterpret_cast<char*>(*str);
 	self->setString(char_list);
@@ -64,13 +66,13 @@ void JsText::JS_SetString(v8::Local<v8::String> name, v8::Local<v8::Value> value
 
 void JsText::JS_GetColor(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
 {
-	DEFINE_HANDLE_SCOPE_AND_GET_SELF;
+	DEFINE_HANDLE_SCOPE_AND_GET_SELF_FOR_TEXT;
 	info.GetReturnValue().Set(JS_MakeColorObject(info.GetIsolate(), self->getColor()));
 }
 
 void JsText::JS_SetColor(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
 {
-	DEFINE_HANDLE_SCOPE_AND_GET_SELF;
+	DEFINE_HANDLE_SCOPE_AND_GET_SELF_FOR_TEXT;
 	auto obj = Local<Object>::Cast(value);
 #define EXTRACT(key) obj->Get(v8::String::NewFromUtf8(info.GetIsolate(), key))
 	auto r = EXTRACT("r");
@@ -82,13 +84,13 @@ void JsText::JS_SetColor(v8::Local<v8::String> name, v8::Local<v8::Value> value,
 
 void JsText::JS_GetCharacterSize(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
 {
-	DEFINE_HANDLE_SCOPE_AND_GET_SELF;
+	DEFINE_HANDLE_SCOPE_AND_GET_SELF_FOR_TEXT;
 	info.GetReturnValue().Set(Number::New(info.GetIsolate(), self->getCharacterSize()));
 }
 
 void JsText::JS_SetCharacterSize(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
 {
-	DEFINE_HANDLE_SCOPE_AND_GET_SELF;
+	DEFINE_HANDLE_SCOPE_AND_GET_SELF_FOR_TEXT;
 	auto num = Local<Number>::Cast(value);
 	self->setCharacterSize(value->Int32Value());
 }
