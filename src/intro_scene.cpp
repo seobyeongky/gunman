@@ -16,7 +16,7 @@ IntroScene::IntroScene()
 	SetMiddleOfScreen(&_ooparts_logo);
 	SetScaleByWidth(&_ooparts_logo, winsize.x / 3.f);
 
-	G.sfx_mgr.Play(L"data\\system\\audio\\scream.wav");
+	G.sfx_mgr.Play(L"data\\system\\audio\\intro.wav");
 }
 
 IntroScene::~IntroScene()

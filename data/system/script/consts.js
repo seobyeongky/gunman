@@ -1,0 +1,13 @@
+out = {}
+
+// inputs
+out.INPUT_LEFT_MOUSE_DOWN = 0
+out.INPUT_LEFT_MOUSE_UP = 1
+out.INPUT_RIGHT_MOUSE_DOWN = 2
+out.INPUT_RIGHT_MOUSE_UP = 3
+out.INPUT_MOUSE_MOVE = 4
+out.INPUT_KEY_DOWN = 5
+out.INPUT_KEY_UP = 6
+out.INPUT_CHAT_MESSAGE = 7
+
+module.exports = out

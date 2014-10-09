@@ -16,6 +16,8 @@
 #endif
 #include <locale.h>
 
+#include "scripting\v8_utils.h"
+
 global_t G;
 
 class LoggerLoader

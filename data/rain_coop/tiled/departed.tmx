@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="30" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass" tilewidth="32" tileheight="32">
+  <image source="../../system/tiled/grass-tiles-2-small.png" width="448" height="192"/>
+  <tile id="12">
+   <properties>
+    <property name="obstacle" value="1"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="obstacle" value="1"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="obstacle" value="1"/>
+   </properties>
+  </tile>
+  <tile id="27">
+   <properties>
+    <property name="obstacle" value="1"/>
+   </properties>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="obstacle" value="1"/>
+   </properties>
+  </tile>
+  <tile id="41">
+   <properties>
+    <property name="obstacle" value="1"/>
+   </properties>
+  </tile>
+  <tile id="54">
+   <properties>
+    <property name="obstacle" value="1"/>
+   </properties>
+  </tile>
+  <tile id="55">
+   <properties>
+    <property name="obstacle" value="1"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="terrain" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzFV11rwzAMdAJr6sKWwrZusLUd7Gn9em3fCu0f2P7/n5kCFtwukpOylD4cZzuWzoodS6lCCFEwEYwFVWIdU0TgSGMNXhK0XZE/5uc0704wN7AYEKOkNwP9s+AoKAR1TxQdKAGN7xPFO0u6qDk1bPugJrtpgurq3mC8rMlrn/ZASZo1jKOu8hnmHBPwnVprQdShvQYeb3Sbs/QKjLolaV2619a4xmvtL68ZY+2zr/x+SuqfQvs8/8Bzth8K30a8j4K1YJOwBnj9zYV4MuJl1vsHz0CE9pja42Dfd7n7auZwBB8R+gzVQHtdk+f/S7Ai1vbKGNsLDok925y95UdZ2wdnzLLBeTl75XvBww34TfB+A87lST2/eG69+XyePX+a53PnWfUmxvMI45H6Xf7w+9W8v3B4bvRzcy27UWh/v8vQnce9vN537kdo31dbeM7Mdz/n5C7tEnQ53pwu53SuKazcVxo+dka8S5jDed7LfZxvvViVd5l4C9LlOimX3zkPs74V7yf58vbNy+99akAr3mX4G6tVp/0XVrxbimHoWkPPVa7eWF8BWm9onu76jxmSsW7J3afX4kb/FwbKQJM=
+  </data>
+ </layer>
+ <objectgroup name="locations" width="30" height="30">
+  <object name="upside" type="location" x="74" y="38" width="810" height="268"/>
+  <object name="downside" type="location" x="68" y="581" width="823" height="300"/>
+ </objectgroup>
+</map>

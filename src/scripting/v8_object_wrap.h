@@ -24,6 +24,7 @@
 
 #include "v8.h"
 #include <assert.h>
+#include <stdio.h>
 
 
 class ObjectWrap {
@@ -102,6 +103,9 @@ private:
 		assert(wrap->handle_.IsNearDeath());
 		assert(data.GetValue() == v8::Local<v8::Object>::New(isolate, wrap->handle_));
 		wrap->handle_.Reset();
+#ifdef _DEBUG
+		printf("delete binded object\n");
+#endif
 		delete wrap;
 	}
 

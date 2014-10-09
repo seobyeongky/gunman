@@ -497,11 +497,10 @@ void PlayScene::HandleInputFromRemote(Input & input)
 	
 	if (!_js_player_input_callback_ref.IsEmpty())
 	{
-		v8::TryCatch try_catch;
-		try_catch.SetVerbose(true);
-
 		Isolate::Scope isolate_scope(_js_isolate);
 		HandleScope handle_scope(_js_isolate);
+		v8::TryCatch try_catch;
+		try_catch.SetVerbose(true);
 		Local<v8::Context> context = PersistentToLocal(_js_isolate, _js_context_ref);
 		v8::Context::Scope context_scope(context );
 		Local<Function> cb = PersistentToLocal(_js_isolate, _js_player_input_callback_ref);
@@ -940,6 +939,8 @@ void PlayScene::JS_Init()
 
 		v8_transformable::Init(_js_isolate);
 		JsText::Init(_js_isolate, js_global);
+		JsTexture::Init(_js_isolate, js_global, _map_name);
+		JsSprite::Init(_js_isolate, js_global);
 
 /*
 		Local<ObjectTemplate> player_templ = ObjectTemplate::New(_js_isolate);
@@ -1019,6 +1020,8 @@ void PlayScene::JS_Finalize()
 	_js_private_input_callback_ref.Reset();
 	_js_player_input_callback_ref.Reset();
 	_js_context_ref.Reset();
+	JsSprite::Finalize();
+	JsTexture::Finalize();
 	JsText::Finalize();
 	v8_transformable::Finalize();
 	_js_isolate->Dispose();

@@ -134,6 +134,9 @@
     <ClCompile Include="protocol.cpp" />
     <ClCompile Include="proto\input.pb.cc" />
     <ClCompile Include="scripting\v8_sfml.cpp" />
+    <ClCompile Include="scripting\v8_sprite.cpp" />
+    <ClCompile Include="scripting\v8_text.cpp" />
+    <ClCompile Include="scripting\v8_texture.cpp" />
     <ClCompile Include="scripting\v8_transformable.cpp" />
     <ClCompile Include="scripting\v8_utils.cpp" />
     <ClCompile Include="sfx_mgr.cpp" />
@@ -199,6 +202,9 @@
     <ClInclude Include="scene.h" />
     <ClInclude Include="scripting\v8_sfml.h" />
     <ClInclude Include="scripting\v8_object_wrap.h" />
+    <ClInclude Include="scripting\v8_sprite.h" />
+    <ClInclude Include="scripting\v8_text.h" />
+    <ClInclude Include="scripting\v8_texture.h" />
     <ClInclude Include="scripting\v8_transformable.h" />
     <ClInclude Include="scripting\v8_utils.h" />
     <ClInclude Include="sfx_mgr.h" />

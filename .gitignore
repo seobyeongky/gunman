@@ -3,7 +3,6 @@ build/
 test/
 test-d/
 audio_works/
-data/
 dep/
 game.ini
 graphic_works/

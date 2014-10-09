@@ -219,6 +219,15 @@
     <ClCompile Include="ingame\renderable.cpp">
       <Filter>소스 파일\ingame</Filter>
     </ClCompile>
+    <ClCompile Include="scripting\v8_text.cpp">
+      <Filter>소스 파일\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\v8_sprite.cpp">
+      <Filter>소스 파일\scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="scripting\v8_texture.cpp">
+      <Filter>소스 파일\scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal.h">
@@ -414,6 +423,15 @@
       <Filter>소스 파일\scripting</Filter>
     </ClInclude>
     <ClInclude Include="scripting\v8_transformable.h">
+      <Filter>소스 파일\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\v8_text.h">
+      <Filter>소스 파일\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\v8_sprite.h">
+      <Filter>소스 파일\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="scripting\v8_texture.h">
       <Filter>소스 파일\scripting</Filter>
     </ClInclude>
   </ItemGroup>

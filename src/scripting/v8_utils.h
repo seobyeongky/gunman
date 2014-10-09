@@ -6,6 +6,9 @@
 
 using namespace sf;
 
+#define DEFINE_HANDLE_SCOPE_AND_GET_SELF(T,that) 	HandleScope handle_scope(that.GetIsolate()); \
+	T * self = GetSelf<T>(that.This());
+
 template <class TypeName>
 inline v8::Local<TypeName> StrongPersistentToLocal(
     const v8::Persistent<TypeName>& persistent) {
@@ -30,15 +33,25 @@ inline v8::Local<TypeName> PersistentToLocal(
   }
 }
 
-template <class T, class V>
-inline T * GetSelf(const v8::PropertyCallbackInfo<V>& info)
+template <class T>
+inline T * GetSelf(const v8::Local<v8::Object> self)
 {
-	v8::Local<v8::Object> self = info.This();
     assert(!self.IsEmpty());
     assert(self->InternalFieldCount() > 0);
 	v8::Local<v8::External> wrap = v8::Local<v8::External>::Cast(self->GetInternalField(0));
     void* ptr = wrap->Value();
 	return static_cast<T*>(ptr);
 }
+
+template <class T>
+inline T * GetWrappedObject(const v8::Local<v8::Object> self)
+{
+    assert(!self.IsEmpty());
+    assert(self->InternalFieldCount() > 1);
+	v8::Local<v8::External> wrap = v8::Local<v8::External>::Cast(self->GetInternalField(1));
+    void* ptr = wrap->Value();
+	return static_cast<T*>(ptr);
+}
+
 
 v8::Handle<v8::Value> JS_MakeColorObject(v8::Isolate * isolate, const Color & c);

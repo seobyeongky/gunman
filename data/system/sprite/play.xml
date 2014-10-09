@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:b8623f76cb6f2d26df22c655d65d58f3:edf1ec2ddf4691a6d132baa5c026d113:b60ca291e23d98d999aa1d50ffc52e62$ -->
+<Imageset Name="play" Imagefile="play.png" NativeHorzRes="256" NativeVertRes="512" AutoScaled="false">
+    <Image Name="arrow-body" XPos="126" YPos="2" Width="36" Height="83"/>
+    <Image Name="arrow-head" XPos="2" YPos="2" Width="36" Height="39"/>
+    <Image Name="arrow-inf" XPos="2" YPos="215" Width="60" Height="220"/>
+    <Image Name="bar-bg" XPos="2" YPos="119" Width="200" Height="30"/>
+    <Image Name="hbar-green" XPos="2" YPos="183" Width="200" Height="30"/>
+    <Image Name="hbar-orange" XPos="2" YPos="151" Width="200" Height="30"/>
+    <Image Name="hbar-red" XPos="2" YPos="87" Width="200" Height="30"/>
+    <Image Name="icon-missile" XPos="74" YPos="2" Width="50" Height="50"/>
+    <Image Name="skillbox" XPos="64" YPos="215" Width="89" Height="191"/>
+    <Image Name="zolaman" XPos="40" YPos="2" Width="32" Height="48"/>
+</Imageset>
