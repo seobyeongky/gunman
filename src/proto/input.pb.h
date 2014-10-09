@@ -42,11 +42,12 @@ enum InputType {
   INPUT_RIGHT_MOUSE_UP = 3,
   INPUT_MOUSE_MOVE = 4,
   INPUT_KEY_DOWN = 5,
-  INPUT_KEY_UP = 6
+  INPUT_KEY_UP = 6,
+  INPUT_CHAT_MESSAGE = 7
 };
 bool InputType_IsValid(int value);
 const InputType InputType_MIN = INPUT_LEFT_MOUSE_DOWN;
-const InputType InputType_MAX = INPUT_KEY_UP;
+const InputType InputType_MAX = INPUT_CHAT_MESSAGE;
 const int InputType_ARRAYSIZE = InputType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* InputType_descriptor();
@@ -237,6 +238,18 @@ class Input : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 key() const;
   inline void set_key(::google::protobuf::int32 value);
 
+  // optional bytes msg = 5;
+  inline bool has_msg() const;
+  inline void clear_msg();
+  static const int kMsgFieldNumber = 5;
+  inline const ::std::string& msg() const;
+  inline void set_msg(const ::std::string& value);
+  inline void set_msg(const char* value);
+  inline void set_msg(const void* value, size_t size);
+  inline ::std::string* mutable_msg();
+  inline ::std::string* release_msg();
+  inline void set_allocated_msg(::std::string* msg);
+
   // @@protoc_insertion_point(class_scope:Input)
  private:
   inline void set_has_pid();
@@ -247,16 +260,19 @@ class Input : public ::google::protobuf::Message {
   inline void clear_has_pos();
   inline void set_has_key();
   inline void clear_has_key();
+  inline void set_has_msg();
+  inline void clear_has_msg();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 pid_;
   int type_;
   ::Vector2d* pos_;
+  ::std::string* msg_;
   ::google::protobuf::int32 key_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
 
   friend void  protobuf_AddDesc_input_2eproto();
   friend void protobuf_AssignDesc_input_2eproto();
@@ -423,6 +439,76 @@ inline ::google::protobuf::int32 Input::key() const {
 inline void Input::set_key(::google::protobuf::int32 value) {
   set_has_key();
   key_ = value;
+}
+
+// optional bytes msg = 5;
+inline bool Input::has_msg() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Input::set_has_msg() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Input::clear_has_msg() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Input::clear_msg() {
+  if (msg_ != &::google::protobuf::internal::kEmptyString) {
+    msg_->clear();
+  }
+  clear_has_msg();
+}
+inline const ::std::string& Input::msg() const {
+  return *msg_;
+}
+inline void Input::set_msg(const ::std::string& value) {
+  set_has_msg();
+  if (msg_ == &::google::protobuf::internal::kEmptyString) {
+    msg_ = new ::std::string;
+  }
+  msg_->assign(value);
+}
+inline void Input::set_msg(const char* value) {
+  set_has_msg();
+  if (msg_ == &::google::protobuf::internal::kEmptyString) {
+    msg_ = new ::std::string;
+  }
+  msg_->assign(value);
+}
+inline void Input::set_msg(const void* value, size_t size) {
+  set_has_msg();
+  if (msg_ == &::google::protobuf::internal::kEmptyString) {
+    msg_ = new ::std::string;
+  }
+  msg_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Input::mutable_msg() {
+  set_has_msg();
+  if (msg_ == &::google::protobuf::internal::kEmptyString) {
+    msg_ = new ::std::string;
+  }
+  return msg_;
+}
+inline ::std::string* Input::release_msg() {
+  clear_has_msg();
+  if (msg_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = msg_;
+    msg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void Input::set_allocated_msg(::std::string* msg) {
+  if (msg_ != &::google::protobuf::internal::kEmptyString) {
+    delete msg_;
+  }
+  if (msg) {
+    set_has_msg();
+    msg_ = msg;
+  } else {
+    clear_has_msg();
+    msg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
 }
 
 

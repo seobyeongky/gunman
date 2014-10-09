@@ -21,6 +21,8 @@ public:
 	void	 DrawEditText(bool flag);
 	void	 ClearEditText() { _chatting_text.clear(); }
 
+	Observable<std::wstring> the_text;
+
 private:
 	virtual void draw(RenderTarget& target, RenderStates states) const;
 

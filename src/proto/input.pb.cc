@@ -52,11 +52,12 @@ void protobuf_AssignDesc_input_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Vector2d));
   Input_descriptor_ = file->message_type(1);
-  static const int Input_offsets_[4] = {
+  static const int Input_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Input, pid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Input, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Input, pos_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Input, key_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Input, msg_),
   };
   Input_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -105,13 +106,14 @@ void protobuf_AddDesc_input_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\013input.proto\" \n\010Vector2d\022\t\n\001x\030\001 \002(\005\022\t\n\001"
-    "y\030\002 \002(\005\"S\n\005Input\022\013\n\003pid\030\001 \002(\r\022\030\n\004type\030\002 "
+    "y\030\002 \002(\005\"`\n\005Input\022\013\n\003pid\030\001 \002(\r\022\030\n\004type\030\002 "
     "\002(\0162\n.InputType\022\026\n\003pos\030\003 \001(\0132\t.Vector2d\022"
-    "\013\n\003key\030\004 \001(\005*\261\001\n\tInputType\022\031\n\025INPUT_LEFT"
-    "_MOUSE_DOWN\020\000\022\027\n\023INPUT_LEFT_MOUSE_UP\020\001\022\032"
-    "\n\026INPUT_RIGHT_MOUSE_DOWN\020\002\022\030\n\024INPUT_RIGH"
-    "T_MOUSE_UP\020\003\022\024\n\020INPUT_MOUSE_MOVE\020\004\022\022\n\016IN"
-    "PUT_KEY_DOWN\020\005\022\020\n\014INPUT_KEY_UP\020\006", 312);
+    "\013\n\003key\030\004 \001(\005\022\013\n\003msg\030\005 \001(\014*\311\001\n\tInputType\022"
+    "\031\n\025INPUT_LEFT_MOUSE_DOWN\020\000\022\027\n\023INPUT_LEFT"
+    "_MOUSE_UP\020\001\022\032\n\026INPUT_RIGHT_MOUSE_DOWN\020\002\022"
+    "\030\n\024INPUT_RIGHT_MOUSE_UP\020\003\022\024\n\020INPUT_MOUSE"
+    "_MOVE\020\004\022\022\n\016INPUT_KEY_DOWN\020\005\022\020\n\014INPUT_KEY"
+    "_UP\020\006\022\026\n\022INPUT_CHAT_MESSAGE\020\007", 349);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "input.proto", &protobuf_RegisterTypes);
   Vector2d::default_instance_ = new Vector2d();
@@ -140,6 +142,7 @@ bool InputType_IsValid(int value) {
     case 4:
     case 5:
     case 6:
+    case 7:
       return true;
     default:
       return false;
@@ -403,6 +406,7 @@ const int Input::kPidFieldNumber;
 const int Input::kTypeFieldNumber;
 const int Input::kPosFieldNumber;
 const int Input::kKeyFieldNumber;
+const int Input::kMsgFieldNumber;
 #endif  // !_MSC_VER
 
 Input::Input()
@@ -426,6 +430,7 @@ void Input::SharedCtor() {
   type_ = 0;
   pos_ = NULL;
   key_ = 0;
+  msg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -434,6 +439,9 @@ Input::~Input() {
 }
 
 void Input::SharedDtor() {
+  if (msg_ != &::google::protobuf::internal::kEmptyString) {
+    delete msg_;
+  }
   if (this != default_instance_) {
     delete pos_;
   }
@@ -468,6 +476,11 @@ void Input::Clear() {
       if (pos_ != NULL) pos_->::Vector2d::Clear();
     }
     key_ = 0;
+    if (has_msg()) {
+      if (msg_ != &::google::protobuf::internal::kEmptyString) {
+        msg_->clear();
+      }
+    }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -541,6 +554,20 @@ bool Input::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(42)) goto parse_msg;
+        break;
+      }
+
+      // optional bytes msg = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_msg:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_msg()));
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -585,6 +612,12 @@ void Input::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->key(), output);
   }
 
+  // optional bytes msg = 5;
+  if (has_msg()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      5, this->msg(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -614,6 +647,13 @@ void Input::SerializeWithCachedSizes(
   // optional int32 key = 4;
   if (has_key()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->key(), target);
+  }
+
+  // optional bytes msg = 5;
+  if (has_msg()) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        5, this->msg(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -652,6 +692,13 @@ int Input::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->key());
+    }
+
+    // optional bytes msg = 5;
+    if (has_msg()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->msg());
     }
 
   }
@@ -693,6 +740,9 @@ void Input::MergeFrom(const Input& from) {
     if (from.has_key()) {
       set_key(from.key());
     }
+    if (from.has_msg()) {
+      set_msg(from.msg());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -724,6 +774,7 @@ void Input::Swap(Input* other) {
     std::swap(type_, other->type_);
     std::swap(pos_, other->pos_);
     std::swap(key_, other->key_);
+    std::swap(msg_, other->msg_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

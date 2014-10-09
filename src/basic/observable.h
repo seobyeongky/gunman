@@ -12,6 +12,13 @@ private:
 	typedef std::function<void(const T &)> fn_t;
 
 public:
+	Observable(void)
+		: _val()
+		, _callbacks()
+		, _id_counter(0)
+	{
+	}
+
 	Observable(const T & val)
 		: _val(val)
 		, _callbacks()

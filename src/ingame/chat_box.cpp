@@ -6,7 +6,8 @@
 #define CHATTING_TEXT_SIZE 15U
 
 ChatBox::ChatBox()
-	:  _chatting_text(G.default_font, 25, 50U)
+	: the_text()
+	, _chatting_text(G.default_font, 25, 50U)
 	, _my_color()
 	, _my_name()
 	, _msg_list()
@@ -147,10 +148,7 @@ bool ChatBox::HandleKeyPressed(Event::KeyEvent key)
 			wstring & wstr = _chatting_text.getString().toWideString();
 			AddChatMsg(	_my_color, _my_name,
 						Color(220, 245, 245), wstr);
-			Packet send_packet;
-			send_packet << TO_UINT16(CL_TO_SV_CHAT);
-			send_packet << wstr;
-			SafeSend(send_packet);
+			the_text.set(wstr);
 			_chatting_text.clear();
 		}
 		return true;

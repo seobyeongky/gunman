@@ -5,10 +5,17 @@
 #include <SFML\Graphics.hpp>
 using namespace sf;
 
+
+class CommonDrwableStyle : public Drawable, public Transformable
+{
+	// For Text, Sprite
+};
+
 class JsText : ObjectWrap
 {
 public:
 	static void Init(v8::Isolate * isolate, v8::Handle<v8::ObjectTemplate> exports);
+	static void Finalize();
 
 private:
 	JsText(v8::Isolate * isolate, v8::Local<v8::Object> handle);

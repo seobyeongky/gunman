@@ -21,6 +21,7 @@ public:
 	virtual int GetPriority() const = 0;
 };
 
+/*
 class JSRenderable : public IRenderable, public ObjectWrap
 {
 public:
@@ -56,3 +57,4 @@ private:
 	int _height;
 	int _priority;
 };
+*/

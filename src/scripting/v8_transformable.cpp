@@ -10,7 +10,7 @@ namespace v8_transformable
 Persistent<FunctionTemplate> tpl_ref;
 
 #define DEFINE_HANDLE_SCOPE_AND_GET_SELF 	HandleScope handle_scope(info.GetIsolate()); \
-	Transformable * self = GetSelf<Transformable>(info);
+	Transformable * self = GetSelf<CommonDrwableStyle>(info);
 
 
 void New(const v8::FunctionCallbackInfo<v8::Value>& info)
@@ -138,6 +138,11 @@ void Init(Isolate * isolate)
 	proto->SetAccessor(v8::String::NewFromUtf8(isolate, "originX"), GetOriginX, SetOriginX);
 	proto->SetAccessor(v8::String::NewFromUtf8(isolate, "originY"), GetOriginY, SetOriginY);
 	tpl_ref.Reset(isolate, tpl);
+}
+
+void Finalize()
+{
+	tpl_ref.Reset();
 }
 
 Local<FunctionTemplate> GetFunctionTemplate(Isolate * isolate)

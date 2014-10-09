@@ -234,7 +234,8 @@ bool EditText::handleEnteredKey(wchar_t unicode)
 
 bool EditText::handleKeyPress(Event::KeyEvent key)
 {
-	G.sfx_mgr.Play(L"data\\system\\audio\\키보드3.ogg");
+	// audiere버그때문에주석처리 ㅜ
+//	G.sfx_mgr.Play(L"data\\system\\audio\\키보드3.ogg");
 	if(key.code == Keyboard::Left)
 	{
 		_comp = false;

@@ -83,6 +83,7 @@ private:
 	ID						_my_id;
 	player_t *				_me;
 	player_map_t			_player_map;
+	wstring					_map_name;
 
 	Flag					_ui_flag;
 
@@ -186,7 +187,8 @@ private:
 	void JS_UIDraw(const v8::FunctionCallbackInfo<v8::Value>& args);
 	DEFINE_STATIC_JS_FUNC(JS_UIDraw);
 
-	void JS_Init(const std::wstring & map_name);
+	void JS_Init();
+	void JS_Finalize();
 	void ReportException(v8::TryCatch* try_catch);
 	bool CheckAllSended() const;
 	void MoveGameFrame();

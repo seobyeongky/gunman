@@ -6,6 +6,7 @@ enum InputType {
 	INPUT_MOUSE_MOVE = 4;
 	INPUT_KEY_DOWN = 5;
 	INPUT_KEY_UP = 6;
+	INPUT_CHAT_MESSAGE = 7;
 }
 
 message Vector2d
@@ -19,4 +20,5 @@ message Input {
   required InputType type = 2;
   optional Vector2d pos = 3;
   optional int32 key = 4;
+  optional bytes msg = 5;
 }

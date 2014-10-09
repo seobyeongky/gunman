@@ -4,6 +4,8 @@
 
 #include "../global.h"
 
+#include <codecvt>
+
 using namespace v8;
 
 #define DEFINE_HANDLE_SCOPE_AND_GET_SELF(T) 	HandleScope handle_scope(info.GetIsolate()); \
@@ -50,18 +52,25 @@ void JsText::Init(Isolate * isolate, Handle<ObjectTemplate> exports)
 	exports->Set(v8::String::NewFromUtf8(isolate, "Text"), PersistentToLocal(isolate, constructor));
 }
 
+void JsText::Finalize()
+{
+	constructor.Reset();
+}
+
 void JsText::JS_GetString(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
 {
 	DEFINE_HANDLE_SCOPE_AND_GET_SELF_FOR_TEXT;
-	info.GetReturnValue().Set(v8::String::NewFromUtf8(info.GetIsolate(), self->getString().toAnsiString().c_str()));
+	wstring what = self->getString().toWideString();
+	vector<uint16_t> utf16(what.begin(), what.end());
+	info.GetReturnValue().Set(v8::String::NewFromTwoByte(info.GetIsolate(), &utf16[0], v8::String::kNormalString, utf16.size()));
 }
 
 void JsText::JS_SetString(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)
 {
 	DEFINE_HANDLE_SCOPE_AND_GET_SELF_FOR_TEXT;
-	v8::String::Utf8Value str(value);
-	const char * char_list = reinterpret_cast<char*>(*str);
-	self->setString(char_list);
+	v8::String::Value str(value);
+	const wchar_t * wchar_list = reinterpret_cast<wchar_t*>(*str);
+	self->setString(wchar_list);
 }
 
 void JsText::JS_GetColor(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
