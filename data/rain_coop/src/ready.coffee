@@ -1,20 +1,32 @@
-{STATE_PLAY} = require './consts'
+{STATE_PLAY,BG_KIND,MAX_NR_PLAYER} = require './consts'
 {Scheduler} = require './scheduler'
+{shuffle} = require './utils'
 
 module.exports = (env) ->
-	{players} = env
+	{lv} = env
+
+	players = Player.all()
+	if players.length > MAX_NR_PLAYER
+		players = shuffle players
+		players = players.splice(0, MAX_NR_PLAYER)
+	env.players = players
 
 	count = 0
 	scheduler = new Scheduler
 
 	text = new Text
-	text.string = "산성비를 막아라!!"
+	text.string = if players.length == 1 then "고독한 산성비 막기!" else "#{player.length}인 협동 산성비 막기!!"
 	text.x = 0.3 * UI.width
 	text.y = 0.3 * UI.height
 	text.characterSize = 25
 
 	scheduler.add ->
-		text.string = "준비하세요!"
+		text.string = "... Day #{Math.floor(lv / BG_KIND)}"
+	, 3
+
+	scheduler.add ->
+		text.string = players.join(', ')
+		text.string += "\n준비하세요!"
 	, 5
 
 	[3..1].forEach (i) ->

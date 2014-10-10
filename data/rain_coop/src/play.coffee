@@ -42,14 +42,14 @@ module.exports = (env) ->
 	effects = []
 	scheduler = new Scheduler
 	nr_fallen = 0
-	lv = 0
 	playing = true
 	ranking_text = null
 	env.stats = players.map ->
 		nr_destroy : 0
 
 	make_background = ->
-		texture_index = 0
+		{lv} = env
+		texture_index = lv % BG_KIND
 		s = new Sprite
 		s.x = 0
 		s.y = 0
@@ -60,9 +60,9 @@ module.exports = (env) ->
 			s.scaleX = UI.width / t.width
 			s.scaleY = UI.height / t.height
 			s.texture = t
-		s.change = ->
-			texture_index = 0 if ++texture_index >= BG_KIND
-			update_texture()
+		# s.change = ->
+		# 	texture_index = 0 if ++texture_index >= BG_KIND
+		# 	update_texture()
 
 		update_texture()
 		s
@@ -109,7 +109,7 @@ module.exports = (env) ->
 		{STAGE_TIME} = stage
 		begin_at = count
 		self.update = ->
-			self.string = "남은 시간 : #{Math.max(0,Math.floor((begin_at + STAGE_TIME - count) / FRAME_RATE))}초"
+			self.string = "남은 시간 : #{Math.max(0,Math.floor((begin_at - count) / FRAME_RATE)) + STAGE_TIME}초"
 			self.originX = self.width
 		self.update()
 		self.x = UI.width - 20
@@ -186,7 +186,8 @@ module.exports = (env) ->
 				effects.push t
 				scheduler.add ->
 					effects.splice effects.indexOf(t), 1
-					env.state = STATE_READY
+					env.stage_cleared = false
+					env.state = STATE_RESULT
 				, 3
 				playing = false
 
@@ -219,24 +220,21 @@ module.exports = (env) ->
 			matched.run_disappear_action()
 			fallen_texts.splice fallen_texts.indexOf(matched), 1
 
-
-	next_stage = ->
-		stage = stages[++lv]
-		throw new Error("all stage cleared") unless stage?
-
 	stage_start = ->
 		{STAGE_TIME} = stage
-		a = when_[count + STAGE_TIME] ?= []
-		a.push ->
+		scheduler.add ->
+			playing = false
 			t = make_message_text("스테이지 성공!",{r:100,g:225,b:50,a:255})
 			effects.push t
-			time = when_[count + 3 * 60] ?= []
-			time.push ->
-				idx = effects.indexOf t
-				throw new Error("hul2") if idx == -1
-				effects.splice idx, 1
+			scheduler.add ->
+				effects.splice effects.indexOf(t), 1
+				env.stage_cleared = true
 				env.state = STATE_RESULT
-			playing = false
+			, 3
+		, STAGE_TIME
+
+	stage_start()
+
 
 	on_frame_move : ->
 		update()

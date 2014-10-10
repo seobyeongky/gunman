@@ -14,3 +14,4 @@ module.exports =
 
 	# etc
 	FRAME_RATE : 60
+	MAX_NR_PLAYER : 5

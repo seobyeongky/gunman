@@ -1,12 +1,14 @@
-{STATE_READY,STATE_PLAY,STATE_RESULT} = require './consts'
+{STATE_READY,STATE_PLAY,STATE_RESULT,MAX_PLAYER} = require './consts'
 
 FIRST_STATE = STATE_PLAY
 
 scenes = {}
 env =
+	lv : 0
 	tick : 0
 	state : FIRST_STATE
 	players : Player.all()
+	stage_cleared : false
 
 scenes[STATE_READY] = require './ready'
 scenes[STATE_PLAY] = require './play'
