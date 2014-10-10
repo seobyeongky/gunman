@@ -1,5 +1,6 @@
 {INPUT_CHAT_MESSAGE} = require './system/consts'
 {STATE_READY,BG_KIND,SEA_SEVERTY_LEVELS,MAX_HP,FRAME_RATE} = require './consts'
+{Scheduler} = require './scheduler'
 stages = require './stages'
 dict = require './dict.json'
 _ = require 'underscore'
@@ -39,7 +40,7 @@ module.exports = (env) ->
 	timeleft_text = null
 	stage = stages[0]
 	effects = []
-	when_ = []
+	scheduler = new Scheduler
 	nr_fallen = 0
 	lv = 0
 	playing = true
@@ -158,14 +159,15 @@ module.exports = (env) ->
 			return
 		self.run_disappear_action = ->
 			effects.push self
-			[1...10].forEach (i) ->
-				time = when_[count + i] ?= []
-				time.push ->
+			index = 0
+			the_func = ->
+				if index++ > 10
+					effects.splice effects.indexOf(self), 1
+				else
 					self.scaleX *= 0.9
 					self.scaleY *= 0.9
-			lasttime = when_[count+11] ?= []
-			lasttime.push ->
-				effects.splice effects.indexOf(self), 1
+					scheduler.next_tick the_func
+			scheduler.next_tick the_func
 
 		self
 
@@ -182,19 +184,14 @@ module.exports = (env) ->
 			if nr_fallen >= MAX_HP
 				t = make_message_text("게임 오버!",{r:255,g:0,b:0,a:255})
 				effects.push t
-				time = when_[count + 3 * 60] ?= []
-				time.push ->
-					idx = effects.indexOf t
-					throw new Error("hul") if idx == -1
-					effects.splice idx, 1
+				scheduler.add ->
+					effects.splice effects.indexOf(t), 1
 					env.state = STATE_READY
+				, 3
 				playing = false
 
 	update = ->
-		while when_[count]?
-			list = when_[count]
-			delete when_[count]
-			e() for e in list
+		scheduler.tick()
 
 		if playing
 			update_fallen_texts()

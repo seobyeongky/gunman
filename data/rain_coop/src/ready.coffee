@@ -1,10 +1,11 @@
 {STATE_PLAY} = require './consts'
+{Scheduler} = require './scheduler'
 
 module.exports = (env) ->
 	{players} = env
 
 	count = 0
-	when_ = {}
+	scheduler = new Scheduler
 
 	text = new Text
 	text.string = "산성비를 막아라!!"
@@ -12,24 +13,21 @@ module.exports = (env) ->
 	text.y = 0.3 * UI.height
 	text.characterSize = 25
 
-	# 5초에
-	when_[5 * 60] = ->
+	scheduler.add ->
 		text.string = "준비하세요!"
+	, 5
 
 	[3..1].forEach (i) ->
-		# 6, 7, 8초에
-		when_[6 * 60 + (3 - i) * 60] = ->
+		scheduler.add ->
 			text.string += "...#{i}"
+		, 6 + (3 - i)
 
-	# 9초에 시작
-	when_[9 * 60] = ->
+	scheduler.add ->
 		env.state = STATE_PLAY
+	, 9
 
 	on_frame_move : ->
-		the_event = when_[count++]
-		the_event?()
-
+		scheduler.tick()
 		UI.draw text
-
 
 	on_player_input : ->
