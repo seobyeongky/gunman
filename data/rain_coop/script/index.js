@@ -91,7 +91,7 @@
 	};
 	return getRequire(modules, []);
 })({
-	"missile_dodge": {
+	"rain_coop": {
 		"src": {
 			"consts.coffee": function (exports, module, require) {
 				module.exports = {
@@ -101,26 +101,29 @@
 				  BG_KIND: 3,
 				  SEA_SEVERTY_LEVELS: 4,
 				  MAX_HP: 12,
-				  FRAME_RATE: 60
+				  FRAME_RATE: 60,
+				  MAX_NR_PLAYER: 5
 				};
 			},
 			"dict.json": function (exports, module, require) {
-				module.exports = ["가든","가람","가람","가람슬기","가람휘","가림","가온","가온길","가온누리","가온들찬빛","가온뫼","가온해","가이","가자","가장","갈","거늘","거울","겨라","겨레","겨루","겨슬","겨슬","그리","그린나래","글고운","글길","기쁨해","길","길가온","꽃가람","꽃내","꽃내","꽃내음","꽃샘","꽃채운","꽃초롱","꽃큰","나길","나나","나라빛","나라우람","나라찬","나래","나래","나래울","나려","나로","나루해오름","나봄","나빛","나샘","나슬","나예","나오","난길","난새","난슬","날샘","날애","남","남은","내길","내꽃","내담","노아","노을","노을","누리","누리보듬","누리봄","누리알찬","누림","눈꽃","눈솔","뉘","늘다","늘봄","늘봄","늘빈","늘솔길","늘솜","늘예솔","늘찬","다가","다빈","다스리","다슬","다온","다올","다옴","다와","다은","다이","다참","다한","다흰","다힘","도담","도도","도란","도래","도손","도움","동이","두나","두동","두루","두메꽃","두바다찬솔","두빛나래","두온","두힘","드리","드리","든솔","든해","든해솔","들샘","들찬","들찬길","라","라라","라미","라별","라와","란새","렁찬","로다","로와","로운","로지","루다","루라","루리","리네","리라","리리","마디","마루","마루","마루나","마루한","마리","마음","마음새","말근","말글","맑은","맑은가람","맑은누리","매디","모두가람","모두다","모드니","모든","모람","모아","모은","모이","모해","무들","무슬","무지개","물맑","물보라","미나","미나래","미드미","미라","미리별","바다","바로찬글","바론","바름","밝은빛누리예","밝음이","범한","벼리","벼리","별","별글","별솔","별하","보나","보늬","보단","보담","보라나","보람","보르미","보미","보미나","보슬","보아라","보예","봄나","봄시내","봄해","부루","불","비사벌","비치","비치나","빈길","빛글","빛길","빛다","빛솔","빛초롱","새길","새꽃","새나","새난","새누","새늘","새론","새밝","새솔","새얀","세련","세리","세움","세이","세찬","소리","소미","소아","소예","솔관","솔길","솔빛길","솔잎","솔찬","수련","수리","슬기","슬아","슬아라","슬예","슬옹","슬우","슬찬","승아","승아","시내","시원","아라","아라","아란","아련나래","아롱별","아름나","아리솔","아리알찬","안찬","알","알찬마루","알찬바로","알찬해","얀","얀별","얀새","얼","엄지","에가득","에다","여름","영글","예님","예다움","외솔","외솔","우람늘","우솔","움찬","으뜸","은새","은소라","은솔","은솜","은송이","이든샘","이루리","이루리라","이룩","이솔","이송이","이플","잎새","자랑","자올","잔디","재마루","재미","재바우","재찬","제나","제철","조롱목","조은","조히","종달","주나","주리","주미","지나","지니","지은","지음","진나","진달래","진샘","진솔","진이","차나","차미","차분","차분나래","차오름","착히","찬","찬내","찬놀","찬누리","찬늘","찬늘봄","찬들","찬들","찬솔","찬솔나라","찬솔큰","찬슬","찬슬기","참","참이","참이삭","채움늘","초고리","초롬","초롱","초롱","초롱꽃","치리","크나","크심","큰가람","큰길","큰깃","큰꽃","큰꽃늘","큰꽃들","큰나라","큰나래","큰돌찬","큰돛","큰마루","큰말","큰맘","큰모듬","큰모음","큰뫼","큰솔","큰아","큰애","큰재","큰힘","클","키움","키클","타고나","터전","터큰","텃골","텃골돌샘터","토리","통꽃","튼동","튼싹","튼트나","튼튼","틀큰","티나","파라","파라나","파라미","파란","파랑","파랑새","퍼리","펴라","푸르","푸르나","푸르내","푸르니","푸른나래","푸른나무","푸른들","푸른마을","풀잎","풀큰","풋내","피네","피라","피리","피어나","핀아","하나","하늬","하람","하랑","하련솔","하예라","하예진","한","한가람","한결","한길찬","한내","한내","한누리","한별나라","한봄찬","한빛","한빛","한샘가온","한울","해가빛","해긴","해길","해나","해늘","해님꽃","해련","해비치","해사랑해","해샘찬","해솔","해찬나래","해찬솔","환찬","환히찬","횃불","희라","흰가람","흰꽃","힘차","힘찬","▣","\r","■","\r","■","해오름달","시샘달","물오름달","잎새달","푸른달","누리달","견우직녀달","타오름달","열매달","하늘연달","미틈달","매듭달","\r","■","1.하루","11.열하루","21.스물하루","▣","\r","가납사니","가년스럽다","가늠","가라사니","가람","가래다","가래톳","가론","가루다","가말다","가멸다","가무리다","가분하다·가붓하다","가살","가시버시","가온길","가온누리","가우리","가위춤","가장이","가재기","가직하다","가축","가탈","각다분하다","간동하다","간정되다","갈개꾼","갈래다","갈마보다","갈무리","감잡히다","강짜를","강파르다","갖바치","갖추다","개골창","개구멍받이","개맹이","개사망","개어귀","개차반","개평","객쩍다","거니채다","거레","거우다","건목","건잠머리","걸싸다","걸쩍거리다","걸태질","게염","게정","겨끔내기","겨르로이","겨리","겯고틀다","결곡하다","결두리","결딴","고거리","고거이","고빗사위","고뿔","고삿","고수련","고수머리","고타야","곧추다","골갱이","골막하다","곰비임비","곰살궂다","곰상스럽다","곰파다","곱살끼다","공성이","공중제비","공치하다","괴덕","구다라","구듭","구메","구쁘다","구성없다","구성지다","구순하다","구실","구어박다","구완","구유","국으로","굴레","굴침스럽다","굴타리먹다","굴통이","굼닐다","굽도리","굽바자","궁따다","귀살쩍다","그느다","그느르다","그루잠","그루터기","그린나래","그린내","그린비","그미","그악하다","금새","기를","기이다","길가온","길라잡이","길마","길미","길섶","길제","길품","김바리","까대기","까막과부","까막까치","까미","깔죽없다","깜냥","깜부기","깨단하다","꺼병이","꺽지다","꼬꼬지","꼬두람이","꼬리별","꼲다","꽃가람","꽃내음","꽃샘","꽃샘바람","꽃잠","꾀꾀로","꿰미","끄나풀","끄느름하다","끌끌하다","나래","나르샤","나린","나릿물","나부대다","나비잠","난든집","난이","남새","남우세","남진계집","낫잡다","낳이","내남없이","내숭","너널","너비","너울","넉가래","넉장거리","넌더리","널출지다","노가리","노고지리","노닥이다","노드매기","노량으로","노루잠","노적가리","노총","놀금","높새","눈거칠다","눈바래기","눈비음","눈썰미","눈엣가시","느껍다","느루","느루먹다","는개","늘비하다","늘솔길","늘해랑","늠그다","능","능갈치다","늦","늦마","늦사리","다님길","다따가","다락같다","다랑귀","다소니","다소다","다솜","다원","다직해야","다흰","닦아세우다","단물나다","단미","달구치다","달랑쇠","달보드레하다","달포","답치기","당나발붙다","당도리","닻별","대갚음","대두리","댓바람","댕기다","더껑이","더께","더치다","더펄이","덖다","던적스럽다","덜퍽지다","덤받이","덤터기","덧거칠다","덧게비","덧두리","덩둘하다","덩저리","도거리","도닐다","도담도담","도두보다","도드미","도란도란","도래솔","도린결","도사리","도섭","도스르다","도투락","도파니","돈바르다","돈사다","돌개바람","동곳빼다","동그마니","동뜨다","동아리","동이","동자아치","동티","되모시","되술래잡히다","되지기","되퉁스럽다","된","된바람","될성부르다","두남두다","두동지다","두례","두멍","둔치","둥개다","뒤란","뒤스르다","뒤웅박","뒤통수(를)치다","뒨장질","뒷갈망","뒷귀","드난","드레","드림흥정","드티다","들거지","들마","들메","들썽하다","들입다","들피","듬쑥하다","따리꾼","딸각발이","떠세","떡심이","떨거지","뚜쟁이","뚝벌씨","뚱기다","뜨께질","뜨악하다","뜯게","라온제나","라온하제","라온힐조","마고자","마닐마닐","마디다","마뜩하다","마루","마름","마름질","마소두래기","마수걸다","마장스럽다","마전","마파람","말결","말재기","말코지","맛조이","매개","매골","매나니","매지구름","매캐하다","맨드라미","맨드리","맨망","맵자하다","맷가마리","맹문","머드러기","머줍다","먼산바라기","메꿎다","메지","멧부리","멱차다","모가비","모꼬지","모람모람","모래톱","모르쇠","모주망태","모집다","모춤하다","목매기","몽구리","몽니","몽따다","몽종하다","몽짜","몽태치다","무꾸리","무녀리","무드럭지다","무람없다","무릎마춤","무서리","무수다","무싯날","무텅이","묵새기다","물강스럽다","물꼬","물마","물보낌","물부리","물비늘","물수제비뜨다","물초","뭉근하다","미대다","미르","미리내","미립","미쁘다","미투리","민낯","민둥산","민충하다","민틋하다","민패","밀막다","밀절미","바오","바자위다","바장이다","바투","반거들충이","반기","반살미","반색","반자받다","반지빠르다","받내다","발림","발발다","발쇠","방물","방자","방자고기","방짜","방패막이","배갯잇","배내","배냇짓","배때벗다","배메기","버겁다","버금","버덩","버력","버르집다","버름하다","벋대다","벌충","벗","베돌다","벼리","벼리,","벼리다","변죽","별찌","볏가리","보깨다","보꾹","보드기","보쟁이다","보짱","본치","볼멘소리","볼모","볼우물","부넘기","부닐다","부대끼다","부라퀴","부르터나다","부아나다","부지깽이","북새","북새바람","붓날다","붓방아","붙박이","비나리","비나리치다","비를","비마중","비말","비설거지","비커리","빌미","빌붙다","빗물이","빙충맞다","빚지시","뻑뻑이","뿌다구니","사그랑이","사금파리","사나래","사달","사람멀미","사로자다","사부랑사부랑","사시랑이","사위다","사재기","사태","사품","삭신","삭정이","삯메기","산다라","산돌림","살갑다","살강","살거리","살붙이","살소매","살손(을)붙이다","살피","삼짇날","삼태기","삼하다","상고대","새,","새경","새라","새룽이","새물내","샘바리","샛바람","샛별","생무지","생인손","생채기","생청","생화","서름하다","서릊다","서리서리","섟","섟삭다","선겁다","선바람","선불걸다","선술집","선웃음","섣부르다","설멍하다","설면하다","설피다","섬돌","섬서하다","성금","성기다","성마르다","세나다","셈나다","셈차리다","소담하다","소댕","소두","소드락질","소래기","소롱하다","소마","소마소마","소소리바람","소수나다","소양배양하다","소태같다","속종","솎다","손","손대기","손떠퀴","손바람","손방","손사래","손타다","손포","수발","수지니","수채","수피아","숙수그레하다","숙지다","숨베","숯","숱","슈룹","스스럼","습습하다","승겁들다","시게","시나브로","시뜻하다","시래기","시르죽다","시름없다","시먹다","시쁘다","시설궂다","시세","시앗","시역","시위","시적거리다","시치다","신망스럽다","실랑이","실큼하다","실터","실팍하다","심드렁하다","심마니","심사미","싸개통","싸도둑","싹수","쌩이질","쏘개질","쓰레질","쓸까스르다","쓿다","아가씨","아귀차다","아기똥하다","아니리","아띠","아라","아라가야","아람","아람치","아련하다","아름드리","아리수","아리아","아리잠작하다","아미","아사","아스라이","아우르다","아이서다","아주버니","아퀴","아퀴짓다","아토","악도리","안날","안다미","안다미로","안를다","안차다","안팎장사","알섬","알심","알짬","알천","암상","암팡지다","앙금","앙달머리","앙세다","앙증하다","앙짜","앞바람","애면글면","애물","애벌갈이","애성이","애오라지","애옥살이","앤생이","앵돌아지다","야바위","야발","야비다리","야수다","야지랑스럽다","야짓","약비나다","얌생이","양지머리","어거리풍년","어니눅다","어엿하다","어줍다","언걸","언구럭","언막이","얼렁장사","얼레","얼레살풀다","업시름","엇부루기","엉거능축하다","엉겁","엉구다","엉리","엉세판","에끼다","에다","에멜무지로","에우다","에움길","여낙낙하다","여남은","여루다","여리꾼","여우별","여우비","여정하다","여줄가리","역성","열고나다","열없다","영바람","영절스럽다","영판","예그리나","예제없이","옛살비","오금","오달지다","오례쌀","오릇하다","오비다","오쟁이지다","오지랖넓다","옥셈","온","온누리","온새미로","올되다","올리사랑","올무","올케","옴니암니","옷깃차례","옹골지다","옹아리","옹추","옹춘마니","왕청되다","왜골","왜자하다","왜장치다","욕지기","용수","용심","용지","용천하다","용춤","용트림","우금","우꾼하다","우두망찰하다","우듬지","우렁잇속","우멍하다","우선하다","우세","우수리","우접다","울대","울력","움딸","웁쌀","웃날들다","웃비","워낭","윗바람","윤슬","으르다","은가람","은가비","은결들다","은사죽음","의초","이내","이든","이르집다","이물","이악하다","이울다","이지다","임","입찬말","잇바디","자귀","자닝하다","자리끼","자리끼","자리보전","자맥질","자발없다","자부지","자빡대다","자투리","잔다리밟다","잔달음","잔질다","잡도리","잡을손","장돌림","장맞이","장족박","잦히다","재강","재우치다","저어하다","적바람(뒤에","적바르다","점지","정수리","제키다","조라떨다","조리차하다","조치개","족대기다","졸가리","졸들다","좁쌀여우","종요롭다","좆다","주니","주럽","주릅","주저롭다","주저리","주전부리","주접","줏대잡이","중절거리다","쥐락펴락","쥘손","즈믄","지다위","지돌이","지망지망히","지실","지위","지청구","직수굿하다","진번질하다","진솔","질통","짐짓","집알이","짜개","짜발량이","짜장","짝자꿍이","째다","째마리","쭉정이","찌그렁이","찜부럭","차돌박이","차반","척(隻)을","천둥","천둥지기","천세나다","첫밗","초들다","초라떼다","초아","추레하다","추지다","치사람","치신없다","커나다","켕기다","코뚜레","코숭이","콩케팥케","큰상물림","킷값","타끈하다","타니","타래","타래버선","타울거리다","터럭","터알","톡탁치다","투미하다","튀하다","트레바리","틋","파니","파임내다","판들다","판수","퍼르퍼르","포롱거리다","푸네기","푸닥거리","푸르미르","푸실","푸접없다","푹하다","푼더분하다","푼푼하다","풀무","품앗이","풍년(豊年)","피새","피천","하나린","하냥다짐","하늬","하늬바람","하람","하르르하다","하릅","하리놀다","하리다","하리들다","하릴없다","하마하마","하비다","하슬라","하야로비","하제","한겻","한둔","한별","한사리","한울","한풀","할경","함진아비","함초롬하다","함함하다","핫아비","핫어미","핫옷","해거름","해껏","해소수","해찰","해찰하다","행짜","허구리","허닥하다","허대다","허드레","허룩하다","허룽거리다","허릅숭이","허물하다","허발","허방","허벅지다","허섭쓰레기","허수하다","허출하다","헛물켜다","헛장","헤먹다","헤살","헤식다","헤윰","호다","호드기","호락질","홀앗이","홀지다","화수분","확","홰","회두리","훈감하다","휘들램","흐노니","흐드러지다","흥글방망이놀다","희나리","희떱다","희치희치","힐조"];
+				module.exports = ["가든","가람","가람","가람슬기","가람휘","가림","가온","가온길","가온누리","가온들찬빛","가온뫼","가온해","가이","가자","가장","갈","거늘","거울","겨라","겨레","겨루","겨슬","겨슬","그리","그린나래","글고운","글길","기쁨해","길","길가온","꽃가람","꽃내","꽃내","꽃내음","꽃샘","꽃채운","꽃초롱","꽃큰","나길","나나","나라빛","나라우람","나라찬","나래","나래","나래울","나려","나로","나루해오름","나봄","나빛","나샘","나슬","나예","나오","난길","난새","난슬","날샘","날애","남","남은","내길","내꽃","내담","노아","노을","노을","누리","누리보듬","누리봄","누리알찬","누림","눈꽃","눈솔","뉘","늘다","늘봄","늘봄","늘빈","늘솔길","늘솜","늘예솔","늘찬","다가","다빈","다스리","다슬","다온","다올","다옴","다와","다은","다이","다참","다한","다흰","다힘","도담","도도","도란","도래","도손","도움","동이","두나","두동","두루","두메꽃","두바다찬솔","두빛나래","두온","두힘","드리","드리","든솔","든해","든해솔","들샘","들찬","들찬길","라","라라","라미","라별","라와","란새","렁찬","로다","로와","로운","로지","루다","루라","루리","리네","리라","리리","마디","마루","마루","마루나","마루한","마리","마음","마음새","말근","말글","맑은","맑은가람","맑은누리","매디","모두가람","모두다","모드니","모든","모람","모아","모은","모이","모해","무들","무슬","무지개","물맑","물보라","미나","미나래","미드미","미라","미리별","바다","바로찬글","바론","바름","밝은빛누리예","밝음이","범한","벼리","벼리","별","별글","별솔","별하","보나","보늬","보단","보담","보라나","보람","보르미","보미","보미나","보슬","보아라","보예","봄나","봄시내","봄해","부루","불","비사벌","비치","비치나","빈길","빛글","빛길","빛다","빛솔","빛초롱","새길","새꽃","새나","새난","새누","새늘","새론","새밝","새솔","새얀","세련","세리","세움","세이","세찬","소리","소미","소아","소예","솔관","솔길","솔빛길","솔잎","솔찬","수련","수리","슬기","슬아","슬아라","슬예","슬옹","슬우","슬찬","승아","승아","시내","시원","아라","아라","아란","아련나래","아롱별","아름나","아리솔","아리알찬","안찬","알","알찬마루","알찬바로","알찬해","얀","얀별","얀새","얼","엄지","에가득","에다","여름","영글","예님","예다움","외솔","외솔","우람늘","우솔","움찬","으뜸","은새","은소라","은솔","은솜","은송이","이든샘","이루리","이루리라","이룩","이솔","이송이","이플","잎새","자랑","자올","잔디","재마루","재미","재바우","재찬","제나","제철","조롱목","조은","조히","종달","주나","주리","주미","지나","지니","지은","지음","진나","진달래","진샘","진솔","진이","차나","차미","차분","차분나래","차오름","착히","찬","찬내","찬놀","찬누리","찬늘","찬늘봄","찬들","찬들","찬솔","찬솔나라","찬솔큰","찬슬","찬슬기","참","참이","참이삭","채움늘","초고리","초롬","초롱","초롱","초롱꽃","치리","크나","크심","큰가람","큰길","큰깃","큰꽃","큰꽃늘","큰꽃들","큰나라","큰나래","큰돌찬","큰돛","큰마루","큰말","큰맘","큰모듬","큰모음","큰뫼","큰솔","큰아","큰애","큰재","큰힘","클","키움","키클","타고나","터전","터큰","텃골","텃골돌샘터","토리","통꽃","튼동","튼싹","튼트나","튼튼","틀큰","티나","파라","파라나","파라미","파란","파랑","파랑새","퍼리","펴라","푸르","푸르나","푸르내","푸르니","푸른나래","푸른나무","푸른들","푸른마을","풀잎","풀큰","풋내","피네","피라","피리","피어나","핀아","하나","하늬","하람","하랑","하련솔","하예라","하예진","한","한가람","한결","한길찬","한내","한내","한누리","한별나라","한봄찬","한빛","한빛","한샘가온","한울","해가빛","해긴","해길","해나","해늘","해님꽃","해련","해비치","해사랑해","해샘찬","해솔","해찬나래","해찬솔","환찬","환히찬","횃불","희라","흰가람","흰꽃","힘차","힘찬","해오름달","시샘달","물오름달","잎새달","푸른달","누리달","견우직녀달","타오름달","열매달","하늘연달","미틈달","매듭달","하루","열하루","스물하루","가납사니","가년스럽다","가늠","가라사니","가람","가래다","가래톳","가론","가루다","가말다","가멸다","가무리다","가분하다·가붓하다","가살","가시버시","가온길","가온누리","가우리","가위춤","가장이","가재기","가직하다","가축","가탈","각다분하다","간동하다","간정되다","갈개꾼","갈래다","갈마보다","갈무리","감잡히다","강짜를","강파르다","갖바치","갖추다","개골창","개구멍받이","개맹이","개사망","개어귀","개차반","개평","객쩍다","거니채다","거레","거우다","건목","건잠머리","걸싸다","걸쩍거리다","걸태질","게염","게정","겨끔내기","겨르로이","겨리","겯고틀다","결곡하다","결두리","결딴","고거리","고거이","고빗사위","고뿔","고삿","고수련","고수머리","고타야","곧추다","골갱이","골막하다","곰비임비","곰살궂다","곰상스럽다","곰파다","곱살끼다","공성이","공중제비","공치하다","괴덕","구다라","구듭","구메","구쁘다","구성없다","구성지다","구순하다","구실","구어박다","구완","구유","국으로","굴레","굴침스럽다","굴타리먹다","굴통이","굼닐다","굽도리","굽바자","궁따다","귀살쩍다","그느다","그느르다","그루잠","그루터기","그린나래","그린내","그린비","그미","그악하다","금새","기를","기이다","길가온","길라잡이","길마","길미","길섶","길제","길품","김바리","까대기","까막과부","까막까치","까미","깔죽없다","깜냥","깜부기","깨단하다","꺼병이","꺽지다","꼬꼬지","꼬두람이","꼬리별","꼲다","꽃가람","꽃내음","꽃샘","꽃샘바람","꽃잠","꾀꾀로","꿰미","끄나풀","끄느름하다","끌끌하다","나래","나르샤","나린","나릿물","나부대다","나비잠","난든집","난이","남새","남우세","남진계집","낫잡다","낳이","내남없이","내숭","너널","너비","너울","넉가래","넉장거리","넌더리","널출지다","노가리","노고지리","노닥이다","노드매기","노량으로","노루잠","노적가리","노총","놀금","높새","눈거칠다","눈바래기","눈비음","눈썰미","눈엣가시","느껍다","느루","느루먹다","는개","늘비하다","늘솔길","늘해랑","늠그다","능","능갈치다","늦","늦마","늦사리","다님길","다따가","다락같다","다랑귀","다소니","다소다","다솜","다원","다직해야","다흰","닦아세우다","단물나다","단미","달구치다","달랑쇠","달보드레하다","달포","답치기","당나발붙다","당도리","닻별","대갚음","대두리","댓바람","댕기다","더껑이","더께","더치다","더펄이","덖다","던적스럽다","덜퍽지다","덤받이","덤터기","덧거칠다","덧게비","덧두리","덩둘하다","덩저리","도거리","도닐다","도담도담","도두보다","도드미","도란도란","도래솔","도린결","도사리","도섭","도스르다","도투락","도파니","돈바르다","돈사다","돌개바람","동곳빼다","동그마니","동뜨다","동아리","동이","동자아치","동티","되모시","되술래잡히다","되지기","되퉁스럽다","된","된바람","될성부르다","두남두다","두동지다","두례","두멍","둔치","둥개다","뒤란","뒤스르다","뒤웅박","뒤통수(를)치다","뒨장질","뒷갈망","뒷귀","드난","드레","드림흥정","드티다","들거지","들마","들메","들썽하다","들입다","들피","듬쑥하다","따리꾼","딸각발이","떠세","떡심이","떨거지","뚜쟁이","뚝벌씨","뚱기다","뜨께질","뜨악하다","뜯게","라온제나","라온하제","라온힐조","마고자","마닐마닐","마디다","마뜩하다","마루","마름","마름질","마소두래기","마수걸다","마장스럽다","마전","마파람","말결","말재기","말코지","맛조이","매개","매골","매나니","매지구름","매캐하다","맨드라미","맨드리","맨망","맵자하다","맷가마리","맹문","머드러기","머줍다","먼산바라기","메꿎다","메지","멧부리","멱차다","모가비","모꼬지","모람모람","모래톱","모르쇠","모주망태","모집다","모춤하다","목매기","몽구리","몽니","몽따다","몽종하다","몽짜","몽태치다","무꾸리","무녀리","무드럭지다","무람없다","무릎마춤","무서리","무수다","무싯날","무텅이","묵새기다","물강스럽다","물꼬","물마","물보낌","물부리","물비늘","물수제비뜨다","물초","뭉근하다","미대다","미르","미리내","미립","미쁘다","미투리","민낯","민둥산","민충하다","민틋하다","민패","밀막다","밀절미","바오","바자위다","바장이다","바투","반거들충이","반기","반살미","반색","반자받다","반지빠르다","받내다","발림","발발다","발쇠","방물","방자","방자고기","방짜","방패막이","배갯잇","배내","배냇짓","배때벗다","배메기","버겁다","버금","버덩","버력","버르집다","버름하다","벋대다","벌충","벗","베돌다","벼리","벼리,","벼리다","변죽","별찌","볏가리","보깨다","보꾹","보드기","보쟁이다","보짱","본치","볼멘소리","볼모","볼우물","부넘기","부닐다","부대끼다","부라퀴","부르터나다","부아나다","부지깽이","북새","북새바람","붓날다","붓방아","붙박이","비나리","비나리치다","비를","비마중","비말","비설거지","비커리","빌미","빌붙다","빗물이","빙충맞다","빚지시","뻑뻑이","뿌다구니","사그랑이","사금파리","사나래","사달","사람멀미","사로자다","사부랑사부랑","사시랑이","사위다","사재기","사태","사품","삭신","삭정이","삯메기","산다라","산돌림","살갑다","살강","살거리","살붙이","살소매","살손(을)붙이다","살피","삼짇날","삼태기","삼하다","상고대","새,","새경","새라","새룽이","새물내","샘바리","샛바람","샛별","생무지","생인손","생채기","생청","생화","서름하다","서릊다","서리서리","섟","섟삭다","선겁다","선바람","선불걸다","선술집","선웃음","섣부르다","설멍하다","설면하다","설피다","섬돌","섬서하다","성금","성기다","성마르다","세나다","셈나다","셈차리다","소담하다","소댕","소두","소드락질","소래기","소롱하다","소마","소마소마","소소리바람","소수나다","소양배양하다","소태같다","속종","솎다","손","손대기","손떠퀴","손바람","손방","손사래","손타다","손포","수발","수지니","수채","수피아","숙수그레하다","숙지다","숨베","숯","숱","슈룹","스스럼","습습하다","승겁들다","시게","시나브로","시뜻하다","시래기","시르죽다","시름없다","시먹다","시쁘다","시설궂다","시세","시앗","시역","시위","시적거리다","시치다","신망스럽다","실랑이","실큼하다","실터","실팍하다","심드렁하다","심마니","심사미","싸개통","싸도둑","싹수","쌩이질","쏘개질","쓰레질","쓸까스르다","쓿다","아가씨","아귀차다","아기똥하다","아니리","아띠","아라","아라가야","아람","아람치","아련하다","아름드리","아리수","아리아","아리잠작하다","아미","아사","아스라이","아우르다","아이서다","아주버니","아퀴","아퀴짓다","아토","악도리","안날","안다미","안다미로","안를다","안차다","안팎장사","알섬","알심","알짬","알천","암상","암팡지다","앙금","앙달머리","앙세다","앙증하다","앙짜","앞바람","애면글면","애물","애벌갈이","애성이","애오라지","애옥살이","앤생이","앵돌아지다","야바위","야발","야비다리","야수다","야지랑스럽다","야짓","약비나다","얌생이","양지머리","어거리풍년","어니눅다","어엿하다","어줍다","언걸","언구럭","언막이","얼렁장사","얼레","얼레살풀다","업시름","엇부루기","엉거능축하다","엉겁","엉구다","엉리","엉세판","에끼다","에다","에멜무지로","에우다","에움길","여낙낙하다","여남은","여루다","여리꾼","여우별","여우비","여정하다","여줄가리","역성","열고나다","열없다","영바람","영절스럽다","영판","예그리나","예제없이","옛살비","오금","오달지다","오례쌀","오릇하다","오비다","오쟁이지다","오지랖넓다","옥셈","온","온누리","온새미로","올되다","올리사랑","올무","올케","옴니암니","옷깃차례","옹골지다","옹아리","옹추","옹춘마니","왕청되다","왜골","왜자하다","왜장치다","욕지기","용수","용심","용지","용천하다","용춤","용트림","우금","우꾼하다","우두망찰하다","우듬지","우렁잇속","우멍하다","우선하다","우세","우수리","우접다","울대","울력","움딸","웁쌀","웃날들다","웃비","워낭","윗바람","윤슬","으르다","은가람","은가비","은결들다","은사죽음","의초","이내","이든","이르집다","이물","이악하다","이울다","이지다","임","입찬말","잇바디","자귀","자닝하다","자리끼","자리끼","자리보전","자맥질","자발없다","자부지","자빡대다","자투리","잔다리밟다","잔달음","잔질다","잡도리","잡을손","장돌림","장맞이","장족박","잦히다","재강","재우치다","저어하다","적바람(뒤에","적바르다","점지","정수리","제키다","조라떨다","조리차하다","조치개","족대기다","졸가리","졸들다","좁쌀여우","종요롭다","좆다","주니","주럽","주릅","주저롭다","주저리","주전부리","주접","줏대잡이","중절거리다","쥐락펴락","쥘손","즈믄","지다위","지돌이","지망지망히","지실","지위","지청구","직수굿하다","진번질하다","진솔","질통","짐짓","집알이","짜개","짜발량이","짜장","짝자꿍이","째다","째마리","쭉정이","찌그렁이","찜부럭","차돌박이","차반","척(隻)을","천둥","천둥지기","천세나다","첫밗","초들다","초라떼다","초아","추레하다","추지다","치사람","치신없다","커나다","켕기다","코뚜레","코숭이","콩케팥케","큰상물림","킷값","타끈하다","타니","타래","타래버선","타울거리다","터럭","터알","톡탁치다","투미하다","튀하다","트레바리","틋","파니","파임내다","판들다","판수","퍼르퍼르","포롱거리다","푸네기","푸닥거리","푸르미르","푸실","푸접없다","푹하다","푼더분하다","푼푼하다","풀무","품앗이","풍년(豊年)","피새","피천","하나린","하냥다짐","하늬","하늬바람","하람","하르르하다","하릅","하리놀다","하리다","하리들다","하릴없다","하마하마","하비다","하슬라","하야로비","하제","한겻","한둔","한별","한사리","한울","한풀","할경","함진아비","함초롬하다","함함하다","핫아비","핫어미","핫옷","해거름","해껏","해소수","해찰","해찰하다","행짜","허구리","허닥하다","허대다","허드레","허룩하다","허룽거리다","허릅숭이","허물하다","허발","허방","허벅지다","허섭쓰레기","허수하다","허출하다","헛물켜다","헛장","헤먹다","헤살","헤식다","헤윰","호다","호드기","호락질","홀앗이","홀지다","화수분","확","홰","회두리","훈감하다","휘들램","흐노니","흐드러지다","흥글방망이놀다","희나리","희떱다","희치희치","힐조"];
 			},
 			"index.coffee": function (exports, module, require) {
-				var FIRST_STATE, STATE_PLAY, STATE_READY, STATE_RESULT, current_stage, env, next_scene, scene, scenes, _ref,
+				var FIRST_STATE, MAX_PLAYER, STATE_PLAY, STATE_READY, STATE_RESULT, current_stage, env, next_scene, scene, scenes, _ref,
 				  __slice = [].slice;
 
-				_ref = require('./consts'), STATE_READY = _ref.STATE_READY, STATE_PLAY = _ref.STATE_PLAY, STATE_RESULT = _ref.STATE_RESULT;
+				_ref = require('./consts'), STATE_READY = _ref.STATE_READY, STATE_PLAY = _ref.STATE_PLAY, STATE_RESULT = _ref.STATE_RESULT, MAX_PLAYER = _ref.MAX_PLAYER;
 
-				FIRST_STATE = STATE_PLAY;
+				FIRST_STATE = STATE_READY;
 
 				scenes = {};
 
 				env = {
+				  lv: 0,
 				  tick: 0,
 				  state: FIRST_STATE,
-				  players: Player.all()
+				  players: Player.all(),
+				  stage_cleared: false
 				};
 
 				scenes[STATE_READY] = require('./ready');
@@ -159,14 +162,18 @@
 				  }
 				  return env.tick++;
 				});
+
+				Audio.playMusic('audio/main_bgm.mp3');
 			},
 			"play.coffee": function (exports, module, require) {
-				var BG_KIND, FRAME_RATE, INPUT_CHAT_MESSAGE, MAX_HP, SEA_SEVERTY_LEVELS, STATE_READY, dict, make_message_text, stages, textures, _, _i, _j, _ref, _results, _results1,
+				var ACID, BG_KIND, FRAME_RATE, INPUT_CHAT_MESSAGE, MAX_HP, POP, SEA_SEVERTY_LEVELS, STATE_READY, STATE_RESULT, SUCCEEDED, Scheduler, WORSE, dict, main_key_color, make_message_text, stages, sub_key_color, textures, _, _i, _j, _ref, _results, _results1,
 				  __slice = [].slice;
 
 				INPUT_CHAT_MESSAGE = require('./system/consts').INPUT_CHAT_MESSAGE;
 
-				_ref = require('./consts'), STATE_READY = _ref.STATE_READY, BG_KIND = _ref.BG_KIND, SEA_SEVERTY_LEVELS = _ref.SEA_SEVERTY_LEVELS, MAX_HP = _ref.MAX_HP, FRAME_RATE = _ref.FRAME_RATE;
+				_ref = require('./consts'), STATE_READY = _ref.STATE_READY, STATE_RESULT = _ref.STATE_RESULT, BG_KIND = _ref.BG_KIND, SEA_SEVERTY_LEVELS = _ref.SEA_SEVERTY_LEVELS, MAX_HP = _ref.MAX_HP, FRAME_RATE = _ref.FRAME_RATE;
+
+				Scheduler = require('./scheduler').Scheduler;
 
 				stages = require('./stages');
 
@@ -175,6 +182,58 @@
 				_ = require('underscore');
 
 				textures = {};
+
+				main_key_color = function(index) {
+				  switch (index % 3) {
+				    case 0:
+				      return {
+				        r: 0,
+				        g: 0,
+				        b: 0,
+				        a: 255
+				      };
+				    case 1:
+				      return {
+				        r: 50,
+				        g: 50,
+				        b: 50,
+				        a: 255
+				      };
+				    case 2:
+				      return {
+				        r: 255,
+				        g: 255,
+				        b: 240,
+				        a: 255
+				      };
+				  }
+				};
+
+				sub_key_color = function(index) {
+				  switch (index % 3) {
+				    case 0:
+				      return {
+				        r: 255,
+				        g: 255,
+				        b: 255,
+				        a: 255
+				      };
+				    case 1:
+				      return {
+				        r: 180,
+				        g: 180,
+				        b: 170,
+				        a: 255
+				      };
+				    case 2:
+				      return {
+				        r: 120,
+				        g: 120,
+				        b: 110,
+				        a: 255
+				      };
+				  }
+				};
 
 				(function() {
 				  _results = [];
@@ -198,6 +257,14 @@
 				  return textures["sea_" + i] = t;
 				});
 
+				ACID = 'audio/acid.wav';
+
+				POP = 'audio/word.wav';
+
+				SUCCEEDED = 'audio/FFT.wav';
+
+				WORSE = 'audio/oil.wav';
+
 				make_message_text = function(msg, color) {
 				  var t;
 				  t = new Text;
@@ -212,7 +279,7 @@
 				};
 
 				module.exports = function(env) {
-				  var bg, chat, checks, count, effects, fallen_texts, hp_text, lv, make_background, make_fallen_text, make_hp_text, make_ranking_text, make_sea, make_timeleft_text, next_stage, nr_fallen, players, playing, ranking_text, render, sea, stage, stage_start, timeleft_text, update, update_fallen_texts, when_;
+				  var bg, chat, checks, count, effects, fallen_texts, hp_text, make_background, make_fallen_text, make_hp_text, make_ranking_text, make_sea, make_timeleft_text, nr_fallen, players, playing, ranking_text, render, scheduler, sea, stage, stage_start, timeleft_text, update, update_fallen_texts;
 				  players = env.players;
 				  count = 0;
 				  fallen_texts = [];
@@ -222,9 +289,8 @@
 				  timeleft_text = null;
 				  stage = stages[0];
 				  effects = [];
-				  when_ = [];
+				  scheduler = new Scheduler;
 				  nr_fallen = 0;
-				  lv = 0;
 				  playing = true;
 				  ranking_text = null;
 				  env.stats = players.map(function() {
@@ -233,8 +299,9 @@
 				    };
 				  });
 				  make_background = function() {
-				    var s, texture_index, update_texture;
-				    texture_index = 0;
+				    var lv, s, texture_index, update_texture;
+				    lv = env.lv;
+				    texture_index = lv % BG_KIND;
 				    s = new Sprite;
 				    s.x = 0;
 				    s.y = 0;
@@ -246,12 +313,6 @@
 				      s.scaleX = UI.width / t.width;
 				      s.scaleY = UI.height / t.height;
 				      return s.texture = t;
-				    };
-				    s.change = function() {
-				      if (++texture_index >= BG_KIND) {
-				        texture_index = 0;
-				      }
-				      return update_texture();
 				    };
 				    update_texture();
 				    return s;
@@ -273,9 +334,13 @@
 				      return s.texture = t;
 				    };
 				    s.update = function() {
-				      var ratio;
+				      var old_severty, ratio;
 				      ratio = Math.min(nr_fallen / MAX_HP, 1);
+				      old_severty = severty;
 				      severty = Math.floor(ratio * (SEA_SEVERTY_LEVELS - 1));
+				      if (old_severty !== severty) {
+				        Audio.playEffect(WORSE);
+				      }
 				      return update_texture();
 				    };
 				    update_texture();
@@ -293,12 +358,7 @@
 				    self.update();
 				    self.x = UI.width - 20;
 				    self.y = UI.height - 100;
-				    self.color = {
-				      r: 255,
-				      g: 255,
-				      b: 0,
-				      a: 255
-				    };
+				    self.color = sub_key_color(env.lv);
 				    self.originY = 0;
 				    return self;
 				  };
@@ -310,18 +370,13 @@
 				    STAGE_TIME = stage.STAGE_TIME;
 				    begin_at = count;
 				    self.update = function() {
-				      self.string = "남은 시간 : " + (Math.max(0, Math.floor((begin_at + STAGE_TIME - count) / FRAME_RATE))) + "초";
+				      self.string = "남은 시간 : " + (Math.max(0, Math.floor((begin_at - count) / FRAME_RATE) + STAGE_TIME)) + "초";
 				      return self.originX = self.width;
 				    };
 				    self.update();
 				    self.x = UI.width - 20;
 				    self.y = 20;
-				    self.color = {
-				      r: 0,
-				      g: 255,
-				      b: 0,
-				      a: 255
-				    };
+				    self.color = sub_key_color(env.lv);
 				    return self;
 				  };
 				  timeleft_text = make_timeleft_text();
@@ -329,6 +384,7 @@
 				    var t;
 				    t = new Text;
 				    t.characterSize = 22;
+				    t.color = sub_key_color(env.lv);
 				    t.update = function() {
 				      var a, max_len, sorted, stats, wrapped, _k, _l, _len, _results2;
 				      stats = env.stats;
@@ -374,12 +430,7 @@
 				    self.originY = 0.5 * self.height;
 				    self.x = Math.random() * (0.5 * UI.width - self.width) + 0.5 * self.width;
 				    self.y = -self.height;
-				    self.color = {
-				      r: 0,
-				      g: 0,
-				      b: 0,
-				      a: 255
-				    };
+				    self.color = main_key_color(env.lv);
 				    born_time = count;
 				    self.update = function() {
 				      var WORD_LIVING_TICKS;
@@ -390,20 +441,19 @@
 				      }
 				    };
 				    self.run_disappear_action = function() {
-				      var lasttime, _name;
+				      var index, the_func;
 				      effects.push(self);
-				      [1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(function(i) {
-				        var time, _name;
-				        time = when_[_name = count + i] != null ? when_[_name = count + i] : when_[_name] = [];
-				        return time.push(function() {
+				      index = 0;
+				      the_func = function() {
+				        if (index++ > 10) {
+				          return effects.splice(effects.indexOf(self), 1);
+				        } else {
 				          self.scaleX *= 0.9;
-				          return self.scaleY *= 0.9;
-				        });
-				      });
-				      lasttime = when_[_name = count + 11] != null ? when_[_name = count + 11] : when_[_name] = [];
-				      return lasttime.push(function() {
-				        return effects.splice(effects.indexOf(self), 1);
-				      });
+				          self.scaleY *= 0.9;
+				          return scheduler.next_tick(the_func);
+				        }
+				      };
+				      return scheduler.next_tick(the_func);
 				    };
 				    return self;
 				  };
@@ -419,6 +469,7 @@
 				    }
 				    fallen_texts.forEach(function(t) {
 				      if (t.should_dead) {
+				        Audio.playEffect(ACID);
 				        return nr_fallen++;
 				      }
 				    });
@@ -427,7 +478,7 @@
 				    });
 				  };
 				  checks = function() {
-				    var t, time, _name;
+				    var t;
 				    if (playing) {
 				      if (nr_fallen >= MAX_HP) {
 				        t = make_message_text("게임 오버!", {
@@ -437,30 +488,17 @@
 				          a: 255
 				        });
 				        effects.push(t);
-				        time = when_[_name = count + 3 * 60] != null ? when_[_name = count + 3 * 60] : when_[_name] = [];
-				        time.push(function() {
-				          var idx;
-				          idx = effects.indexOf(t);
-				          if (idx === -1) {
-				            throw new Error("hul");
-				          }
-				          effects.splice(idx, 1);
-				          return env.state = STATE_READY;
-				        });
+				        scheduler.add(function() {
+				          effects.splice(effects.indexOf(t), 1);
+				          env.stage_cleared = false;
+				          return env.state = STATE_RESULT;
+				        }, 3);
 				        return playing = false;
 				      }
 				    }
 				  };
 				  update = function() {
-				    var e, list, _k, _len;
-				    while (when_[count] != null) {
-				      list = when_[count];
-				      delete when_[count];
-				      for (_k = 0, _len = list.length; _k < _len; _k++) {
-				        e = list[_k];
-				        e();
-				      }
-				    }
+				    scheduler.tick();
 				    if (playing) {
 				      update_fallen_texts();
 				      hp_text.update();
@@ -495,25 +533,32 @@
 				      env.stats[pid].nr_destroy++;
 				      matched.color = players[pid].color;
 				      matched.run_disappear_action();
-				      return fallen_texts.splice(fallen_texts.indexOf(matched), 1);
-				    }
-				  };
-				  next_stage = function() {
-				    stage = stages[++lv];
-				    if (stage == null) {
-				      throw new Error("all stage cleared");
+				      fallen_texts.splice(fallen_texts.indexOf(matched), 1);
+				      return Audio.playEffect(POP);
 				    }
 				  };
 				  stage_start = function() {
-				    var STAGE_TIME, a, _name;
+				    var STAGE_TIME;
 				    STAGE_TIME = stage.STAGE_TIME;
-				    a = when_[_name = count + STAGE_TIME] != null ? when_[_name = count + STAGE_TIME] : when_[_name] = [];
-				    return a.push(function() {
-				      var cong;
-				      cong = new Text;
-				      return cong.string = "스테이지 성공!!!";
-				    });
+				    return scheduler.add(function() {
+				      var t;
+				      playing = false;
+				      Audio.playEffect(SUCCEEDED);
+				      t = make_message_text("스테이지 성공!", {
+				        r: 100,
+				        g: 225,
+				        b: 50,
+				        a: 255
+				      });
+				      effects.push(t);
+				      return scheduler.add(function() {
+				        effects.splice(effects.indexOf(t), 1);
+				        env.stage_cleared = true;
+				        return env.state = STATE_RESULT;
+				      }, 3);
+				    }, STAGE_TIME);
 				  };
+				  stage_start();
 				  return {
 				    on_frame_move: function() {
 				      update();
@@ -531,38 +576,53 @@
 				};
 			},
 			"ready.coffee": function (exports, module, require) {
-				var STATE_PLAY;
+				var BG_KIND, FOGHORN, MAX_NR_PLAYER, STATE_PLAY, Scheduler, shuffle, _ref;
 
-				STATE_PLAY = require('./consts').STATE_PLAY;
+				_ref = require('./consts'), STATE_PLAY = _ref.STATE_PLAY, BG_KIND = _ref.BG_KIND, MAX_NR_PLAYER = _ref.MAX_NR_PLAYER;
+
+				Scheduler = require('./scheduler').Scheduler;
+
+				shuffle = require('./utils').shuffle;
+
+				FOGHORN = 'audio/Foghorn.wav';
 
 				module.exports = function(env) {
-				  var count, players, text, when_;
-				  players = env.players;
+				  var count, lv, players, scheduler, text;
+				  lv = env.lv;
+				  players = Player.all();
+				  if (players.length > MAX_NR_PLAYER) {
+				    players = shuffle(players);
+				    players = players.splice(0, MAX_NR_PLAYER);
+				  }
+				  env.players = players;
 				  count = 0;
-				  when_ = {};
+				  scheduler = new Scheduler;
 				  text = new Text;
-				  text.string = "산성비를 막아라!!";
+				  text.string = players.length === 1 ? "산성비를 막아라!" : "" + player.length + "인 협동 산성비 막기!!";
 				  text.x = 0.3 * UI.width;
 				  text.y = 0.3 * UI.height;
 				  text.characterSize = 25;
-				  when_[5 * 60] = function() {
-				    return text.string = "준비하세요!";
-				  };
+				  scheduler.add(function() {
+				    Audio.playEffect(FOGHORN);
+				    return text.string = "... Day " + (Math.floor(lv / BG_KIND));
+				  }, 3);
+				  scheduler.add(function() {
+				    text.string = players.map(function(p) {
+				      return p.name;
+				    }).join(', ');
+				    return text.string += "\n준비하십시오!";
+				  }, 5);
 				  [3, 2, 1].forEach(function(i) {
-				    return when_[6 * 60 + (3 - i) * 60] = function() {
+				    return scheduler.add(function() {
 				      return text.string += "..." + i;
-				    };
+				    }, 6 + (3 - i));
 				  });
-				  when_[9 * 60] = function() {
+				  scheduler.add(function() {
 				    return env.state = STATE_PLAY;
-				  };
+				  }, 9);
 				  return {
 				    on_frame_move: function() {
-				      var the_event;
-				      the_event = when_[count++];
-				      if (typeof the_event === "function") {
-				        the_event();
-				      }
+				      scheduler.tick();
 				      return UI.draw(text);
 				    },
 				    on_player_input: function() {}
@@ -570,11 +630,149 @@
 				};
 			},
 			"result.coffee": function (exports, module, require) {
-				module.exports = function() {
+				var STATE_READY, Scheduler, stages, textures, _;
+
+				_ = require('underscore');
+
+				STATE_READY = require('./consts').STATE_READY;
+
+				Scheduler = require('./scheduler').Scheduler;
+
+				stages = require('./stages');
+
+				textures = {};
+
+				['gameover', 'gameclear', 'stageclear'].forEach(function(name) {
+				  var t;
+				  t = new Texture;
+				  t.loadFromFile("textures/bg_" + name + ".png");
+				  return textures["bg_" + name] = t;
+				});
+
+				module.exports = function(env) {
+				  var all_cleared, bg, make_bg, make_result_text, players, result_text, scheduler, stage_cleared, stats;
+				  players = env.players, stats = env.stats, stage_cleared = env.stage_cleared;
+				  scheduler = new Scheduler;
+				  result_text = null;
+				  bg = null;
+				  all_cleared = function() {
+				    return env.lv === stages.length - 1;
+				  };
+				  make_result_text = function() {
+				    var sorted, text, wrapped;
+				    text = new Text;
+				    text.characterSize = 25;
+				    text.string = "결과!";
+				    text.x = 0.3 * UI.width;
+				    text.y = 0.3 * UI.height;
+				    wrapped = stats.map(function(a, i) {
+				      return _.extend({
+				        pid: i
+				      }, a);
+				    });
+				    sorted = _.sortBy(wrapped, function(a) {
+				      return a.nr_destroy;
+				    });
+				    sorted.reverse();
+				    sorted.forEach(function(a, i) {
+				      var p;
+				      p = players[a.pid];
+				      return scheduler.add(function() {
+				        text.string += "\n";
+				        return text.string += "" + p.name + " : " + a.nr_destroy + "개 파괴!";
+				      }, i + 2);
+				    });
+				    return text;
+				  };
+				  result_text = make_result_text();
+				  make_bg = function() {
+				    var s, t;
+				    t = null;
+				    if (stage_cleared) {
+				      if (all_cleared()) {
+				        t = textures.bg_gameclear;
+				      } else {
+				        t = textures.bg_stageclear;
+				      }
+				    } else {
+				      t = textures.bg_gameover;
+				    }
+				    s = new Sprite;
+				    s.texture = t;
+				    s.x = 0;
+				    s.y = 0;
+				    s.originX = 0;
+				    s.originY = 0;
+				    s.scaleX = UI.width / t.width;
+				    s.scaleY = UI.height / t.height;
+				    return s;
+				  };
+				  bg = make_bg();
+				  scheduler.add(function() {
+				    if (all_cleared()) {
+				      result_text.string += "\n축하합니다. 모든 스테이지를 클리어하였습니다!";
+				      return;
+				    }
+				    if (stage_cleared) {
+				      env.lv++;
+				    } else {
+				      env.lv = 0;
+				    }
+				    return env.state = STATE_READY;
+				  }, players.length + 6);
 				  return {
-				    on_frame_move: function() {},
+				    on_frame_move: function() {
+				      scheduler.tick();
+				      UI.draw(bg);
+				      return UI.draw(result_text);
+				    },
 				    on_player_input: function() {}
 				  };
+				};
+			},
+			"scheduler.coffee": function (exports, module, require) {
+				var FRAME_RATE, STATE_READY, Scheduler, _ref;
+
+				_ref = require('./consts'), FRAME_RATE = _ref.FRAME_RATE, STATE_READY = _ref.STATE_READY;
+
+				Scheduler = (function() {
+				  function Scheduler() {
+				    this.schedule = {};
+				    this.current_tick = 0;
+				  }
+
+				  Scheduler.prototype.add = function(fn, seconds) {
+				    var after, queue, _base, _name;
+				    after = (seconds * FRAME_RATE) | 0;
+				    queue = (_base = this.schedule)[_name = this.current_tick + after] != null ? (_base = this.schedule)[_name = this.current_tick + after] : _base[_name] = [];
+				    return queue.push(fn);
+				  };
+
+				  Scheduler.prototype.next_tick = function(fn) {
+				    var queue, _base, _name;
+				    queue = (_base = this.schedule)[_name = this.current_tick + 1] != null ? (_base = this.schedule)[_name = this.current_tick + 1] : _base[_name] = [];
+				    return queue.push(fn);
+				  };
+
+				  Scheduler.prototype.tick = function() {
+				    var fn, list, _i, _len, _ref1;
+				    while ((_ref1 = this.schedule[this.current_tick]) != null ? _ref1.length : void 0) {
+				      list = this.schedule[this.current_tick];
+				      delete this.schedule[this.current_tick];
+				      for (_i = 0, _len = list.length; _i < _len; _i++) {
+				        fn = list[_i];
+				        fn();
+				      }
+				    }
+				    return this.current_tick++;
+				  };
+
+				  return Scheduler;
+
+				})();
+
+				module.exports = {
+				  Scheduler: Scheduler
 				};
 			},
 			"stages.coffee": function (exports, module, require) {
@@ -582,7 +780,23 @@
 				  {
 				    WORD_LIVING_TICKS: 6 * 60,
 				    WORD_GENERATION_PERIOD: 60,
-				    STAGE_TIME: 30 * 60
+				    STAGE_TIME: 10
+				  }, {
+				    WORD_LIVING_TICKS: 7 * 60,
+				    WORD_GENERATION_PERIOD: 50,
+				    STAGE_TIME: 10
+				  }, {
+				    WORD_LIVING_TICKS: 7 * 60,
+				    WORD_GENERATION_PERIOD: 50,
+				    STAGE_TIME: 10
+				  }, {
+				    WORD_LIVING_TICKS: 7 * 60,
+				    WORD_GENERATION_PERIOD: 50,
+				    STAGE_TIME: 10
+				  }, {
+				    WORD_LIVING_TICKS: 7 * 60,
+				    WORD_GENERATION_PERIOD: 50,
+				    STAGE_TIME: 10
 				  }
 				];
 			},
@@ -601,6 +815,31 @@
 					out.INPUT_CHAT_MESSAGE = 7
 					
 					module.exports = out
+				}
+			},
+			"utils.js": function (exports, module, require) {
+				function shuffle(array) {
+				    var counter = array.length, temp, index;
+				
+				    // While there are elements in the array
+				    while (counter > 0) {
+				        // Pick a random index
+				        index = Math.floor(Math.random() * counter);
+				
+				        // Decrease counter by 1
+				        counter--;
+				
+				        // And swap the last element with it
+				        temp = array[counter];
+				        array[counter] = array[index];
+				        array[index] = temp;
+				    }
+				
+				    return array;
+				}
+				
+				module.exports = {
+					shuffle : shuffle
 				}
 			}
 		}
@@ -2025,4 +2264,4 @@
 			}.call(this));
 		}
 	}
-})("missile_dodge/src/index");
+})("rain_coop/src/index");

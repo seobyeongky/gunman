@@ -1,6 +1,6 @@
 {STATE_READY,STATE_PLAY,STATE_RESULT,MAX_PLAYER} = require './consts'
 
-FIRST_STATE = STATE_PLAY
+FIRST_STATE = STATE_READY
 
 scenes = {}
 env =
@@ -33,3 +33,5 @@ onFrameMove (args...) ->
 		current_stage = env.state
 		next_scene()
 	env.tick++
+
+Audio.playMusic 'audio/main_bgm.mp3'

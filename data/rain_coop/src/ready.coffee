@@ -2,6 +2,8 @@
 {Scheduler} = require './scheduler'
 {shuffle} = require './utils'
 
+FOGHORN = 'audio/Foghorn.wav'
+
 module.exports = (env) ->
 	{lv} = env
 
@@ -15,18 +17,19 @@ module.exports = (env) ->
 	scheduler = new Scheduler
 
 	text = new Text
-	text.string = if players.length == 1 then "고독한 산성비 막기!" else "#{player.length}인 협동 산성비 막기!!"
+	text.string = if players.length == 1 then "산성비를 막아라!" else "#{player.length}인 협동 산성비 막기!!"
 	text.x = 0.3 * UI.width
 	text.y = 0.3 * UI.height
 	text.characterSize = 25
 
 	scheduler.add ->
+		Audio.playEffect FOGHORN
 		text.string = "... Day #{Math.floor(lv / BG_KIND)}"
 	, 3
 
 	scheduler.add ->
-		text.string = players.join(', ')
-		text.string += "\n준비하세요!"
+		text.string = players.map((p)->p.name).join(', ')
+		text.string += "\n준비하십시오!"
 	, 5
 
 	[3..1].forEach (i) ->

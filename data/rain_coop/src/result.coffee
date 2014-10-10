@@ -1,4 +1,5 @@
 _ = require 'underscore'
+{STATE_READY} = require './consts'
 {Scheduler} = require './scheduler'
 stages = require './stages'
 
@@ -6,7 +7,7 @@ textures = {}
 ['gameover','gameclear','stageclear'].forEach (name) ->
 	t = new Texture
 	t.loadFromFile "textures/bg_#{name}.png"
-	textures["bg_#{i}"] = t
+	textures["bg_#{name}"] = t
 
 module.exports = (env) ->
 	{players,stats,stage_cleared} = env
@@ -66,11 +67,11 @@ module.exports = (env) ->
 		else
 			env.lv = 0
 		env.state = STATE_READY
-	, sorted.length + 6
+	, players.length + 6
 
 	on_frame_move : ->
 		scheduler.tick()
 		UI.draw bg
-		UI.draw text
+		UI.draw result_text
 
 	on_player_input : ->

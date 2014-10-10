@@ -1,11 +1,29 @@
 {INPUT_CHAT_MESSAGE} = require './system/consts'
-{STATE_READY,BG_KIND,SEA_SEVERTY_LEVELS,MAX_HP,FRAME_RATE} = require './consts'
+{STATE_READY,STATE_RESULT,BG_KIND,SEA_SEVERTY_LEVELS,MAX_HP,FRAME_RATE} = require './consts'
 {Scheduler} = require './scheduler'
 stages = require './stages'
 dict = require './dict.json'
 _ = require 'underscore'
 
 textures = {}
+
+main_key_color = (index) ->
+	switch index % 3
+		when 0
+			{r:0,g:0,b:0,a:255}
+		when 1
+			{r:50,g:50,b:50,a:255}
+		when 2
+			{r:255,g:255,b:240,a:255}
+
+sub_key_color = (index) ->
+	switch index % 3
+		when 0
+			{r:255,g:255,b:255,a:255}
+		when 1
+			{r:180,g:180,b:170,a:255}
+		when 2
+			{r:120,g:120,b:110,a:255}
 
 [0...BG_KIND].forEach (i) ->
 	t = new Texture
@@ -17,6 +35,10 @@ textures = {}
 	t.loadFromFile "textures/sea_#{i}.png"
 	textures["sea_#{i}"] = t
 
+ACID = 'audio/acid.wav'
+POP = 'audio/word.wav'
+SUCCEEDED = 'audio/FFT.wav'
+WORSE = 'audio/oil.wav'
 
 make_message_text = (msg,color) ->
 	t = new Text
@@ -82,7 +104,9 @@ module.exports = (env) ->
 			s.texture = t
 		s.update = ->
 			ratio = Math.min(nr_fallen / MAX_HP,1)
+			old_severty = severty
 			severty = Math.floor(ratio * (SEA_SEVERTY_LEVELS - 1))
+			Audio.playEffect WORSE if old_severty != severty
 			update_texture()
 
 		update_texture()
@@ -98,7 +122,7 @@ module.exports = (env) ->
 		self.update()
 		self.x = UI.width - 20
 		self.y = UI.height - 100
-		self.color = {r:255,g:255,b:0,a:255}
+		self.color = sub_key_color(env.lv)
 		self.originY = 0
 		self
 	hp_text = make_hp_text()
@@ -109,18 +133,19 @@ module.exports = (env) ->
 		{STAGE_TIME} = stage
 		begin_at = count
 		self.update = ->
-			self.string = "남은 시간 : #{Math.max(0,Math.floor((begin_at - count) / FRAME_RATE)) + STAGE_TIME}초"
+			self.string = "남은 시간 : #{Math.max(0,Math.floor((begin_at - count) / FRAME_RATE) + STAGE_TIME)}초"
 			self.originX = self.width
 		self.update()
 		self.x = UI.width - 20
 		self.y = 20
-		self.color = {r:0,g:255,b:0,a:255}
+		self.color = sub_key_color(env.lv)
 		self
 	timeleft_text = make_timeleft_text()
 
 	make_ranking_text = ->
 		t = new Text
 		t.characterSize = 22
+		t.color = sub_key_color(env.lv)
 		t.update = ->
 			{stats} = env
 			wrapped = stats.map (a,i) -> _.extend {pid:i}, a
@@ -149,7 +174,7 @@ module.exports = (env) ->
 		self.originY = 0.5 * self.height
 		self.x = Math.random() * (0.5 * UI.width - self.width) + 0.5 * self.width
 		self.y = -self.height
-		self.color = {r:0,g:0,b:0,a:255}
+		self.color = main_key_color(env.lv)
 		born_time = count
 		self.update = ->
 			{WORD_LIVING_TICKS} = stage
@@ -176,7 +201,10 @@ module.exports = (env) ->
 		if count % WORD_GENERATION_PERIOD == 0
 			fallen_texts.push make_fallen_text()
 		text.update() for text in fallen_texts
-		fallen_texts.forEach (t) -> nr_fallen++ if t.should_dead
+		fallen_texts.forEach (t) ->
+			if t.should_dead
+				Audio.playEffect ACID
+				nr_fallen++
 		fallen_texts = _.reject fallen_texts, (t) -> t.should_dead
 
 	checks = ->
@@ -219,11 +247,13 @@ module.exports = (env) ->
 			matched.color = players[pid].color
 			matched.run_disappear_action()
 			fallen_texts.splice fallen_texts.indexOf(matched), 1
+			Audio.playEffect POP
 
 	stage_start = ->
 		{STAGE_TIME} = stage
 		scheduler.add ->
 			playing = false
+			Audio.playEffect SUCCEEDED
 			t = make_message_text("스테이지 성공!",{r:100,g:225,b:50,a:255})
 			effects.push t
 			scheduler.add ->
