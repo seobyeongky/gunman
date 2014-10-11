@@ -102,7 +102,7 @@
 				  SEA_SEVERTY_LEVELS: 4,
 				  MAX_HP: 12,
 				  FRAME_RATE: 60,
-				  MAX_NR_PLAYER: 5
+				  MAX_NR_PLAYER: 4
 				};
 			},
 			"dict.json": function (exports, module, require) {
@@ -166,7 +166,7 @@
 				Audio.playMusic('audio/main_bgm.mp3');
 			},
 			"play.coffee": function (exports, module, require) {
-				var ACID, BG_KIND, FRAME_RATE, INPUT_CHAT_MESSAGE, MAX_HP, POP, SEA_SEVERTY_LEVELS, STATE_READY, STATE_RESULT, SUCCEEDED, Scheduler, WORSE, dict, main_key_color, make_message_text, stages, sub_key_color, textures, _, _i, _j, _ref, _results, _results1,
+				var ACID, BG_KIND, FRAME_RATE, INPUT_CHAT_MESSAGE, MAX_HP, POP, SEA_SEVERTY_LEVELS, STATE_READY, STATE_RESULT, SUCCEEDED, Scheduler, WORSE, dict, main_key_color, make_message_text, play_hit, play_miss, stages, sub_key_color, textures, _, _i, _j, _ref, _results, _results1,
 				  __slice = [].slice;
 
 				INPUT_CHAT_MESSAGE = require('./system/consts').INPUT_CHAT_MESSAGE;
@@ -227,9 +227,9 @@
 				      };
 				    case 2:
 				      return {
-				        r: 120,
-				        g: 120,
-				        b: 110,
+				        r: 190,
+				        g: 190,
+				        b: 180,
 				        a: 255
 				      };
 				  }
@@ -265,6 +265,14 @@
 
 				WORSE = 'audio/oil.wav';
 
+				play_hit = function() {
+				  return Audio.playEffect("audio/hit_" + (Math.floor(Math.random() * 8)) + ".wav");
+				};
+
+				play_miss = function() {
+				  return Audio.playEffect("audio/miss_" + (Math.floor(Math.random() * 2)) + ".wav");
+				};
+
 				make_message_text = function(msg, color) {
 				  var t;
 				  t = new Text;
@@ -287,7 +295,7 @@
 				  sea = null;
 				  hp_text = null;
 				  timeleft_text = null;
-				  stage = stages[0];
+				  stage = stages[env.lv];
 				  effects = [];
 				  scheduler = new Scheduler;
 				  nr_fallen = 0;
@@ -534,7 +542,9 @@
 				      matched.color = players[pid].color;
 				      matched.run_disappear_action();
 				      fallen_texts.splice(fallen_texts.indexOf(matched), 1);
-				      return Audio.playEffect(POP);
+				      return play_hit();
+				    } else {
+				      return play_miss();
 				    }
 				  };
 				  stage_start = function() {
@@ -780,23 +790,39 @@
 				  {
 				    WORD_LIVING_TICKS: 6 * 60,
 				    WORD_GENERATION_PERIOD: 60,
-				    STAGE_TIME: 10
+				    STAGE_TIME: 45
 				  }, {
-				    WORD_LIVING_TICKS: 7 * 60,
-				    WORD_GENERATION_PERIOD: 50,
-				    STAGE_TIME: 10
+				    WORD_LIVING_TICKS: 3 * 60,
+				    WORD_GENERATION_PERIOD: 85,
+				    STAGE_TIME: 45
 				  }, {
-				    WORD_LIVING_TICKS: 7 * 60,
-				    WORD_GENERATION_PERIOD: 50,
-				    STAGE_TIME: 10
+				    WORD_LIVING_TICKS: 11 * 60,
+				    WORD_GENERATION_PERIOD: 45,
+				    STAGE_TIME: 45
 				  }, {
-				    WORD_LIVING_TICKS: 7 * 60,
+				    WORD_LIVING_TICKS: 5 * 60,
 				    WORD_GENERATION_PERIOD: 50,
-				    STAGE_TIME: 10
+				    STAGE_TIME: 60
 				  }, {
-				    WORD_LIVING_TICKS: 7 * 60,
-				    WORD_GENERATION_PERIOD: 50,
-				    STAGE_TIME: 10
+				    WORD_LIVING_TICKS: 2.5 * 60,
+				    WORD_GENERATION_PERIOD: 60,
+				    STAGE_TIME: 60
+				  }, {
+				    WORD_LIVING_TICKS: 11 * 60,
+				    WORD_GENERATION_PERIOD: 35,
+				    STAGE_TIME: 60
+				  }, {
+				    WORD_LIVING_TICKS: 4.5 * 60,
+				    WORD_GENERATION_PERIOD: 45,
+				    STAGE_TIME: 100
+				  }, {
+				    WORD_LIVING_TICKS: 2.5 * 60,
+				    WORD_GENERATION_PERIOD: 55,
+				    STAGE_TIME: 100
+				  }, {
+				    WORD_LIVING_TICKS: 11 * 60,
+				    WORD_GENERATION_PERIOD: 20,
+				    STAGE_TIME: 120
 				  }
 				];
 			},

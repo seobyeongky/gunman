@@ -15,6 +15,81 @@
 
 #include <gl\GL.h>
 
+
+class SmallItem : public IItem
+{
+public:
+						SmallItem(const wstring & string, function<void()> next);
+	virtual				~SmallItem();
+	virtual void		selected();
+	virtual void		unselected();
+	virtual void		activated();
+	virtual FloatRect	getLocalBounds() const;
+	virtual FloatRect	getGlobalBounds() const;
+
+	virtual bool		HandleWindowEvent(const Event & e);
+
+private:
+	virtual void draw(RenderTarget& target, RenderStates states) const;
+
+private:
+	Text				_text;
+	function<void()>	_next;
+};
+
+
+SmallItem::SmallItem(const wstring & string, function<void()> next)
+	: _text(string, G.default_font, 25),
+	_next(next)
+{
+	_text.setColor(Color::Black);
+//	SetMiddleOfLocal(&_text);
+}
+
+SmallItem::~SmallItem()
+{
+}
+
+void SmallItem::selected()
+{
+	_text.setColor(Color::Yellow);
+	G.sfx_mgr.Play(L"data\\system\\audio\\this.wav");
+}
+
+void SmallItem::unselected()
+{
+	_text.setColor(Color::Black);
+}
+
+void SmallItem::activated()
+{
+	_text.setColor(Color::Cyan);
+	G.sfx_mgr.Play(L"data\\system\\audio\\this.wav");
+	_next();
+}
+
+FloatRect SmallItem::getLocalBounds() const
+{
+	return _text.getGlobalBounds();
+}
+
+FloatRect SmallItem::getGlobalBounds() const
+{
+	return getTransform().transformRect(getLocalBounds());
+}
+
+bool SmallItem::HandleWindowEvent(const Event & e)
+{
+	return false;
+}
+
+void SmallItem::draw(RenderTarget& target, RenderStates states) const
+{
+	states.transform *= getTransform();
+	target.draw(_text, states);
+}
+
+
 LobbyScene::LobbyScene(const wstring & room_name,
 					   bool is_host, ID my_id)
 	: _is_host(is_host)
@@ -25,7 +100,7 @@ LobbyScene::LobbyScene(const wstring & room_name,
 	, _chat_frame(*G.sprite_map[L"frame01"])
 	, _unodes()
 	, _menu()
-	, _map_list()
+	, _map_list(Menu::delta_t(Vector2f(0,-50.f), 0, 1), Keyboard::Return)
 	, _cleaner()
 {
 	G.window.setTitle(L"사격의 달인 - " + room_name + L"방");
@@ -115,10 +190,11 @@ LobbyScene::LobbyScene(const wstring & room_name,
 		MapList::GetList(&map_list);
 		for (auto & map_name : map_list)
 		{
-			_map_list.PushItem(new MyItem(map_name, [this,map_name](){
+			_map_list.PushItem(new SmallItem(map_name, [this,map_name](){
 				_map = map_name;
 			}));
 		}
+		_map_list.setPosition(50.f, winsize.y - 100.f);
 	}
 }
 
@@ -138,8 +214,8 @@ bool LobbyScene::HandleWindowEvent(const Event & e)
 		}
 	}
 	if (_menu.HandleWindowEvent(e)) return true;
-	if (_map_list.HandleWindowEvent(e)) return true;
-	return _chat_box.HandleWindowEvent(e);
+	if (_chat_box.HandleWindowEvent(e)) return true;
+	return _map_list.HandleWindowEvent(e);
 }
 
 void LobbyScene::FrameMove()

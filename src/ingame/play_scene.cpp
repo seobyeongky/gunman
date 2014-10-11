@@ -11,6 +11,7 @@
 #include "../scripting/v8_utils.h"
 #include "../scripting/v8_sfml.h"
 #include "../scripting/v8_transformable.h"
+#include "../scripting/v8_audio.h"
 #include "ani00.h"
 #include "ability.h"
 #include "renderer.h"
@@ -941,7 +942,7 @@ void PlayScene::JS_Init()
 		JsText::Init(_js_isolate, js_global);
 		JsTexture::Init(_js_isolate, js_global, _map_name);
 		JsSprite::Init(_js_isolate, js_global);
-
+		js_audio::Init(_js_isolate, js_global, _map_name);
 /*
 		Local<ObjectTemplate> player_templ = ObjectTemplate::New(_js_isolate);
 		player_templ->SetInternalFieldCount(1);
@@ -975,6 +976,8 @@ void PlayScene::JS_Init()
 		ui_templ->Set(JS_STR("draw"), JS_FUNC(S_JS_UIDraw));
 		Local<Object> ui = ui_templ->NewInstance();
 		_js_ui_ref.Reset(_js_isolate, ui);
+
+		js_audio::Instantiate(_js_isolate);
 
 		v8::TryCatch try_catch;
 		v8::Handle<v8::Value> script_path;
@@ -1020,6 +1023,7 @@ void PlayScene::JS_Finalize()
 	_js_private_input_callback_ref.Reset();
 	_js_player_input_callback_ref.Reset();
 	_js_context_ref.Reset();
+	js_audio::Finalize();
 	JsSprite::Finalize();
 	JsTexture::Finalize();
 	JsText::Finalize();
@@ -1065,7 +1069,7 @@ void PlayScene::ReportException(TryCatch* try_catch)
 			wsprintf(buf, L"%s\n", stack_trace_string);
 		}
 		_chat_box.AddInfoMsg(buf);
-		G.sfx_mgr.Play(L"data\\system\\Error.wav");
+		G.sfx_mgr.Play(L"data\\system\\audio\\Error.wav");
 	}
 }
 

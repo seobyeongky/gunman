@@ -23,7 +23,7 @@ sub_key_color = (index) ->
 		when 1
 			{r:180,g:180,b:170,a:255}
 		when 2
-			{r:120,g:120,b:110,a:255}
+			{r:190,g:190,b:180,a:255}
 
 [0...BG_KIND].forEach (i) ->
 	t = new Texture
@@ -39,6 +39,12 @@ ACID = 'audio/acid.wav'
 POP = 'audio/word.wav'
 SUCCEEDED = 'audio/FFT.wav'
 WORSE = 'audio/oil.wav'
+
+play_hit = ->
+	Audio.playEffect "audio/hit_#{Math.floor(Math.random() * 8)}.wav"
+
+play_miss = ->
+	Audio.playEffect "audio/miss_#{Math.floor(Math.random() * 2)}.wav"
 
 make_message_text = (msg,color) ->
 	t = new Text
@@ -60,7 +66,7 @@ module.exports = (env) ->
 	sea = null
 	hp_text = null
 	timeleft_text = null
-	stage = stages[0]
+	stage = stages[env.lv]
 	effects = []
 	scheduler = new Scheduler
 	nr_fallen = 0
@@ -247,7 +253,9 @@ module.exports = (env) ->
 			matched.color = players[pid].color
 			matched.run_disappear_action()
 			fallen_texts.splice fallen_texts.indexOf(matched), 1
-			Audio.playEffect POP
+			play_hit()
+		else
+			play_miss()
 
 	stage_start = ->
 		{STAGE_TIME} = stage

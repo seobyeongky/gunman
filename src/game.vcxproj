@@ -133,6 +133,7 @@
     <ClCompile Include="net_interface.cpp" />
     <ClCompile Include="protocol.cpp" />
     <ClCompile Include="proto\input.pb.cc" />
+    <ClCompile Include="scripting\v8_audio.cpp" />
     <ClCompile Include="scripting\v8_sfml.cpp" />
     <ClCompile Include="scripting\v8_sprite.cpp" />
     <ClCompile Include="scripting\v8_text.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="protocol.h" />
     <ClInclude Include="proto\input.pb.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="scripting\v8_audio.h" />
     <ClInclude Include="scripting\v8_sfml.h" />
     <ClInclude Include="scripting\v8_object_wrap.h" />
     <ClInclude Include="scripting\v8_sprite.h" />
