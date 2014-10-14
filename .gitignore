@@ -4,6 +4,7 @@ test/
 test-d/
 audio_works/
 dep/
+dep-osx/
 game.ini
 graphic_works/
 *.suo

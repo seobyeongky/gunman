@@ -135,8 +135,10 @@ namespace Director
 			//G.window.draw(fps_text);
 #endif
 			G.window.display();
-		
+
+#ifdef _WIN32
 			_ASSERTE( _CrtCheckMemory( ) );
+#endif
 		}
 		delete scene;
 

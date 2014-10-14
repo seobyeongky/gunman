@@ -1,7 +1,7 @@
 #pragma once
 
 #include <v8.h>
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <assert.h>
 
 using namespace sf;

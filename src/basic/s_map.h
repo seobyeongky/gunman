@@ -57,7 +57,7 @@ public:
 	};
 
 private:
-	typedef std::vector<Pair>	pair_vec_t;
+	typedef typename std::vector<Pair>	pair_vec_t;
 
 public:
 	class Iter
@@ -167,7 +167,7 @@ private:
 template <typename KeyT, typename T>
 bool smap<KeyT, T>::insert(const KeyT & key, const T & el)
 {
-	pair_vec_t::iterator it = std::lower_bound(_pair_vec.begin(), _pair_vec.end(), key);
+    typename pair_vec_t::iterator it = std::lower_bound(_pair_vec.begin(), _pair_vec.end(), key);
 	if(it != _pair_vec.end() && it->_key == key) return false;
 
 	_el_list.push_front(el);
@@ -179,7 +179,7 @@ template <typename KeyT, typename T>
 bool smap<KeyT, T>::find(const KeyT & key, ConstIter * it_ptr) const
 {
 	if(_pair_vec.empty()) return false;
-	pair_vec_t::const_iterator it = lower_bound(_pair_vec.begin(), _pair_vec.end(), key);
+	typename pair_vec_t::const_iterator it = lower_bound(_pair_vec.begin(), _pair_vec.end(), key);
 	if(it == _pair_vec.end() || it != _pair_vec.end() && it->_key != key) return false;
 	if(it_ptr != nullptr) it_ptr->_it = it;
 	return true;
@@ -189,7 +189,7 @@ template <typename KeyT, typename T>
 bool smap<KeyT, T>::find(const KeyT & key, Iter * it_ptr)
 {
 	if(_pair_vec.empty()) return false;
-	pair_vec_t::iterator it = lower_bound(_pair_vec.begin(), _pair_vec.end(), key);
+	typename pair_vec_t::iterator it = lower_bound(_pair_vec.begin(), _pair_vec.end(), key);
 	if(it == _pair_vec.end() || it != _pair_vec.end() && it->_key != key) return false;
 	if(it_ptr != nullptr) it_ptr->_it = it;
 	return true;

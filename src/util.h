@@ -4,7 +4,7 @@
 #include "global.h"
 
 // 메시지 박스로 에러 메시지를 띄웁니다.
-void ErrorMsg(LPCWSTR format_string, ...);
+void ErrorMsg(const wchar_t * format_string, ...);
 
 class DirChanger
 {
@@ -14,7 +14,7 @@ public:
 	~DirChanger();
 
 private:
-	wstring		_pre_dir;
+	string		_pre_dir;
 	
 	void	Init();
 	void	Change(const wchar_t * new_dir);
@@ -35,7 +35,7 @@ inline void SetMiddleOfScreen(T * object)
 template <typename T>
 inline void SetMiddleOfLocal(T * object)
 {
-	auto &bounds = object->getLocalBounds();
+	const auto & bounds = object->getLocalBounds();
 	object->setOrigin(
 		bounds.width / 2,
 		bounds.height / 2
@@ -53,7 +53,7 @@ inline void SetScaleToSize(T * object, float width, float height)
 template<typename T>
 inline void FitSizeToScreen(T * object)
 {
-	auto &size = G.window.getSize();
+	const auto &size = G.window.getSize();
 	object->setSize(Vector2f(	static_cast<float>(size.x),
 								static_cast<float>(size.y)));
 }
@@ -61,7 +61,7 @@ inline void FitSizeToScreen(T * object)
 template<typename T>
 inline void FitScaleToScreen(T * object)
 {
-	auto &size = G.window.getSize();
+	const auto &size = G.window.getSize();
 	SetScaleToSize(	object,
 					static_cast<float>(size.x),
 					static_cast<float>(size.y));

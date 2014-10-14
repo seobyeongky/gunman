@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>ADFC737E-7D70-430E-B6DB-6345411C0610</string>
+	<key>IDESourceControlProjectName</key>
+	<string>gunman</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>440DF08FF95E12396D8915E84CDD9713B7FFB417</key>
+		<string>github.com:seobyeongky/gunman.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>osx/gunman/gunman.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>440DF08FF95E12396D8915E84CDD9713B7FFB417</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:seobyeongky/gunman.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>440DF08FF95E12396D8915E84CDD9713B7FFB417</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>440DF08FF95E12396D8915E84CDD9713B7FFB417</string>
+			<key>IDESourceControlWCCName</key>
+			<string>gunman</string>
+		</dict>
+	</array>
+</dict>
+</plist>

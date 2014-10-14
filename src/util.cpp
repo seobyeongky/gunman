@@ -1,34 +1,76 @@
 #include "util.h"
 
-#include <io.h>
-#include <locale.h>
-#include <direct.h>
+#ifdef _WIN32
+#   include <io.h>
+#   include <direct.h>
+#else
+#   include "osx/utils.h"
+#   include <sys/types.h>
+#   include <sys/stat.h>
+#   include <unistd.h>
+#   include <dirent.h>
+#   include <fnmatch.h>
+#endif
 
-void Msgbox(LPCWSTR format_string, va_list arg_list, LPCWSTR title)
+#include <locale.h>
+//#include "basic/string_convert.h"
+
+
+#ifndef _WIN32
+// fake version of _vscwprintf
+int _vscwprintf(const wchar_t *format, va_list argptr)
+{
+    return(vswprintf(0, 0, format, argptr));
+}
+#endif
+
+void Msgbox(const wchar_t * format_string, va_list arg_list, const wchar_t * title)
 {
 	int length = _vscwprintf(format_string, arg_list) + 1;  
-	WCHAR *buf = static_cast<WCHAR *>(
-		_malloca(length * sizeof(WCHAR)));
-	vswprintf_s(buf, length, format_string, arg_list);
-	
-//	LeaveLog(buf);
-	G.window.setMouseCursorVisible(true);
-	MessageBox(G.window.getSystemHandle(), buf, title, 0U);
-	G.window.setMouseCursorVisible(false);
+#ifdef _WIN32
+    wchar_t *buf = static_cast<wchar_t *>(
+		_malloca(length * sizeof(wchar_t)));
+#else
+    wchar_t * buf = static_cast<wchar_t *>(alloca(length * sizeof(wchar_t)));
+#endif
 
+#ifdef _WIN32
+    vswprintf_s(buf, length, format_string, arg_list);
+#else
+    vswprintf(buf, length, format_string, arg_list);
+#endif
+
+    //	LeaveLog(buf);
+	G.window.setMouseCursorVisible(true);
+
+#ifdef _WIN32
+    MessageBox(G.window.getSystemHandle(), buf, title, 0U);
+#else
+    std::string theTitle, theMessage;
+    uni2multi(buf, &theMessage);
+    uni2multi(title, &theTitle);
+    MessageBox_cocoa(theTitle.c_str(), theMessage.c_str());
+#endif
+	
+    G.window.setMouseCursorVisible(false);
+
+#ifdef _WIN32
 	_freea(buf);
+#endif
 }
 
-void ErrorMsg(LPCWSTR format_string, ...)
+void ErrorMsg(const wchar_t * format_string, ...)
 {
 	va_list args;
 	va_start(args, format_string);
-	Msgbox(format_string, args, L"ø°∑Ø");
+	Msgbox(format_string, args, L"ÏóêÎü¨");
 	va_end(args);
 }
 
 // Return true if the folder exists, false otherwise
-bool folderExists(const char* folderName) {
+bool folderExists(const char* folderName)
+{
+#ifdef _WIN32
     if (_access(folderName, 0) == -1) {
         //File not found
         return false;
@@ -41,6 +83,17 @@ bool folderExists(const char* folderName) {
     }
 
     return true;
+#else
+    
+    struct stat info;
+    if( stat( folderName, &info ) != 0 )
+        return false;
+    else if( info.st_mode & S_IFDIR )  // S_ISDIR() doesn't exist on my windows
+        return true;
+    else
+        return false;
+
+#endif
 }
 
 bool createFolder(std::string folderName) {
@@ -63,19 +116,24 @@ bool createFolder(std::string folderName) {
         strPtr[1] = 0;
     } while (strPtr >= c_str);
 
-    if (_chdir(c_str)) {
+/*    if (chdir(c_str)) {
         return true;
     }
-
+*/
     // Create the folders iteratively
     for (list<std::string>::iterator it = folderLevels.begin(); it != folderLevels.end(); it++) {
+#ifdef _WIN32
         if (CreateDirectoryA(it->c_str(), NULL) == 0) {
             return true;
         }
-        _chdir(it->c_str());
+#else
+        mkdir(it->c_str(),  0755);
+#endif
+        chdir(it->c_str());
     }
 
-    return false;
+//    return false;
+    return true;
 }
 
 DirChanger::DirChanger()
@@ -98,12 +156,20 @@ DirChanger::DirChanger(const wchar_t * new_dir)
 
 DirChanger::~DirChanger()
 {
-	Change(_pre_dir.c_str());
+    std::wstring uni;
+    multi2uni(_pre_dir, &uni);
+	Change(uni.c_str());
 }
 
 void DirChanger::Change(const wchar_t * new_dir)
 {
-	_wchdir(new_dir);
+#ifdef _WIN32
+    _wchdir(new_dir);
+#else
+    std::string multi;
+    uni2multi(new_dir, &multi);
+    chdir(multi.c_str());
+#endif
 }
 
 void DirChanger::Init()
@@ -111,16 +177,17 @@ void DirChanger::Init()
 	{
 		// Save current working directory
 		size_t			buf_size = 128;
-		vector<wchar_t>	buf(buf_size);
+		vector<char>	buf(buf_size);
 	
 		for(;;)
 		{
-			_wgetcwd(&buf[0], buf_size);
-			if(buf[0] != L'\0')
+            getcwd(&buf[0], buf_size);
+
+            if(buf[0] != '\0')
 				break;
 			buf_size *= 2;
 			if(buf_size > 1024)
-				G.logger->Error(L"DirChanger : working directory¿« ∞Ê∑Œ ¿Ã∏ß ±Ê¿Ã∞° ≥ π´ ±È¥œ¥Ÿ.");
+				G.logger->Error(L"DirChanger : working directory¬ø¬´ ‚àû√ä‚àë≈í ¬ø√É‚àè√ü ¬±√ä¬ø√É‚àû¬∞ ‚â•¬†œÄ¬¥ ¬±√à¬•≈ì¬•≈∏.");
 			buf.resize(buf_size);
 		}
 		_pre_dir.assign(&buf[0], buf.size());
@@ -130,12 +197,13 @@ void DirChanger::Init()
 bool GetMatchedFileList(vector<wstring> * ptr, const wstring & wfilename)
 {
 	ptr->clear();
+    string filename;
+    uni2multi(wfilename, &filename);
 
+#ifdef _WIN32
 	_finddata_t fd;
     long handle;
 	int count = 0;
-	string filename;
-	uni2multi(wfilename, &filename);
     handle=_findfirst(filename.c_str(), &fd);
     if (handle == -1) return false;
 
@@ -153,6 +221,29 @@ bool GetMatchedFileList(vector<wstring> * ptr, const wstring & wfilename)
 	_findclose(handle);
 
 	 return true;
+#else
+    DIR           *d;
+    struct dirent *dir;
+    d = opendir(".");
+    
+    if (d)
+    {
+        while ((dir = readdir(d)) != NULL)
+        {
+//            printf("%s\n", dir->d_name);
+            if (strcmp(dir->d_name, ".") == 0 || strcmp(dir->d_name, "..") == 0) continue;
+            if (fnmatch(filename.c_str(), dir->d_name, FNM_FILE_NAME) == 0)
+            {
+                wstring file_name;
+                multi2uni(dir->d_name, &file_name);
+                ptr->push_back(file_name);
+            }
+        }
+        
+        closedir(d);
+    }
+    
+#endif
 }
 
 bool GetTextFromFile(const wstring & wfilename, wstring * buf)
@@ -160,7 +251,13 @@ bool GetTextFromFile(const wstring & wfilename, wstring * buf)
 	buf->clear();
 
 	FILE * in = nullptr;
+#ifdef _WIN32
 	_wfopen_s(&in, wfilename.c_str(), L"r");
+#else
+    string filename;
+    uni2multi(wfilename, &filename);
+    in = fopen(filename.c_str(), "r");
+#endif
 	if (in == nullptr) return false;
 	
 	wchar_t BUF[1024];

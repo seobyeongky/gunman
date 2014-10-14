@@ -1,7 +1,7 @@
 #pragma once
 
 // OPZNET
-#include <opznet\server.h>
+#include <opznet/server.h>
 
 // CRT
 #include <cassert>
@@ -12,16 +12,18 @@
 #include <mutex>
 
 // WIN32
+#ifdef _WIN32
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
 #include <Windows.h>
+#endif
 
 // BASIC
-#include "..\basic\s_map.h"
-#include "..\basic\\logger.h"
+#include "../basic/s_map.h"
+#include "../basic/logger.h"
 
-#include "..\protocol.h"
+#include "../protocol.h"
 
 using namespace std;
 using namespace opznet;

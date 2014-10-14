@@ -2,11 +2,11 @@
 #include "util.h"
 #include "global.h"
 
-#include <ole2.h>
-#include <xmllite.h>
+#include <tinyxml.h>
 #include <stdio.h>
-#include <shlwapi.h>
 
+
+/*
 struct xmlElement_t
 {
 	wstring							name;
@@ -154,14 +154,25 @@ private:
 	IStream		*file_stream;
 	IXmlReader	*reader;
 };
+*/
 
-bool LoadSpriteFromXml(LPCWSTR xmlfile)
+bool LoadSpriteFromXml(const wchar_t * xmlfile)
 {
 	Texture		*texture = nullptr;
-	xmlMsg_t	msg;
+//	xmlMsg_t	msg;
 	bool		imageset_inside = false;
-	XmlFile		file(xmlfile);
+    
+    TiXmlDocument doc;
+    string multi;
+    uni2multi(xmlfile, &multi);
+    FILE * in = fopen(multi.c_str(), "r");
+    doc.LoadFile(in);
+    auto k = doc.FirstChildElement();
+    k->NextSibling();
 
+    
+    TiXmlElement* root = doc.FirstChildElement();
+    
 	while(file.Parse(&msg))
 	{
 		switch(msg.type)
@@ -269,7 +280,7 @@ bool LoadSpriteFromXml(LPCWSTR xmlfile)
 	return true;
 }
 
-bool LoadSprite(LPCWSTR image_dir)
+bool LoadSprite(const wchar_t * image_dir)
 {
 	DirChanger		dir_changer(image_dir);
 	vector<wstring>	list;
