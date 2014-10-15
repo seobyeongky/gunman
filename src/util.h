@@ -4,6 +4,7 @@
 #include "global.h"
 
 // 메시지 박스로 에러 메시지를 띄웁니다.
+void Msgbox(const wchar_t * title, const wchar_t * format_string, ...);
 void ErrorMsg(const wchar_t * format_string, ...);
 
 class DirChanger
@@ -45,7 +46,7 @@ inline void SetMiddleOfLocal(T * object)
 template <typename T>
 inline void SetScaleToSize(T * object, float width, float height)
 {
-	auto &bounds = object->getLocalBounds();
+	const auto &bounds = object->getLocalBounds();
 	object->setScale(width / bounds.width,
 				height / bounds.height);
 }
@@ -70,14 +71,14 @@ inline void FitScaleToScreen(T * object)
 template<typename T>
 inline void SetScaleByWidth(T * object, float width)
 {
-	auto &bounds = object->getLocalBounds();
+	const auto &bounds = object->getLocalBounds();
 	SetScaleToSize(object, width, width * bounds.height / bounds.width);
 }
 
 template<typename T>
 inline void SetScaleByHeight(T * object, float height)
 {
-	auto &bounds = object->getLocalBounds();
+	const auto &bounds = object->getLocalBounds();
 	SetScaleToSize(object, height * bounds.width / bounds.height, height);
 }
 

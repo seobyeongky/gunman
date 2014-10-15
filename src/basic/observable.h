@@ -42,7 +42,7 @@ template <typename T>
 void Observable<T>::set(const T & r)
 {
 	_val = r;
-	for (auto & callback : _callbacks)
+	for (auto callback : _callbacks)
 	{
 		callback.element()(_val);
 	}

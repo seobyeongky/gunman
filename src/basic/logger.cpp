@@ -2,36 +2,49 @@
 
 #include <chrono>
 
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
+#ifdef _WIN32
+#   ifndef WIN32_LEAN_AND_MEAN
+#   define WIN32_LEAN_AND_MEAN
+#   endif
+#   include <Windows.h>
+#   include <io.h>
+#   include <direct.h>
+#else
+#   include "../util.h"
+#   include "../osx/fake_windows.h"
 #endif
-#include <Windows.h>
 
-#include <io.h>
 #include <locale.h>
-#include <direct.h>
 
 Logger::Logger(const wstring & file_name, WindowHandle h_wnd)
 	: _f_stream(), _clock(), _h_wnd(h_wnd)
 {
 	_f_stream.imbue(locale("korean"));
+#ifdef _WIN32
 	_f_stream.open(file_name, fstream::app);
-
+#else
+    string mfilename;
+    uni2multi(file_name, &mfilename);
+    _f_stream.open(mfilename, fstream::app);
+#endif
 	typedef chrono::system_clock clock_t;
 	auto		now = clock_t::now();
 	time_t		now_c = clock_t::to_time_t(now);
 	struct tm	parts;
+#ifdef _WIN32
 	localtime_s(&parts, &now_c);
-
+#else
+    parts = *localtime(&now_c);
+#endif
 	_clock.restart();
 
 	_f_stream	<< L"=======================================================" << endl
-				<< L"\t" << (1900 + parts.tm_year) << L"³â"
-				<< (1 + parts.tm_mon) << L"¿ù "
-				<< parts.tm_mday << L"ÀÏ\t"
-				<< parts.tm_hour << L"½Ã "
-				<< parts.tm_min << L"ºÐ "
-				<< parts.tm_sec << L"ÃÊºÎÅÍ" << endl
+				<< L"\t" << (1900 + parts.tm_year) << L"ë…„"
+				<< (1 + parts.tm_mon) << L"ì›”"
+				<< parts.tm_mday << L"ì¼\t"
+				<< parts.tm_hour << L"ì‹œ "
+				<< parts.tm_min << L"ë¶„ "
+				<< parts.tm_sec << L"ì´ˆ" << endl
 				<< L"=======================================================" << endl;
 }
 
@@ -45,12 +58,13 @@ void Logger::Info(const wchar_t * format, ...)
 	va_list args;
 	va_start(args, format);
 	int length = _vscwprintf(format, args) + 1;  
-	WCHAR *buf = static_cast<WCHAR *>(_malloca(length * sizeof(WCHAR)));
+	wchar_t *buf = static_cast<wchar_t *>(_malloca(length * sizeof(wchar_t)));
 	vswprintf_s(buf, length, format, args);
 
 	float elapsed_time = _clock.getElapsedTime().asSeconds();
-	_f_stream << elapsed_time << L"ÃÊ : " << buf << endl;
-	wprintf(L"%fÃÊ : %s\n", elapsed_time , buf);
+	_f_stream << elapsed_time << L"âˆšÂ  : " << buf << endl;
+	wprintf(L"%f : %s\n", elapsed_time , buf);
+    _freea(buf);
 	va_end(args);
 }
 
@@ -59,12 +73,13 @@ void Logger::Warning(const wchar_t * format, ...)
 	va_list args;
 	va_start(args, format);
 	int length = _vscwprintf(format, args) + 1;  
-	WCHAR *buf = static_cast<WCHAR *>(_malloca(length * sizeof(WCHAR)));
+	wchar_t *buf = static_cast<wchar_t *>(_malloca(length * sizeof(wchar_t)));
 	vswprintf_s(buf, length, format, args);
 
 	float elapsed_time = _clock.getElapsedTime().asSeconds();
-	_f_stream << elapsed_time << L"ÃÊ : [°æ°í]" << buf << endl;
-	wprintf(L"%fÃÊ : [°æ°í]%s\n", elapsed_time , buf);
+	_f_stream << elapsed_time << L"âˆšÂ  : [âˆžÃŠâˆžÃŒ]" << buf << endl;
+	wprintf(L"%f : [âˆžÃŠâˆžÃŒ]%s\n", elapsed_time , buf);
+    _freea(buf);
 	va_end(args);
 }
 
@@ -73,13 +88,14 @@ void Logger::Error(const wchar_t * format, ...)
 	va_list args;
 	va_start(args, format);
 	int length = _vscwprintf(format, args) + 1;  
-	WCHAR *buf = static_cast<WCHAR *>(_malloca(length * sizeof(WCHAR)));
+	wchar_t *buf = static_cast<wchar_t *>(_malloca(length * sizeof(wchar_t)));
 	vswprintf_s(buf, length, format, args);
 
 	float elapsed_time = _clock.getElapsedTime().asSeconds();
-	_f_stream << elapsed_time << L"ÃÊ : [¿À·ù]" << buf << endl;
-	wprintf(L"%fÃÊ : [¿À·ù]%s\n", elapsed_time , buf);
+	_f_stream << elapsed_time << L"âˆšÂ  : [Ã¸Â¿âˆ‘Ë˜]" << buf << endl;
+	wprintf(L"%f : [Ã¸Â¿âˆ‘Ë˜]%s\n", elapsed_time , buf);
 
-	MessageBox(_h_wnd, buf, L"¿À·ù", MB_OK | MB_ICONERROR);
+    ErrorMsg(buf);
+    _freea(buf);
 	va_end(args);
 }

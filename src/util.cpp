@@ -10,35 +10,21 @@
 #   include <unistd.h>
 #   include <dirent.h>
 #   include <fnmatch.h>
+#   include "osx/fake_windows.h"
 #endif
 
 #include <locale.h>
 //#include "basic/string_convert.h"
 
 
-#ifndef _WIN32
-// fake version of _vscwprintf
-int _vscwprintf(const wchar_t *format, va_list argptr)
-{
-    return(vswprintf(0, 0, format, argptr));
-}
-#endif
 
-void Msgbox(const wchar_t * format_string, va_list arg_list, const wchar_t * title)
+
+void Msgbox_internal(const wchar_t * format_string, va_list arg_list, const wchar_t * title)
 {
 	int length = _vscwprintf(format_string, arg_list) + 1;  
-#ifdef _WIN32
-    wchar_t *buf = static_cast<wchar_t *>(
-		_malloca(length * sizeof(wchar_t)));
-#else
-    wchar_t * buf = static_cast<wchar_t *>(alloca(length * sizeof(wchar_t)));
-#endif
+    wchar_t *buf = static_cast<wchar_t *>(_malloca(length * sizeof(wchar_t)));
 
-#ifdef _WIN32
     vswprintf_s(buf, length, format_string, arg_list);
-#else
-    vswprintf(buf, length, format_string, arg_list);
-#endif
 
     //	LeaveLog(buf);
 	G.window.setMouseCursorVisible(true);
@@ -54,16 +40,22 @@ void Msgbox(const wchar_t * format_string, va_list arg_list, const wchar_t * tit
 	
     G.window.setMouseCursorVisible(false);
 
-#ifdef _WIN32
 	_freea(buf);
-#endif
+}
+
+void MsgBox(const wchar_t * title, const wchar_t * format_string, ...)
+{
+    va_list args;
+    va_start(args, format_string);
+    Msgbox_internal(format_string, args, title);
+    va_end(args);
 }
 
 void ErrorMsg(const wchar_t * format_string, ...)
 {
 	va_list args;
 	va_start(args, format_string);
-	Msgbox(format_string, args, L"에러");
+	Msgbox_internal(format_string, args, L"에러");
 	va_end(args);
 }
 
@@ -251,14 +243,10 @@ bool GetTextFromFile(const wstring & wfilename, wstring * buf)
 	buf->clear();
 
 	FILE * in = nullptr;
-#ifdef _WIN32
-	_wfopen_s(&in, wfilename.c_str(), L"r");
-#else
-    string filename;
-    uni2multi(wfilename, &filename);
-    in = fopen(filename.c_str(), "r");
-#endif
-	if (in == nullptr) return false;
+
+    _wfopen_s(&in, wfilename.c_str(), L"r");
+
+    if (in == nullptr) return false;
 	
 	wchar_t BUF[1024];
 

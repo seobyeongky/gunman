@@ -17,3 +17,16 @@ log.txt
 *.pdb
 test.zip
 test-d.zip
+
+# xcode
+*.mode*v*
+*.pbxuser
+*.xcbkptlist
+*.xcworkspacedata
+*.xcuserstate
+*.xccheckout
+xcschememanagement.plist
+.DS_Store
+._.*
+xcuserdata/
+DerivedData/

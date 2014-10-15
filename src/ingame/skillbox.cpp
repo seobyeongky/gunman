@@ -24,7 +24,7 @@ void SkillBox::Content::Reset(const wstring & sname, Champion *	me)
 	smap<wstring, Ability*>::Iter it;
 	if (!ability_map.find(sname, &it))
 	{
-		G.logger->Error(L"없는 능력 : %s", sname.c_str());
+		G.logger->Error(L"ability not found : %s", sname.c_str());
 		_valid = false;
 		return;
 	}
@@ -32,7 +32,7 @@ void SkillBox::Content::Reset(const wstring & sname, Champion *	me)
 	smap<wstring, Sprite*>::Iter it2;
 	if (!G.sprite_map.find(abil->icon, &it2))
 	{
-		G.logger->Error(L"sprite map에 %s스킬의 icon(%s)가 없습니다!", sname.c_str());
+		G.logger->Error(L"iconf %s missing from sprite map!", sname.c_str());
 		_valid = false;
 		return;
 	}

@@ -38,7 +38,7 @@ void ChatBox::Reset(const player_t & me)
 
 void ChatBox::Update()
 {
-	// ¿À·¡µÈ ¸Þ½ÃÁö´Â Áö¿ó´Ï´Ù.
+	// Ã¸Â¿âˆ‘Â°ÂµÂ» âˆï¬Î©âˆšÂ¡Ë†Â¥Â¬ Â¡Ë†Ã¸Ã›Â¥Å“Â¥Å¸.
 	for(auto it = _msg_list.begin(); it != _msg_list.end();)
 	{
 		if(it->time + 8000 < G.present_time)
@@ -69,7 +69,7 @@ void ChatBox::AddChatMsg(const Color & color, const wstring & str, const Color &
 
 void ChatBox::AddAlarmMsg(const wstring & str)
 {
-	AddChatMsg(	Color(255, 255, 255), L"¾Ë¸²",
+	AddChatMsg(	Color(255, 255, 255), L"ì•Œë¦¼",
 				Color(200, 200, 200), str);
 }
 
@@ -109,7 +109,7 @@ void ChatBox::draw(RenderTarget& target, RenderStates states) const
 	float x = 0;
 	float y = -(float)CHATTING_TEXT_SIZE;
 
-	// ¸Þ½ÃÁö¸¦ È­¸é¿¡ ±×¸³´Ï´Ù.
+	// âˆï¬Î©âˆšÂ¡Ë†âˆÂ¶ Â»â‰ âˆÃˆÃ¸Â° Â±â—Šâˆâ‰¥Â¥Å“Â¥Å¸.
 	for(auto it = _msg_list.rbegin(); it != _msg_list.rend(); ++it)
 	{
 		Text * first = it->text_pair.first;
@@ -145,7 +145,7 @@ bool ChatBox::HandleKeyPressed(Event::KeyEvent key)
 	{
 		if(!_chatting_text.getString().isEmpty())
 		{
-			wstring & wstr = _chatting_text.getString().toWideString();
+			const wstring & wstr = _chatting_text.getString().toWideString();
 			AddChatMsg(	_my_color, _my_name,
 						Color(220, 245, 245), wstr);
 			the_text.set(wstr);

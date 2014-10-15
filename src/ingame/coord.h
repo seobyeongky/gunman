@@ -8,6 +8,7 @@
 #pragma once
 
 #include "../internal.h"
+#include <math.h>
 
 typedef Vector2f vector_t;
 typedef Vector2f pos_t;

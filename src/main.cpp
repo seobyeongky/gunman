@@ -12,11 +12,11 @@
 #include <v8.h>
 
 #ifdef _DEBUG
-#include <gtest\gtest.h>
+#include <gtest/gtest.h>
 #endif
 #include <locale.h>
 
-#include "scripting\v8_utils.h"
+#include "scripting/v8_utils.h"
 
 global_t G;
 
@@ -33,7 +33,7 @@ public:
 	AudioDeviceLoader(void)
 	{
 		if (!(G.audio_device = audiere::OpenDevice()))
-			G.logger->Warning(L"AudioDeviceLoader : audio device ¿­±â ½ÇÆÐ");
+			G.logger->Warning(L"AudioDeviceLoader : audio device open failed");
 	}
 	~AudioDeviceLoader(void){G.audio_device = nullptr;}
 };
@@ -55,7 +55,11 @@ public:
 ///////////////// MAIN FUNC ///////////////////
 int main(int argc, char * argv[])
 {
+#ifdef _WIN32
 	_wsetlocale(LC_ALL, L"korean");
+#else
+    setlocale(LC_ALL, "korean");
+#endif
 	srand(static_cast<unsigned int>(time(nullptr)));
 
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();;
@@ -65,7 +69,7 @@ int main(int argc, char * argv[])
 	desktop.height = static_cast<unsigned int>(desktop.height / 1.5f);
 #endif
 
-	G.window.create(desktop, L"»ç°ÝÀÇ ´ÞÀÎ"
+	G.window.create(desktop, L"ì‚¬ê²©ì˜ ë‹¬ì¸"
 #ifndef _DEBUG
 		, Style::Fullscreen
 #endif
@@ -82,7 +86,7 @@ int main(int argc, char * argv[])
 		NetInterfaceLoader n;
 
 		if (!profile::Load())
-			G.logger->Error(L"ÇÁ·ÎÇÊ ·Îµå ½ÇÆÐ!");
+			G.logger->Error(L"Profile load failed");
 
 #ifdef _DEBUG
 		::testing::InitGoogleTest(&argc, argv);
