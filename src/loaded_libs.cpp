@@ -47,6 +47,8 @@
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
+#pragma comment(lib, "tinyxml.lib")
+
 // for V8
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "advapi32.lib")

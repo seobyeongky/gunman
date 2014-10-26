@@ -1,4 +1,4 @@
-#define  _VARIADIC_MAX  10
+﻿#define  _VARIADIC_MAX  10
 
 #include "global.h"
 #include "asset.h"

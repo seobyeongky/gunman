@@ -1,7 +1,8 @@
 
 #include "string_convert.h"
 #include <stdlib.h>
-#include <sys/errno.h>
+
+// #include <sys/errno.h>
 
 const size_t MY_BUFSIZE = 1024;
 

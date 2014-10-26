@@ -122,6 +122,7 @@ PlayScene::PlayScene(const wstring & room_name,
 	, _map_name(map_name)
 	, _send_ok(true)
 	, _ui_flag()
+	, _backbuf()
 	, _chat_box()
 	, _pop()
 	, _map()
@@ -228,6 +229,11 @@ PlayScene::PlayScene(const wstring & room_name,
 			player->input_received = true;
 		}
 	}));
+
+	_backbuf.create(G.window.getSize().x, G.window.getSize().y, false);
+	_backsprite.setTexture(_backbuf.getTexture());
+	_backsprite.setOrigin(0.f, _backbuf.getSize().y);
+	_backsprite.setScale(1.f,-1.f);
 
 	_chat_box.setPosition(.05f*winsize.x, .7f*winsize.y);
 	_chat_box.Reset(*_me);
@@ -490,7 +496,6 @@ void PlayScene::FrameMove()
 		else
 		{
 			// Wait for pending input
-			Director::DontFlushNextTime();
 		}
 	}
 	else
@@ -739,6 +744,7 @@ void PlayScene::UpdateUI()
 void PlayScene::Render()
 {
 	Renderer::Render();
+	G.window.draw(_backsprite);
 	G.window.draw(_chat_box);
 //	G.window.draw(_skillbox);
 	G.window.draw(_pop);
@@ -937,7 +943,8 @@ void PlayScene::JS_UIDraw(const v8::FunctionCallbackInfo<v8::Value>& args)
 	void* ptr = wrapped->Value();
 	Drawable * drawable = static_cast<CommonDrwableStyle *>(ptr);
 
-	G.window.draw(*drawable);
+	_backbuf.draw(*drawable);
+//	G.window.draw(*drawable);
 }
 
 void PlayScene::JS_Init()
@@ -1110,6 +1117,8 @@ void PlayScene::MoveGameFrame()
 {
 	if (!_js_frame_move_callback_ref.IsEmpty())
 	{
+		_backbuf.clear();
+
 		Isolate::Scope isolate_scope(_js_isolate);
 		HandleScope handle_scope(_js_isolate);
 		v8::TryCatch try_catch;

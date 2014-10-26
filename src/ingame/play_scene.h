@@ -18,7 +18,7 @@
 #include <v8.h>
 
 // test tmx parsing
-#include <Tmx.h>
+#include <tmxparser/Tmx.h>
 #include "tilemap.h"
 
 
@@ -88,6 +88,8 @@ private:
 
 	Flag					_ui_flag;
 
+	RenderTexture			_backbuf;
+	Sprite					_backsprite;
 	ChatBox					_chat_box;
 	PopMsg					_pop;
 

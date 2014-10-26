@@ -1,4 +1,4 @@
-#include "asset.h"
+﻿#include "asset.h"
 #include "util.h"
 #include "global.h"
 
@@ -188,7 +188,7 @@ bool ParseImages(TiXmlElement * parent, vector<img_info_t *> * list_ptr, std::st
     return true;
 }
 
-#define CHECK(cond,themsg...) if (!(cond)) {G.logger->Error(themsg);return false;}
+//#define CHECK(cond,themsg...) if (!(cond)) {G.logger->Error(themsg);return false;}
 
 bool LoadSpriteFromXml(const wchar_t * xmlfile)
 {
@@ -199,16 +199,16 @@ bool LoadSpriteFromXml(const wchar_t * xmlfile)
     string multi;
     uni2multi(xmlfile, &multi);
     FILE * in = fopen(multi.c_str(), "r");
-    CHECK (in != 0, L"failed to open file %s", xmlfile);
-    CHECK (doc.LoadFile(in), L"Failed to load %s", xmlfile);
+	if (in == 0) {G.logger->Error(L"failed to open file %s", xmlfile); return false; }
+	if (!doc.LoadFile(in)) {G.logger->Error(L"Failed to load %s", xmlfile); return false; }
     fclose(in);
     TiXmlElement* e = doc.FirstChildElement();
 
-    CHECK (e != 0, L"There is no root! %s", xmlfile);
-    CHECK (strcmp(e->Value(), "Imageset") == 0, L"There is a non-Imageset in %s", xmlfile);
+	if (e == 0) {G.logger->Error(L"There is no root! %s", xmlfile); return false; }
+	if (strcmp(e->Value(), "Imageset") != 0) {G.logger->Error(L"There is a non-Imageset in %s", xmlfile); return false; }
     Texture		*texture = nullptr;
     const char * imgfile = e->Attribute("Imagefile");
-    CHECK (imgfile != 0, L"The field Imagefile missing! in %s:%hs", xmlfile, e->Value());
+	if (imgfile == 0) {G.logger->Error(L"The field Imagefile missing! in %s:%hs", xmlfile, e->Value()); return false;}
     wstring uimgfile;
     multi2uni(imgfile, &uimgfile);
     smap<wstring, Texture *>::Iter it;
@@ -218,13 +218,13 @@ bool LoadSpriteFromXml(const wchar_t * xmlfile)
     {
         //±‚¡∏ ≈ÿΩ∫√ƒ ∏ÆΩ∫∆Æø° æ¯¥¬ ∆ƒ¿œ¿Œ ∞ÊøÏ¿‘¥œ¥Ÿ.
         texture = new Texture();
-        CHECK (texture->loadFromFile(imgfile), L"Texture file(%s) load failed", uimgfile.c_str());
+		if (!texture->loadFromFile(imgfile)) {G.logger->Error(L"Texture file(%s) load failed", uimgfile.c_str()); return false;}
         G.texture_map.insert(uimgfile, texture);
     }
     
     vector<img_info_t*> list;
     std::string errmsg;
-    CHECK (ParseImages(e, &list, &errmsg), L"Image parsing failed for file %s : %hs", xmlfile, errmsg.c_str());
+	if (!ParseImages(e, &list, &errmsg)) {G.logger->Error(L"Image parsing failed for file %s : %hs", xmlfile, errmsg.c_str()); return false;}
     
     for (auto img : list)
     {
@@ -250,21 +250,21 @@ bool LoadSprite(const wchar_t * image_dir)
 
 bool LoadSystemAssets()
 {
-	if (!G.default_font.loadFromFile("data\\system\\font\\≥™¥Æ∞ÌµÒBold.ttf"))
+	if (!G.default_font.loadFromFile("data\\system\\font\\나눔고딕Bold.ttf"))
 	{
-		G.logger->Error(L"LoadSystemAssets : default font load Ω«∆–");
+		G.logger->Error(L"LoadSystemAssets : default font load 실패");
 		return false;
 	}
 
-	if (!G.title_font.loadFromFile("data\\system\\font\\aøæ≥Ø∏ÒøÂ≈¡B.ttf"))
+	if (!G.title_font.loadFromFile("data\\system\\font\\a옛날목욕탕B.ttf"))
 	{
-		G.logger->Error(L"LoadSystemAssets : title font load Ω«∆–");
+		G.logger->Error(L"LoadSystemAssets : title font load 실패");
 		return false;
 	}
 
 	if (!LoadSprite(L"data\\system\\sprite\\"))
 	{
-		G.logger->Error(L"LoadAssets: image load Ω«∆–");
+		G.logger->Error(L"LoadAssets: image load 실패");
 		return false;
 	}
 	

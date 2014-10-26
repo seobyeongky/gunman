@@ -49,12 +49,6 @@ namespace Director
 		}
 	}
 
-	bool dont_flush = false;
-	void DontFlushNextTime()
-	{
-		dont_flush = true;
-	}
-
 	void Begin(IScene * first_scene)
 	{
 		IScene *		scene = first_scene;
@@ -78,8 +72,7 @@ namespace Director
 			G.sfx_mgr.Update();
 			NetInterface::Update();
 
-			if (!dont_flush)
-				G.window.clear(sf::Color::Black);
+			G.window.clear(sf::Color::Black);
 
 			while(G.window.pollEvent(event))
 			{
@@ -141,10 +134,7 @@ namespace Director
 #ifdef _DEBUG
 			//G.window.draw(fps_text);
 #endif
-			if (!dont_flush)
-				G.window.display();
-
-			dont_flush = false;
+			G.window.display();
 		
 #ifdef _WIN32
 			_ASSERTE( _CrtCheckMemory( ) );
