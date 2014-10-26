@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../internal.h"
-// #include "../scripting/v8_object_wrap.h"
-
+#include "../scripting/v8_object_wrap.h"
 #include <v8.h>
 
 enum
@@ -21,40 +20,28 @@ public:
 	virtual int GetPriority() const = 0;
 };
 
-/*
+
 class JSRenderable : public IRenderable, public ObjectWrap
 {
 public:
-	static void Init(v8::Isolate * isolate, v8::Handle<v8::ObjectTemplate> exports);
+	JSRenderable(v8::Isolate * isolate, v8::Local<v8::Object> handle);
 
-	virtual int GetHeight() const {return _height;}
-	virtual int GetPriority() const {return _priority;}
+	virtual int GetHeight() const;
+	virtual int GetPriority() const;
 
 protected:
-	virtual void draw(RenderTarget& target, RenderStates states) const
-	{
-		Local<Object> self = handle();
-		if (self->InternalFieldCount() < 1) return;
-
-		v8::Local<v8::External> wrap = v8::Local<v8::External>::Cast(self->GetInternalField(0));
-		void* ptr = wrap->Value();
-		Drawable * drawable = static_cast<Drawable*>(ptr);
-
-		target.draw(*drawable, states);
-	}
+	virtual void draw(RenderTarget& target, RenderStates states) const;
 
 private:
-	JsRenderable(v8::Isolate * isolate, v8::Local<v8::Object> handle);
-
-	static void New(const v8::FunctionCallbackInfo<v8::Value>& args);
+/*	static void New(const v8::FunctionCallbackInfo<v8::Value>& args);
 	static void JS_GetHeight(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info);
 	static void JS_SetHeight(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info);
 	static void JS_GetPriority(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info);
 	static void JS_SetPriority(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info);
 
 	static v8::Persistent<v8::FunctionTemplate> constructor
-
+	
 	int _height;
 	int _priority;
+	*/
 };
-*/

@@ -95,7 +95,9 @@ static void JS_RendererAddRenderable(const FunctionCallbackInfo<Value>& args)
 
 	auto obj = Handle<Object>::Cast(args[0]);
 
-//	Renderer::AddJsRenderable(obj);
+	int id = Renderer::AddJsRenderable(obj);
+
+	args.GetReturnValue().Set(id);
 }
 
 static void JS_RendererRemoveRenderable(const FunctionCallbackInfo<Value>& args)
@@ -106,7 +108,7 @@ static void JS_RendererRemoveRenderable(const FunctionCallbackInfo<Value>& args)
 
 	auto num = Handle<Number>::Cast(args[0]);
 
-//	Renderer::RemoveJsRenderable(num->Integer());
+	Renderer::RemoveJsRenderable(num->Int32Value());
 }
 
 PlayScene * PlayScene::_instance = nullptr;
