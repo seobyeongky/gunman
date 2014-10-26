@@ -4,6 +4,19 @@
 
 FOGHORN = 'audio/Foghorn.wav'
 
+make_bg = ->
+	t = new Texture
+	t.loadFromFile 'textures/bg_intro.png'
+	s = new Sprite
+	s.texture = t
+	s.x = 0
+	s.y = 0
+	s.originX = 0
+	s.originY = 0
+	s.scaleX = UI.width / t.width
+	s.scaleY = UI.height / t.height
+	s
+
 module.exports = (env) ->
 	{lv} = env
 
@@ -17,10 +30,12 @@ module.exports = (env) ->
 	scheduler = new Scheduler
 
 	text = new Text
-	text.string = if players.length == 1 then "산성비를 막아라!" else "#{player.length}인 협동 산성비 막기!!"
+	text.color = {r:0,g:0,g:0,a:255}
+	text.string = if players.length == 1 then "산성비를 막아라!" else "#{players.length}인 협동 산성비 막기!!"
 	text.x = 0.3 * UI.width
 	text.y = 0.3 * UI.height
 	text.characterSize = 25
+	bg = make_bg()
 
 	scheduler.add ->
 		Audio.playEffect FOGHORN
@@ -43,6 +58,7 @@ module.exports = (env) ->
 
 	on_frame_move : ->
 		scheduler.tick()
+		UI.draw bg
 		UI.draw text
 
 	on_player_input : ->

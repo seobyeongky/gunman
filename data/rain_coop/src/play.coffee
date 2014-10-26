@@ -40,6 +40,9 @@ POP = 'audio/word.wav'
 SUCCEEDED = 'audio/FFT.wav'
 WORSE = 'audio/oil.wav'
 
+the_seed = 123
+RANDOM = (require './random') the_seed
+
 play_hit = ->
 	Audio.playEffect "audio/hit_#{Math.floor(Math.random() * 8)}.wav"
 
@@ -175,10 +178,10 @@ module.exports = (env) ->
 	make_fallen_text = ->
 		self = new Text
 		self.characterSize = 25
-		self.string = dict[Math.floor(Math.random() * dict.length)]
+		self.string = dict[RANDOM.number(dict.length)]
 		self.originX = 0.5 * self.width
 		self.originY = 0.5 * self.height
-		self.x = Math.random() * (0.5 * UI.width - self.width) + 0.5 * self.width
+		self.x = RANDOM.number(0.5 * UI.width - 0.5 * self.width) + 0.5 * self.width
 		self.y = -self.height
 		self.color = main_key_color(env.lv)
 		born_time = count

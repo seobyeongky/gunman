@@ -94,9 +94,13 @@ void SvPlayScene::Broadcast()
 {
 	static string outbuf;
 
+//	std::stringstream ss;
+
 	Packet sendpacket;
 	sendpacket << TO_UINT16(SV_TO_CL_BROADCAST)
 		<< _inputs.size();
+
+//	ss << "packet with input size : " << _inputs.size() << " ";
 
 	for (auto & input : _inputs)
 	{
@@ -106,14 +110,21 @@ void SvPlayScene::Broadcast()
 	}
 
 	sendpacket << TO_UINT16(_void_input_players.size());
+//	ss << "with void players(" << _void_input_players.size() << ") ";
 	for (ID cid : _void_input_players)
+	{
 		sendpacket << cid;
-
+//		ss << cid << " ";
+	}
+	
+//	ss << endl;
+//	printf("%s", ss.str().c_str());
 	for (auto & cl : svG.client_map)
 	{
 		SafeSend(cl.key(), sendpacket);
 	}
 
+	_void_input_players.clear();
 	_inputs.clear();
 }
 

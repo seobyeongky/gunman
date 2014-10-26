@@ -120,6 +120,7 @@ PlayScene::PlayScene(const wstring & room_name,
 	, _me(nullptr)
 	, _player_map()
 	, _map_name(map_name)
+	, _send_ok(true)
 	, _ui_flag()
 	, _chat_box()
 	, _pop()
@@ -131,7 +132,7 @@ PlayScene::PlayScene(const wstring & room_name,
 	, _mychamp(nullptr)
 	, _bullets()
 	, _frame_count(0)
-	, _input_sync_term(1)
+	, _input_sync_term(10)
 	, _ui_finites()
 	, _skillbox()
 	, _ui_skill_flag()
@@ -140,6 +141,8 @@ PlayScene::PlayScene(const wstring & room_name,
 	, _ui_skill_arrow(nullptr)
 {
 	_instance = this;
+
+	if (G.bg_music && G.bg_music->isPlaying()) G.bg_music->stop();
 
 	using namespace placeholders;
 
@@ -186,6 +189,10 @@ PlayScene::PlayScene(const wstring & room_name,
 	G.window.setTitle(buf);
 
 	_me = &_player_map[_my_id];
+
+	_cleaner.Register(NetInterface::RegisterClientGoneCallback([this](const client_t & cl_info){
+		_player_map.erase(cl_info.id);
+	}));
 
 	_cleaner.Register(NetInterface::RegisterPacketCallback(SV_TO_CL_CHAT, [this](Packet & packet)
 	{
@@ -297,6 +304,8 @@ PlayScene::~PlayScene()
 
 	delete _ui_skill_arrow;
 //	ReleaseAbilities();
+
+	if (G.bg_music) G.bg_music->play();
 }
 
 bool PlayScene::HandleWindowEvent(const Event & e)
@@ -440,7 +449,7 @@ void PlayScene::ResetSkillUI()
 	_ui_skill_arrow->SetVisible(false);
 }
 
-void PlayScene::FrameMove()
+void PlayScene::SendPendingInputs()
 {
 	// inputs buffer가 비어있지 않다면 서버로 flush시킵니다.
 	Packet sendpacket;
@@ -458,6 +467,15 @@ void PlayScene::FrameMove()
 		_inputs.clear();
 	}
 	opznet::SafeSend(sendpacket);
+	_send_ok = false;
+}
+
+void PlayScene::FrameMove()
+{
+	if (_send_ok)
+	{
+		SendPendingInputs();
+	}
 
 	if (_frame_count % _input_sync_term == 0)
 	{
@@ -465,11 +483,14 @@ void PlayScene::FrameMove()
 		{
 			// Continue
 			MoveGameFrame();
+			for (auto it : _player_map)
+				it.element().input_received = false;
+			SendPendingInputs();
 		}
 		else
 		{
 			// Wait for pending input
-
+			Director::DontFlushNextTime();
 		}
 	}
 	else

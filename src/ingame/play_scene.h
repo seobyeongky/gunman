@@ -84,6 +84,7 @@ private:
 	player_t *				_me;
 	player_map_t			_player_map;
 	wstring					_map_name;
+	bool					_send_ok;
 
 	Flag					_ui_flag;
 
@@ -140,6 +141,8 @@ private:
 	bool	HandleIMEUpdatedEvent(const Event & e);
 
 	void	ResetSkillUI();
+
+	void	SendPendingInputs();
 
 	// Frame Moves
 	void	HandleInput();

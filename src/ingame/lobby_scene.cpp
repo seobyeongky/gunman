@@ -138,6 +138,8 @@ LobbyScene::LobbyScene(const wstring & room_name,
 		wstring map;
 		packet >> map;
 		Director::SetTimeout(2000, [this, room_name, map](){
+			NetInterface::ClearCallbacks();
+			_cleaner.Activate();
 			Director::SwitchScene(new PlayScene(room_name, _is_host, _my_id, _player_map, map));
 		});
 	}));
@@ -149,6 +151,13 @@ LobbyScene::LobbyScene(const wstring & room_name,
 		.5f*winsize.x-(350.f-60.f)/230.f*.4f*.5f*winsize.y,
 		.88f*winsize.y);
 	_chat_box.DrawEditText(true);
+	_chat_box.the_text.on([](const wstring & msg){
+		if (msg.empty()) return;
+		Packet send_packet;
+		send_packet << TO_UINT16(CL_TO_SV_CHAT);
+		send_packet << msg;
+		SafeSend(send_packet);
+	});
 
 	dbgpoint.setPosition(
 		.5f*winsize.x-(350.f-60.f)/230.f*.4f*.5f*winsize.y,

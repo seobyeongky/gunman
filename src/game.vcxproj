@@ -18,13 +18,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -43,13 +43,13 @@
     <IntDir>$(SolutionDir)temp\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)-d</TargetName>
     <IncludePath>$(SolutionDir)dep\opznet\;$(SolutionDir)dep\sfml2\;$(SolutionDir)dep\audiere\;$(SolutionDir)dep\v8\include\;$(SolutionDir)dep\grpapi\include\;$(SolutionDir)dep\gtest\include\;$(IncludePath);$(SolutionDir)dep\tmx-parser\include\;$(SolutionDir)dep\protobuf\include\</IncludePath>
-    <LibraryPath>$(SolutionDir)dep\opznet\;$(SolutionDir)dep\sfml2\;$(SolutionDir)dep\audiere\;$(SolutionDir)dep\v8\lib\;$(SolutionDir)dep\grpapi\lib\;$(SolutionDir)dep\gtest\lib\;$(LibraryPath);$(SolutionDir)dep\tmx-parser\lib\;$(SolutionDir)dep\protobuf\lib\</LibraryPath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(SolutionDir)dep\opznet\;$(SolutionDir)dep\sfml2\;$(SolutionDir)dep\audiere\;$(SolutionDir)dep\v8\lib\;$(SolutionDir)dep\grpapi\lib\;$(SolutionDir)dep\gtest\lib\;$(LibraryPath);$(SolutionDir)dep\tmx-parser\lib\;$(SolutionDir)dep\protobuf\lib\</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)temp\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)dep\opznet\;$(SolutionDir)dep\sfml2\;$(SolutionDir)dep\audiere\;$(SolutionDir)dep\v8\include\;$(SolutionDir)dep\grpapi\include\;$(IncludePath);$(SolutionDir)dep\tmx-parser\include\;$(SolutionDir)dep\protobuf\include\</IncludePath>
-    <LibraryPath>$(SolutionDir)dep\opznet\;$(SolutionDir)dep\sfml2\;$(SolutionDir)dep\audiere\;$(SolutionDir)dep\v8\lib\;$(SolutionDir)dep\grpapi\lib\;$(LibraryPath);$(SolutionDir)dep\tmx-parser\lib\;$(SolutionDir)dep\protobuf\lib\</LibraryPath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(SolutionDir)dep\opznet\;$(SolutionDir)dep\sfml2\;$(SolutionDir)dep\audiere\;$(SolutionDir)dep\v8\lib\;$(SolutionDir)dep\grpapi\lib\;$(LibraryPath);$(SolutionDir)dep\tmx-parser\lib\;$(SolutionDir)dep\protobuf\lib\</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

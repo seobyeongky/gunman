@@ -15,6 +15,7 @@ namespace Director
 	void SetDefaultCursor();
 
 	void SafeCall(function<void(bool)> fn);
+	void DontFlushNextTime();
 
 #ifdef _DEBUG
 	void PushDebugDrawRect(const FloatRect & rect);

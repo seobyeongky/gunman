@@ -36,7 +36,7 @@ MenuScene::MenuScene()
 
 	FitScaleToScreen(&_bg);
 	
-//	if (G.bg_music) G.bg_music->play();
+	if (G.bg_music) G.bg_music->play();
 	
 	auto & winsize = G.window.getSize();
 

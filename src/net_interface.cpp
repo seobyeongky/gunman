@@ -76,6 +76,7 @@ namespace NetInterface
 					G.logger->Error(L"서버 찾기 서비스 잇기 실패");
 				break;
 			case CLMSG_UNEXPECTED_ERROR:
+				G.logger->Warning(L"Unexpected error : %s", cl_msg.error_msg);
 				break;
 			case CLMSG_PACKET_RECV:
 				{
