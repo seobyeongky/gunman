@@ -1,6 +1,8 @@
 #include "tilemap.h"
 #include "../global.h"
 
+#include <math.h>
+
 TileMap g_tilemap;
 
 TileMap::TileMap()
@@ -18,7 +20,7 @@ void TileMap::LoadFromTmx(const Tmx::Map & tmxmap)
 	const Tmx::Tileset * tileset = tmxmap.GetTileset(0);
 	if (!_texture.loadFromFile(tileset->GetImage()->GetSource()))
 	{
-		G.logger->Error(L"%s 텍스처 로드 실패", tileset->GetImage()->GetSource().c_str());
+		G.logger->Error(L"Failed to load texture %s", tileset->GetImage()->GetSource().c_str());
 		return;
 	}
 	// fix me ... 어떻게 하는지 모름 방식을 모름

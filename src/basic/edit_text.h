@@ -8,7 +8,7 @@
 #pragma once
 
 #include "widget.h"
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 using namespace sf;
 

@@ -2,6 +2,9 @@
 
 class Flag
 {
+private:
+    int _val;
+
 public:
 	Flag() : _val(0) {}
 	Flag(int val) : _val(val) {}
@@ -11,7 +14,7 @@ public:
 		return (_val & v) != 0;
 	}
 
-	bool not(int v) const
+	bool not_(int v) const
 	{
 		return (_val & v) == 0;
 	}
@@ -30,7 +33,4 @@ public:
 	{
 		return _val;
 	}
-
-private:
-	int _val;
 };

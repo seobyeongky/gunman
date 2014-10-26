@@ -9,7 +9,7 @@
 
 #include "../internal.h"
 
-#include <Tmx.h>
+#include <tmxparser/Tmx.h>
 
 class TileMap : public Drawable, public Transformable
 {

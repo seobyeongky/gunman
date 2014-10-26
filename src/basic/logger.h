@@ -11,8 +11,8 @@
 #include <fstream>
 
 // SFML
-#include <SFML\System.hpp>
-#include <SFML\Window.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 
 using namespace std;
 using namespace sf;

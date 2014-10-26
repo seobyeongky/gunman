@@ -1,6 +1,10 @@
 #include "userprofile.h"
 #include "util.h"
 
+#ifndef _WIN32
+#   include "osx/fake_windows.h"
+#endif
+
 namespace profile
 {
 	wstring				name;
@@ -68,7 +72,7 @@ namespace profile
 		{
 			if (!SaveFile(profile))
 			{
-				G.logger->Warning(L"프로필(%s) 저장 실패", profile.name.c_str());
+				G.logger->Warning(L"save profile failed : %s", profile.name.c_str());
 				continue;
 			}
 		}

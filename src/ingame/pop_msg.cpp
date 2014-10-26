@@ -1,6 +1,10 @@
 #include "pop_msg.h"
 #include "../global.h"
 
+#ifndef _WIN32
+#   include "../osx/fake_windows.h"
+#endif
+
 PopMsg::PopMsg()
 	: _big_msg(L"", G.default_font, 30U),
 	_cur_big_msg(nullptr),
@@ -56,8 +60,8 @@ void PopMsg::Show(const wchar_t * format_msg_str, ...)
 	va_list args;
 	va_start(args, format_msg_str);
 	int length = _vscwprintf(format_msg_str, args) + 1;  
-	WCHAR *buf = static_cast<WCHAR *>(
-		_malloca(length * sizeof(WCHAR)));
+	wchar_t *buf = static_cast<wchar_t *>(
+		_malloca(length * sizeof(wchar_t)));
 	vswprintf_s(buf, length, format_msg_str, args);
 	_big_msg_queue.push(big_msg_t(G.present_time, buf));
 	_freea(buf);

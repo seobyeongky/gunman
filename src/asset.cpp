@@ -2,11 +2,11 @@
 #include "util.h"
 #include "global.h"
 
-#include <ole2.h>
-#include <xmllite.h>
+#include <tinyxml.h>
 #include <stdio.h>
-#include <shlwapi.h>
 
+
+/*
 struct xmlElement_t
 {
 	wstring							name;
@@ -154,122 +154,87 @@ private:
 	IStream		*file_stream;
 	IXmlReader	*reader;
 };
+*/
 
-bool LoadSpriteFromXml(LPCWSTR xmlfile)
+struct img_info_t
 {
-	Texture		*texture = nullptr;
-	xmlMsg_t	msg;
-	bool		imageset_inside = false;
-	XmlFile		file(xmlfile);
+    std::string name;
+    int x, y;
+    int width, height;
+};
 
-	while(file.Parse(&msg))
-	{
-		switch(msg.type)
-		{
-		case XML_MSG_ELEMENT:
-			if(imageset_inside)
-			{
-				if(msg.element.name != L"image")
-				{
-					G.logger->Error(L"imageset¾È¿¡ image°¡ ¾Æ´Ñ °ÍÀÌ ÀÖ½À´Ï´Ù. (%s)", msg.element.name.c_str());
-					return false;
-				}
-				wstring name;
-				
-				int width, height, x_pos, y_pos;
-				int set = 0;
+#define CHECK_NULL(name,x) if (!x) {*errmsg = "The Image field " name " missing!"; delete img; return false;}
+bool ParseImages(TiXmlElement * parent, vector<img_info_t *> * list_ptr, std::string * errmsg)
+{
+    for (TiXmlElement * e = parent->FirstChildElement(); e; e = e->NextSiblingElement())
+    {
+        if (strcmp(e->Value(), "Image") != 0)
+        {
+            *errmsg = "There is non-Image inside of Imageset";
+            return false;
+        }
 
-				for(auto i = msg.element.attr.begin(); i != msg.element.attr.end(); ++i)
-				{
-					if(i->first == L"name")
-					{
-						name = i->second;
-						assert((set & 0x001) == 0);
-						set += 0x001;
-					}
-					else if(i->first == L"width")
-					{
-						width =  _wtoi(i->second.c_str());
-						assert((set & 0x002) == 0);
-						set += 0x002;
-					}
-					else if(i->first == L"height")
-					{
-						height = _wtoi(i->second.c_str());
-						assert((set & 0x004) == 0);
-						set += 0x004;
-					}
-					else if(i->first == L"xpos")
-					{
-						x_pos = _wtoi(i->second.c_str());
-						assert((set & 0x008) == 0);
-						set += 0x008;
-					}
-					else if(i->first == L"ypos")
-					{
-						y_pos = _wtoi(i->second.c_str());
-						assert((set & 0x010) == 0);
-						set += 0x010;
-					}
-				}
-
-				if((set & 0x01f) == 0x01f)
-				{
-					G.sprite_map[name] = new Sprite(*texture, IntRect(x_pos, y_pos, width, height));
-				}
-				else
-				{
-					G.logger->Error(L"Texture Á¤º¸ file ¿À¿°");
-					return false;
-				}
-			}
-			else
-			{
-				if(msg.element.name != L"imageset")
-				{
-					G.logger->Error(L"ImagesetÀÌ ¾Æ´Ñ °ÍÀÌ ÀÖ½À´Ï´Ù. (%s)", msg.element.name.c_str());
-					return false;
-				}
-				for(auto i = msg.element.attr.begin(); i != msg.element.attr.end(); ++i)
-				{
-					if(i->first == L"imagefile")
-					{
-						smap<wstring, Texture *>::Iter iter;
-						const wstring & texture_file_name = i->second;
-
-						if(!G.texture_map.find(texture_file_name))
-						{
-							//±âÁ¸ ÅØ½ºÃÄ ¸®½ºÆ®¿¡ ¾ø´Â ÆÄÀÏÀÎ °æ¿ìÀÔ´Ï´Ù.
-							texture = new Texture();
-							string ansi_file_name(texture_file_name.begin(), texture_file_name.end());
-							if(!texture->loadFromFile(ansi_file_name))
-							{
-								G.logger->Error(L"Texture file load ½ÇÆÐ (%s)", texture_file_name.c_str());
-								return false;
-							} 
-							G.texture_map.insert(texture_file_name, texture);
-						}
-						break;
-					}
-				}
-				if(texture == nullptr)
-				{
-					G.logger->Error(L"Imageset¿¡¼­ Texture file Á¤º¸¸¦ Ã£Áö ¸øÇß½À´Ï´Ù.");
-					return false;
-				}
-				imageset_inside = true;
-			}
-			break;
-
-		case XML_MSG_ELEMENT_END:
-			imageset_inside = false;
-			break;
-		}
-	}
-	return true;
+        img_info_t * img = new img_info_t;
+        const char * name = e->Attribute("Name");
+        CHECK_NULL("Name", name);
+        img->name = name;
+        CHECK_NULL("XPos", e->Attribute("XPos", &img->x));
+        CHECK_NULL("YPos", e->Attribute("YPos", &img->y));
+        CHECK_NULL("Width", e->Attribute("Width", &img->width));
+        CHECK_NULL("Height", e->Attribute("Height", &img->height));
+        list_ptr->push_back(img);
+    }
+    
+    return true;
 }
 
-bool LoadSprite(LPCWSTR image_dir)
+#define CHECK(cond,themsg...) if (!(cond)) {G.logger->Error(themsg);return false;}
+
+bool LoadSpriteFromXml(const wchar_t * xmlfile)
+{
+//	xmlMsg_t	msg;
+	bool		imageset_inside = false;
+    
+    TiXmlDocument doc;
+    string multi;
+    uni2multi(xmlfile, &multi);
+    FILE * in = fopen(multi.c_str(), "r");
+    CHECK (in != 0, L"failed to open file %s", xmlfile);
+    CHECK (doc.LoadFile(in), L"Failed to load %s", xmlfile);
+    fclose(in);
+    TiXmlElement* e = doc.FirstChildElement();
+
+    CHECK (e != 0, L"There is no root! %s", xmlfile);
+    CHECK (strcmp(e->Value(), "Imageset") == 0, L"There is a non-Imageset in %s", xmlfile);
+    Texture		*texture = nullptr;
+    const char * imgfile = e->Attribute("Imagefile");
+    CHECK (imgfile != 0, L"The field Imagefile missing! in %s:%hs", xmlfile, e->Value());
+    wstring uimgfile;
+    multi2uni(imgfile, &uimgfile);
+    smap<wstring, Texture *>::Iter it;
+    if(G.texture_map.find(uimgfile, &it))
+        texture = (*it).element();
+    else
+    {
+        //Â±â€šÂ¡âˆ â‰ˆÃ¿Î©âˆ«âˆšÆ’ âˆÃ†Î©âˆ«âˆ†Ã†Ã¸Â° Ã¦Â¯Â¥Â¬ âˆ†Æ’Â¿Å“Â¿Å’ âˆžÃŠÃ¸ÃÂ¿â€˜Â¥Å“Â¥Å¸.
+        texture = new Texture();
+        CHECK (texture->loadFromFile(imgfile), L"Texture file(%s) load failed", uimgfile.c_str());
+        G.texture_map.insert(uimgfile, texture);
+    }
+    
+    vector<img_info_t*> list;
+    std::string errmsg;
+    CHECK (ParseImages(e, &list, &errmsg), L"Image parsing failed for file %s : %hs", xmlfile, errmsg.c_str());
+    
+    for (auto img : list)
+    {
+        wstring theName;
+        multi2uni(img->name, &theName);
+        G.sprite_map[theName] = new Sprite(*texture, IntRect(img->x, img->y, img->width, img->height));
+    }
+}
+
+bool LoadSprite(const wchar_t * image_dir)
 {
 	DirChanger		dir_changer(image_dir);
 	vector<wstring>	list;
@@ -285,21 +250,21 @@ bool LoadSprite(LPCWSTR image_dir)
 
 bool LoadSystemAssets()
 {
-	if (!G.default_font.loadFromFile("data\\system\\font\\³ª´®°íµñBold.ttf"))
+	if (!G.default_font.loadFromFile("data\\system\\font\\â‰¥â„¢Â¥Ã†âˆžÃŒÂµÃ’Bold.ttf"))
 	{
-		G.logger->Error(L"LoadSystemAssets : default font load ½ÇÆÐ");
+		G.logger->Error(L"LoadSystemAssets : default font load Î©Â«âˆ†â€“");
 		return false;
 	}
 
-	if (!G.title_font.loadFromFile("data\\system\\font\\a¿¾³¯¸ñ¿åÅÁB.ttf"))
+	if (!G.title_font.loadFromFile("data\\system\\font\\aÃ¸Ã¦â‰¥Ã˜âˆÃ’Ã¸Ã‚â‰ˆÂ¡B.ttf"))
 	{
-		G.logger->Error(L"LoadSystemAssets : title font load ½ÇÆÐ");
+		G.logger->Error(L"LoadSystemAssets : title font load Î©Â«âˆ†â€“");
 		return false;
 	}
 
 	if (!LoadSprite(L"data\\system\\sprite\\"))
 	{
-		G.logger->Error(L"LoadAssets: image load ½ÇÆÐ");
+		G.logger->Error(L"LoadAssets: image load Î©Â«âˆ†â€“");
 		return false;
 	}
 	

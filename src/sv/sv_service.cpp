@@ -20,7 +20,8 @@ bool BeginSvService(const wstring & room_name)
 
 	while (!SvDirector::IsWorking())
 	{
-		Sleep(50);
+        chrono::milliseconds dura(50);
+        this_thread::sleep_for(dura);
 	}
 
 	return true;
@@ -32,7 +33,8 @@ void EndSvService()
 
 	while (SvDirector::IsWorking())
 	{
-		Sleep(50);
+        chrono::milliseconds dura(50);
+        this_thread::sleep_for(dura);
 	}
 
 	EndServer();

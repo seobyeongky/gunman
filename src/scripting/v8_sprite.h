@@ -2,7 +2,7 @@
 
 #include "v8_object_wrap.h"
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 using namespace sf;
 
 class JsTexture;

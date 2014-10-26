@@ -37,11 +37,6 @@ void CooldownShadow::SetRatio(float ratio)
 		LEFT, TOP, RIGHT, BOTTOM
 	} dir;
 
-	if (GetAsyncKeyState(VK_RETURN))
-	{
-		angle = angle;
-	}
-
 	size_t n = 0;
 	if (angle < PI_4)
 	{

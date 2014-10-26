@@ -146,7 +146,9 @@ namespace Director
 
 			dont_flush = false;
 		
+#ifdef _WIN32
 			_ASSERTE( _CrtCheckMemory( ) );
+#endif
 		}
 		delete scene;
 
