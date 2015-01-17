@@ -131,6 +131,8 @@ private:
 	DEFINE_JS_REF(v8::Object, _js_player_api);
 	DEFINE_JS_REF(v8::Object, _js_ui);
 
+	smap<int, JSRenderable*> _js_renderables;
+
 	// Event
 	void	AddPlayer(const client_t & basic_info);
 	void	HandleInputFromRemote(Input & c);
@@ -191,6 +193,14 @@ private:
 	DEFINE_STATIC_JS_GETTER(JS_UIHeightGetter);
 	void JS_UIDraw(const v8::FunctionCallbackInfo<v8::Value>& args);
 	DEFINE_STATIC_JS_FUNC(JS_UIDraw);
+
+	// Renderer
+	void JS_RendererMove(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_FUNC(JS_RendererMove);
+	void JS_RendererAddRenderable(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_FUNC(JS_RendererAddRenderable);
+	void JS_RendererRemoveRenderable(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_FUNC(JS_RendererRemoveRenderable);
 
 	void JS_Init();
 	void JS_Finalize();

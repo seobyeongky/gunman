@@ -73,44 +73,6 @@ void CheckCursorScreenCollision(bool * up, bool * down, bool * left, bool * righ
 }
 
 
-static void JS_RendererMove(const FunctionCallbackInfo<Value>& args)
-{
-	JS_PARAM_ASSERTION(args.Length() == 2);
-	
-	HandleScope handle_scope(args.GetIsolate());
-
-	auto dx = Handle<Number>::Cast(args[0]);
-	auto dy = Handle<Number>::Cast(args[1]);
-
-	Renderer::Move(static_cast<float>(dx->NumberValue()), static_cast<float>(dy->NumberValue()));
-}
-
-
-
-static void JS_RendererAddRenderable(const FunctionCallbackInfo<Value>& args)
-{
-	JS_PARAM_ASSERTION(args.Length() == 1);
-
-	HandleScope handle_scope(args.GetIsolate());
-
-	auto obj = Handle<Object>::Cast(args[0]);
-
-	int id = Renderer::AddJsRenderable(obj);
-
-	args.GetReturnValue().Set(id);
-}
-
-static void JS_RendererRemoveRenderable(const FunctionCallbackInfo<Value>& args)
-{
-	JS_PARAM_ASSERTION(args.Length() == 1);
-
-	HandleScope handle_scope(args.GetIsolate());
-
-	auto num = Handle<Number>::Cast(args[0]);
-
-	Renderer::RemoveJsRenderable(num->Int32Value());
-}
-
 PlayScene * PlayScene::_instance = nullptr;
 
 PlayScene::PlayScene(const wstring & room_name,
@@ -949,6 +911,50 @@ void PlayScene::JS_UIDraw(const v8::FunctionCallbackInfo<v8::Value>& args)
 //	G.window.draw(*drawable);
 }
 
+void PlayScene::JS_RendererMove(const FunctionCallbackInfo<Value>& args)
+{
+	JS_PARAM_ASSERTION(args.Length() == 2);
+	
+	HandleScope handle_scope(args.GetIsolate());
+
+	auto dx = Handle<Number>::Cast(args[0]);
+	auto dy = Handle<Number>::Cast(args[1]);
+
+	Renderer::Move(static_cast<float>(dx->NumberValue()), static_cast<float>(dy->NumberValue()));
+}
+
+// a = new Sprite
+// id = Renderer.addRenderable(a)
+// Renderer.removeRenderable(id)
+
+void PlayScene::JS_RendererAddRenderable(const FunctionCallbackInfo<Value>& args)
+{
+	JS_PARAM_ASSERTION(args.Length() == 1);
+
+	HandleScope handle_scope(args.GetIsolate());
+
+	auto obj = Handle<Object>::Cast(args[0]);
+
+	auto js_renderable = new JSRenderable(args.GetIsolate(), obj);
+
+	int id = Renderer::AddRenderable(js_renderable);
+	_js_renderables[id] = js_renderable;
+
+	args.GetReturnValue().Set(id);
+}
+
+void PlayScene::JS_RendererRemoveRenderable(const FunctionCallbackInfo<Value>& args)
+{
+	JS_PARAM_ASSERTION(args.Length() == 1);
+
+	HandleScope handle_scope(args.GetIsolate());
+
+	auto num = Handle<Number>::Cast(args[0]);
+
+	Renderer::RemoveRenderable(num->Int32Value());
+}
+
+
 void PlayScene::JS_Init()
 {
 	_js_isolate = v8::Isolate::New();
@@ -987,9 +993,9 @@ void PlayScene::JS_Init()
 		v8::Context::Scope context_scope(context);
 
 		Local<ObjectTemplate> renderer_templ = ObjectTemplate::New(_js_isolate);
-		renderer_templ->Set(JS_STR("move"), JS_FUNC(JS_RendererMove));
-		renderer_templ->Set(JS_STR("addRenderable"), JS_FUNC(JS_RendererAddRenderable));
-		renderer_templ->Set(JS_STR("removeRenderable"), JS_FUNC(JS_RendererRemoveRenderable));
+		renderer_templ->Set(JS_STR("move"), JS_FUNC(S_JS_RendererMove));
+		renderer_templ->Set(JS_STR("addRenderable"), JS_FUNC(S_JS_RendererAddRenderable));
+		renderer_templ->Set(JS_STR("removeRenderable"), JS_FUNC(S_JS_RendererRemoveRenderable));
 		Local<Object> renderer = renderer_templ->NewInstance();
 		_js_renderer_ref.Reset(_js_isolate, renderer);
 
