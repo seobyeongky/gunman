@@ -14,7 +14,7 @@ public:
 
 	void	 AddChatMsg(const Color & color, const wstring & str, const Color & color2, const wstring & str2);
 	void	 AddAlarmMsg(const wstring & str);
-	void	 AddInfoMsg(const wstring & info_str);
+	void	 AddInfoMsg(const wstring & info_str, const Color & color = Color(190, 120, 100));
 
 	bool	 HandleWindowEvent(const sf::Event & e);
 

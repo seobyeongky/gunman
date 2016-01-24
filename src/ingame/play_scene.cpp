@@ -1099,7 +1099,7 @@ void PlayScene::ReportException(TryCatch* try_catch)
 	if (message.IsEmpty()) {
 		// V8 didn't provide any extra information about this error; just
 		// print the exception.
-		_chat_box.AddInfoMsg(exception_string);
+		_chat_box.AddInfoMsg(exception_string, Color(255, 255, 0, 255));
 	} else {
 		// Print (filename):(line number): (message).
 		
@@ -1127,7 +1127,7 @@ void PlayScene::ReportException(TryCatch* try_catch)
 			const wchar_t * stack_trace_string = reinterpret_cast<const wchar_t *>(*stack_trace);
 			wsprintf(buf, L"%s\n", stack_trace_string);
 		}
-		_chat_box.AddInfoMsg(buf);
+		_chat_box.AddInfoMsg(buf, Color(255, 255, 0, 255));
 		G.sfx_mgr.Play(L"data\\system\\audio\\Error.wav");
 	}
 }

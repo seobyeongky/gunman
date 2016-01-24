@@ -73,10 +73,10 @@ void ChatBox::AddAlarmMsg(const wstring & str)
 				Color(200, 200, 200), str);
 }
 
-void ChatBox::AddInfoMsg(const wstring & info_str)
+void ChatBox::AddInfoMsg(const wstring & info_str, const Color & color)
 {
 	Text * new_text = new Text(info_str, G.default_font, CHATTING_TEXT_SIZE);
-	new_text->setColor(Color(190, 120, 100));
+	new_text->setColor(color);
 	
 	msg_t msg;
 	msg.time = G.present_time;
