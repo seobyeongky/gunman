@@ -924,6 +924,8 @@ void PlayScene::JS_UIDraw(const v8::FunctionCallbackInfo<v8::Value>& args)
 	HandleScope handle_scope(_js_isolate);
 
 	Local<Object> the = Local<Object>::Cast(args[0]);
+	JS_PARAM_ASSERTION(the->InternalFieldCount() > 0);
+
 	Local<External> wrapped = Local<External>::Cast(the->GetInternalField(0));
 	void* ptr = wrapped->Value();
 	Drawable * drawable = static_cast<CommonDrwableStyle *>(ptr);

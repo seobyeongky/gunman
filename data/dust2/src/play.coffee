@@ -70,7 +70,7 @@ module.exports = (env) ->
 
 	render = ->
 		UI.draw bg
-		UI.draw minimap
+		minimap.render()
 		for statbox in statboxes
 			statbox.render()
 		selbox.render()

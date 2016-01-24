@@ -12,6 +12,7 @@ JSRenderable::JSRenderable(Isolate * isolate, Local<Object> handle)
 void JSRenderable::draw(RenderTarget& target, RenderStates states) const
 {
 	Local<Object> self = handle();
+	
 	if (self->InternalFieldCount() < 2) return;
 
 	v8::Local<v8::External> wrap = v8::Local<v8::External>::Cast(self->GetInternalField(0));

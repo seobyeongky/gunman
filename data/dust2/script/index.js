@@ -122,6 +122,74 @@ this["global"] = this;
 				  TXT_HEIGHT: 0.03 * UI.height
 				};
 			},
+			"edge_map.coffee": function (exports, module, require) {
+				module.exports = {
+				  make_edgemap: function(nodes, edges) {
+				    var edge, edge_map, set, _i, _len;
+				    edge_map = {};
+				    set = function(X, Y) {
+				      var detail_map, list;
+				      detail_map = edge_map[X] != null ? edge_map[X] : edge_map[X] = {};
+				      detail_map[Y] = 1;
+				      list = detail_map.edge_list != null ? detail_map.edge_list : detail_map.edge_list = [];
+				      return list.push(Y);
+				    };
+				    for (_i = 0, _len = edges.length; _i < _len; _i++) {
+				      edge = edges[_i];
+				      set(edge[0], edge[1]);
+				      set(edge[1], edge[0]);
+				    }
+				    return {
+				      edge_list: function(node_id) {
+				        return edge_map[node_id].edge_list;
+				      },
+				      check_can_go: function(node_id_a, node_id_b) {
+				        return edge_map[node_id_a][node_id_b] != null;
+				      }
+				    };
+				  }
+				};
+			},
+			"gnodemap.coffee": function (exports, module, require) {
+				var SMALL_PADDING, edge_map, edges, make_edgemap, make_sprite, nodes, _ref;
+
+				_ref = require('./nodes.json'), nodes = _ref.nodes, edges = _ref.edges;
+
+				make_sprite = require('./utils/sprite').make_sprite;
+
+				SMALL_PADDING = require('./consts').SMALL_PADDING;
+
+				make_edgemap = require('./edge_map').make_edgemap;
+
+				edge_map = make_edgemap(nodes, edges);
+
+				module.exports = {
+				  make_gnodemap: function(X, Y, S) {
+				    var gnodes;
+				    gnodes = Object.keys(nodes).map(function(node_id) {
+				      var node, sp;
+				      node = nodes[node_id];
+				      sp = make_sprite("green_dot.png", SMALL_PADDING, SMALL_PADDING);
+				      sp.x = X + node.pos[0] * S;
+				      sp.y = Y + node.pos[1] * S;
+				      return {
+				        render: function() {
+				          return UI.draw(sp);
+				        }
+				      };
+				    });
+				    return {
+				      render: function() {
+				        var gnode, _i, _len;
+				        for (_i = 0, _len = gnodes.length; _i < _len; _i++) {
+				          gnode = gnodes[_i];
+				          gnode.render();
+				        }
+				      }
+				    };
+				  }
+				};
+			},
 			"index.coffee": function (exports, module, require) {
 				var FIRST_STATE, MAX_PLAYER, STATE_PLAY, STATE_RESULT, current_stage, env, next_scene, scene, scenes, _ref,
 				  __slice = [].slice;
@@ -416,22 +484,62 @@ this["global"] = this;
 				}
 			},
 			"minimap.coffee": function (exports, module, require) {
+				var PADDING, make_gnodemap, make_sprite;
+
+				PADDING = require('./consts').PADDING;
+
+				make_sprite = require('./utils/sprite').make_sprite;
+
+				make_gnodemap = require('./gnodemap').make_gnodemap;
+
 				module.exports = {
 				  make_minimap: function() {
-				    var H, padding, sp, tex;
-				    sp = new Sprite;
-				    sp.originX = 0;
-				    sp.originY = 0;
-				    tex = new Texture;
-				    tex.loadFromFile("textures/minimap.jpg");
-				    sp.texture = tex;
+				    var H, W, bg, gnodemap;
 				    H = 0.6 * UI.height;
-				    padding = 0.05 * UI.height;
-				    sp.scaleX = sp.scaleY = H / tex.height;
-				    sp.x = padding;
-				    sp.y = padding;
-				    return sp;
+				    bg = make_sprite("minimap.jpg", null, H);
+				    W = bg.scaleX * bg.texture.width;
+				    bg.x = PADDING;
+				    bg.y = PADDING;
+				    gnodemap = make_gnodemap(bg.x, bg.y, bg.scaleY);
+				    return {
+				      render: function() {
+				        UI.draw(bg);
+				        return gnodemap.render();
+				      }
+				    };
 				  }
+				};
+			},
+			"nodes.json": function (exports, module, require) {
+				module.exports = {
+					"nodes" : {
+						"B_SITE" : {
+							"pos" : [169, 231]
+						},
+						"CT_MID" : {
+							"pos" : [384, 244]
+						},
+						"CT_SPAWN" : {
+							"pos" : [575, 271]
+						},
+						"A_SITE" : {
+							"pos" : [825, 208]
+						},
+						"MID" : {
+							"pos" : [487, 468]
+						},
+						"UPPER_B" : {
+							"pos" : [181, 512]
+						}
+					},
+					"edges" : [
+						["B_SITE", "UPPER_B"],
+						["B_SITE", "CT_MID"],
+						["CT_MID", "CT_SPAWN"],
+						["CT_MID", "MID"],
+						["UPPER_B", "MID"],
+						["CT_SPAWN", "A_SITE"]
+					]
 				};
 			},
 			"play.coffee": function (exports, module, require) {
@@ -553,7 +661,7 @@ this["global"] = this;
 				  render = function() {
 				    var statbox, _j, _len1;
 				    UI.draw(bg);
-				    UI.draw(minimap);
+				    minimap.render();
 				    for (_j = 0, _len1 = statboxes.length; _j < _len1; _j++) {
 				      statbox = statboxes[_j];
 				      statbox.render();
@@ -568,6 +676,7 @@ this["global"] = this;
 				    on_player_input: function() {
 				      var args, pid, type;
 				      pid = arguments[0], type = arguments[1], args = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
+				      print("pid:" + pid + ", type:" + type + ", args:" + (JSON.stringify(args)));
 				      if (type === INPUT_CHAT_MESSAGE) {
 				        return handle_chat(pid, args[0]);
 				      }

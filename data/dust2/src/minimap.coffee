@@ -1,14 +1,17 @@
+{PADDING} = require './consts'
+{make_sprite} = require './utils/sprite'
+{make_gnodemap} = require './gnodemap'
+
 module.exports =
 	make_minimap : ->
-		sp = new Sprite
-		sp.originX = 0
-		sp.originY = 0
-		tex = new Texture
-		tex.loadFromFile "textures/minimap.jpg"
-		sp.texture = tex
 		H = 0.6 * UI.height
-		padding = 0.05 * UI.height
-		sp.scaleX = sp.scaleY = H / tex.height
-		sp.x = padding
-		sp.y = padding
-		sp
+		bg = make_sprite "minimap.jpg", null, H
+		W = bg.scaleX * bg.texture.width
+		bg.x = PADDING
+		bg.y = PADDING
+
+		gnodemap = make_gnodemap(bg.x, bg.y, bg.scaleY)
+
+		render : ->
+			UI.draw bg
+			gnodemap.render()

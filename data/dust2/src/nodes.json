@@ -1,0 +1,30 @@
+{
+	"nodes" : {
+		"B_SITE" : {
+			"pos" : [169, 231]
+		},
+		"CT_MID" : {
+			"pos" : [384, 244]
+		},
+		"CT_SPAWN" : {
+			"pos" : [575, 271]
+		},
+		"A_SITE" : {
+			"pos" : [825, 208]
+		},
+		"MID" : {
+			"pos" : [487, 468]
+		},
+		"UPPER_B" : {
+			"pos" : [181, 512]
+		}
+	},
+	"edges" : [
+		["B_SITE", "UPPER_B"],
+		["B_SITE", "CT_MID"],
+		["CT_MID", "CT_SPAWN"],
+		["CT_MID", "MID"],
+		["UPPER_B", "MID"],
+		["CT_SPAWN", "A_SITE"]
+	]
+}

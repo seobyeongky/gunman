@@ -72,6 +72,8 @@ int main(int argc, char * argv[])
 	G.window.create(desktop, L"사격의 달인"
 #ifndef _DEBUG
 		, Style::Fullscreen
+#else
+		, Style::Titlebar
 #endif
 		);
 	G.window.setFramerateLimit(60U);
