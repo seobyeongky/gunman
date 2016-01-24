@@ -1,3 +1,3 @@
-[submodule "data\\dust2"]
-	path = data\\dust2
+[submodule "data/dust2"]
+	path = data/dust2
 	url = git@github.com:seobyeongky/dust2.git
