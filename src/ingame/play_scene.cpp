@@ -17,6 +17,7 @@
 #include "renderer.h"
 #include "coord.h"
 #include "../menu_scene.h"
+#include "../sfkey_conv.h"
 
 #include <v8.h>
 #include <codecvt>
@@ -86,6 +87,7 @@ PlayScene::PlayScene(const wstring & room_name,
 	, _map_name(map_name)
 	, _send_ok(true)
 	, _ui_flag()
+	, _key_press_dict()
 	, _backbuf()
 	, _chat_box()
 	, _pop()
@@ -196,7 +198,7 @@ PlayScene::PlayScene(const wstring & room_name,
 
 	_backbuf.create(G.window.getSize().x, G.window.getSize().y, false);
 	_backsprite.setTexture(_backbuf.getTexture());
-	_backsprite.setOrigin(0.f, _backbuf.getSize().y);
+	_backsprite.setOrigin(0.f, static_cast<float>(_backbuf.getSize().y));
 	_backsprite.setScale(1.f,-1.f);
 
 	_chat_box.setPosition(.05f*winsize.x, .7f*winsize.y);
@@ -335,7 +337,14 @@ bool PlayScene::HandleKeyPressedEvent(const Event & e)
 		}
 		else
 		{
+			Input input;
+			input.set_pid(_my_id);
+			input.set_type(INPUT_KEY_DOWN);
+			input.set_key(e.key.code);
 			
+			_key_press_dict[input.key()] = true;
+			_inputs.push_back(input);
+			return true;
 		}
 	}
 	return false;
@@ -343,6 +352,18 @@ bool PlayScene::HandleKeyPressedEvent(const Event & e)
 
 bool PlayScene::HandleKeyReleasedEvent(const Event & e)
 {
+	smap<int, bool>::Iter it;
+	if (_key_press_dict.find(e.key.code, &it) && (*it).element() == true)
+	{
+		Input input;
+		input.set_pid(_my_id);
+		input.set_type(INPUT_KEY_UP);
+		input.set_key(e.key.code);
+		(*it).element() = false;
+		_inputs.push_back(input);
+		return true;
+	}
+
 	return false;
 }
 
@@ -526,9 +547,9 @@ void PlayScene::HandleInputFromRemote(Input & input)
 		case INPUT_KEY_DOWN:
 		case INPUT_KEY_UP:
 			{
-				char key = input.key();
-				char buf[] = {key, '\0'};
-				Handle<Value> args[] = {pid, type, JS_STR(buf)};
+//				char key = input.key();
+//				char buf[] = {key, '\0'};
+				Handle<Value> args[] = {pid, type, JS_STR(get_sfconv(static_cast<Keyboard::Key>(input.key())))};
 				Handle<Value> result = cb->Call(context->Global(), 3, args);
 			}
 			break;

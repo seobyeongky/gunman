@@ -20,3 +20,13 @@ void JSRenderable::draw(RenderTarget& target, RenderStates states) const
 
 	target.draw(*drawable, states);
 }
+
+int JSRenderable::GetHeight() const 
+{
+	return 1;
+}
+
+int JSRenderable::GetPriority() const
+{
+	return 0;
+}

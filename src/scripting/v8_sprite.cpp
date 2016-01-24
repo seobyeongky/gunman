@@ -45,7 +45,7 @@ void JsSprite::Init(Isolate * isolate, Handle<ObjectTemplate> exports)
 	// Prototype
 	Local<ObjectTemplate> proto = tpl->PrototypeTemplate();
 //	proto->SetInternalFieldCount(1);
-	proto->SetAccessor(v8::String::NewFromUtf8(isolate, "texture"), 0, JS_SetTexture);
+	proto->SetAccessor(v8::String::NewFromUtf8(isolate, "texture"), JS_GetTexture, JS_SetTexture);
 
 	constructor.Reset(isolate, tpl);
 
@@ -55,6 +55,20 @@ void JsSprite::Init(Isolate * isolate, Handle<ObjectTemplate> exports)
 void JsSprite::Finalize()
 {
 	constructor.Reset();
+}
+
+void JsSprite::JS_GetTexture(v8::Local<v8::String> name, const v8::PropertyCallbackInfo<v8::Value>& info)
+{
+	DEFINE_HANDLE_SCOPE_AND_GET_SELF_FOR_SPRITE(info);
+	
+	JsSprite * that = GetWrappedObject<JsSprite>(info.This());
+	if (!that->_texture)
+	{
+		info.GetReturnValue().SetNull();
+		return;
+	}
+
+	info.GetReturnValue().Set(that->_texture->handle(info.GetIsolate()));
 }
 
 void JsSprite::JS_SetTexture(v8::Local<v8::String> name, v8::Local<v8::Value> value, const v8::PropertyCallbackInfo<void>& info)

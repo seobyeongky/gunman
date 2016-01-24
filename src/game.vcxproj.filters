@@ -55,6 +55,9 @@
     <Filter Include="소스 파일\server">
       <UniqueIdentifier>{f22f391a-824e-4420-9265-e3221ff68f27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\util">
+      <UniqueIdentifier>{089c60f5-3e07-4ab3-8023-29d60723867d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -73,9 +76,6 @@
       <Filter>소스 파일\intro_scene</Filter>
     </ClCompile>
     <ClCompile Include="asset.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="util.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="director.cpp">
@@ -231,6 +231,12 @@
     <ClCompile Include="scripting\v8_audio.cpp">
       <Filter>소스 파일\scripting</Filter>
     </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>소스 파일\util</Filter>
+    </ClCompile>
+    <ClCompile Include="sfkey_conv.cpp">
+      <Filter>소스 파일\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="internal.h">
@@ -247,9 +253,6 @@
     </ClInclude>
     <ClInclude Include="intro_scene.h">
       <Filter>소스 파일\intro_scene</Filter>
-    </ClInclude>
-    <ClInclude Include="util.h">
-      <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="asset.h">
       <Filter>소스 파일</Filter>
@@ -439,6 +442,12 @@
     </ClInclude>
     <ClInclude Include="scripting\v8_audio.h">
       <Filter>소스 파일\scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>소스 파일\util</Filter>
+    </ClInclude>
+    <ClInclude Include="sfkey_conv.h">
+      <Filter>소스 파일\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

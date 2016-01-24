@@ -140,6 +140,7 @@
     <ClCompile Include="scripting\v8_texture.cpp" />
     <ClCompile Include="scripting\v8_transformable.cpp" />
     <ClCompile Include="scripting\v8_utils.cpp" />
+    <ClCompile Include="sfkey_conv.cpp" />
     <ClCompile Include="sfx_mgr.cpp" />
     <ClCompile Include="starcraft\grp_loader.cpp" />
     <ClCompile Include="starcraft\star_unit.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="scripting\v8_texture.h" />
     <ClInclude Include="scripting\v8_transformable.h" />
     <ClInclude Include="scripting\v8_utils.h" />
+    <ClInclude Include="sfkey_conv.h" />
     <ClInclude Include="sfx_mgr.h" />
     <ClInclude Include="starcraft\grp_loader.h" />
     <ClInclude Include="starcraft\star_unit.h" />

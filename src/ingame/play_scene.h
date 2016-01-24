@@ -87,6 +87,7 @@ private:
 	bool					_send_ok;
 
 	Flag					_ui_flag;
+	smap<int, bool>			_key_press_dict;
 
 	RenderTexture			_backbuf;
 	Sprite					_backsprite;
