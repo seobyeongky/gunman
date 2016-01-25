@@ -799,7 +799,6 @@ void PlayScene::SendReadyToRecv()
 	SafeSend(sendpacket);
 }
 
-
 void PlayScene::JS_Print(const v8::FunctionCallbackInfo<v8::Value>& args)
 {
 	bool first = true;
@@ -814,7 +813,28 @@ void PlayScene::JS_Print(const v8::FunctionCallbackInfo<v8::Value>& args)
 		const wchar_t * wchar_list = reinterpret_cast<wchar_t*>(*msg);
 
 		_instance->_chat_box.AddInfoMsg(wchar_list);
-		G.sfx_mgr.Play(L"data\\system\\bell.wav");
+		G.sfx_mgr.Play(L"data\\system\\audio\\bell.wav");
+	}
+}
+
+void PlayScene::JS_DebugPrint(const v8::FunctionCallbackInfo<v8::Value>& args)
+{
+	bool first = true;
+	for (int i = 0; i < args.Length(); i++) {
+	    HandleScope handle_scope(args.GetIsolate());
+	    if (first) {
+		  first = false;
+		} else {
+		  printf(" ");
+		}
+		v8::String::Value msg(args[i]);
+		const wchar_t * wchar_list = reinterpret_cast<wchar_t*>(*msg);
+
+#ifdef _DEBUG
+		_instance->_chat_box.AddInfoMsg(wchar_list, Color(255, 255, 0, 255));
+#endif
+		G.logger->Warning(wchar_list);
+		G.sfx_mgr.Play(L"data\\system\\audio\\bell.wav");
 	}
 }
 
@@ -990,6 +1010,7 @@ void PlayScene::JS_Init()
 		js_global = ObjectTemplate::New(_js_isolate);
 
 		js_global->Set(JS_STR("print"), JS_FUNC(S_JS_Print));
+		js_global->Set(JS_STR("debugPrint"), JS_FUNC(S_JS_DebugPrint));
 		js_global->Set(JS_STR("onPlayerInput"), JS_FUNC(S_JS_OnPlayerInput));
 		js_global->Set(JS_STR("onPrivateInput"), JS_FUNC(S_JS_OnPrivateInput));
 		js_global->Set(JS_STR("onFrameMove"), JS_FUNC(S_JS_OnFrameMove));

@@ -22,9 +22,19 @@ Handle<Value> JS_MakePlayerObject(Isolate * isolate, ID id, const player_t & p)
 	Handle<Object> obj = Object::New(isolate);
 #define SETT(key,value) obj->Set(v8::String::NewFromUtf8(isolate, key), value)
 	SETT("id", Integer::NewFromUnsigned(isolate, id));
-	string uname;
-	uni2multi(p.name, &uname);
-	SETT("name", v8::String::NewFromUtf8(isolate, uname.c_str()));
+
+	vector<uint16_t> buf(p.name.length() + 1);
+	for (unsigned int i = 0; i < p.name.length(); i++)
+	{
+		buf[i] = p.name[i];
+	}
+	buf[p.name.length()] = 0;
+
+	SETT("name", v8::String::NewFromTwoByte(isolate, &buf[0]));
+
+//	string uname;
+//	uni2multi(p.name, &uname);
+//	SETT("name", v8::String::NewFromUtf8(isolate, uname.c_str()));
 	SETT("color", JS_MakeColorObject(isolate, p.color));
 	return handle_scope.Escape<Object>(obj);
 }

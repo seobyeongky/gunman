@@ -1,0 +1,1 @@
+xcopy ..\data ..\test-d\data\ /e

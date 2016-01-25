@@ -166,6 +166,8 @@ private:
 	// Global
 	void JS_Print(const v8::FunctionCallbackInfo<v8::Value>& args);
 	DEFINE_STATIC_JS_FUNC(JS_Print);
+	void JS_DebugPrint(const v8::FunctionCallbackInfo<v8::Value>& args);
+	DEFINE_STATIC_JS_FUNC(JS_DebugPrint);
 	void JS_OnPlayerInput(const v8::FunctionCallbackInfo<v8::Value>& args);
 	DEFINE_STATIC_JS_FUNC(JS_OnPlayerInput);
 	void JS_OnPrivateInput(const v8::FunctionCallbackInfo<v8::Value>& args);

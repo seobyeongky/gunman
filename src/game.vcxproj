@@ -63,7 +63,11 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\build\Debug\game-d.exe ..\test-d /Y</Command>
+      <Command>xcopy ..\build\Debug\game-d.exe ..\test-d /Y
+IF EXIST "..\test-d\data" (
+  rmdir "..\test-d\data" /s /q
+)
+xcopy ..\data ..\test-d\data\ /e</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>ㅋㅋ</Message>
